@@ -2,16 +2,13 @@
 
 import type { ComponentType } from "react";
 import {
-  ArrowLeftRightIcon,
   ChartNoAxesColumnIcon,
   ChevronLeftIcon,
+  GitGraphIcon,
   HeartPulseIcon,
   LayoutDashboardIcon,
-  Link2Icon,
-  ReceiptIcon,
   RepeatIcon,
   SettingsIcon,
-  TagIcon,
   WalletIcon,
   WaypointsIcon,
 } from "lucide-react";
@@ -40,20 +37,14 @@ type NavItem = {
   page?: DashboardPage;
 };
 
-const operationItems: NavItem[] = [
-  { id: "dashboard", label: "پیشخوان", icon: LayoutDashboardIcon },
-  {
-    id: "transactions",
-    label: "تراکنش‌ها",
-    icon: ArrowLeftRightIcon,
-    page: "transactions",
-  },
-  { id: "settlements", label: "تسویه‌حساب", icon: ReceiptIcon },
-  { id: "discounts", label: "کدهای تخفیف", icon: TagIcon, page: "discounts" },
-  { id: "links", label: "لینک‌های پرداخت", icon: Link2Icon, page: "links" },
-];
-
 const growthItems: NavItem[] = [
+  {
+    id: "dashboard",
+    label: "پیشخوان",
+    icon: LayoutDashboardIcon,
+    page: "dashboard",
+  },
+
   {
     id: "sales-pulse",
     label: "نبض فروش و مناسبت‌ها",
@@ -77,6 +68,12 @@ const growthItems: NavItem[] = [
     label: "سلامت مسیر پرداخت",
     icon: WaypointsIcon,
     page: "payment-health",
+  },
+    {
+    id: "business-graph",
+    label: "گراف هوشمند کسب و کار",
+    icon: GitGraphIcon,
+    page: "business-graph",
   },
 ];
 
@@ -148,12 +145,6 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
           <NavGroup
             label="رشد کسب‌وکار"
             items={growthItems}
-            activePage={activePage}
-            onNavigate={onNavigate}
-          />
-          <NavGroup
-            label="عملیات"
-            items={operationItems}
             activePage={activePage}
             onNavigate={onNavigate}
           />
