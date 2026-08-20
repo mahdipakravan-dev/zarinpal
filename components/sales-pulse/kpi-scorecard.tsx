@@ -27,19 +27,19 @@ const accentStyles: Record<
   { icon: string; change: string }
 > = {
   emerald: {
-    icon: "bg-[var(--pulse-good)]/10 text-[var(--pulse-good)]",
+    icon: "text-[var(--pulse-good)]",
     change: "text-[var(--pulse-good)]",
   },
   violet: {
-    icon: "bg-[var(--pulse-violet-soft)] text-[var(--pulse-violet)]",
+    icon: "text-[var(--pulse-violet)]",
     change: "text-[var(--pulse-violet)]",
   },
   blue: {
-    icon: "bg-[var(--pulse-blue-soft)] text-[var(--pulse-blue)]",
+    icon: "text-[var(--pulse-blue)]",
     change: "text-[var(--pulse-blue)]",
   },
   amber: {
-    icon: "bg-[var(--pulse-amber-soft)] text-[var(--pulse-amber)]",
+    icon: "text-[var(--pulse-amber)]",
     change: "text-[var(--pulse-amber)]",
   },
 };
@@ -60,7 +60,7 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
         <div className="flex min-w-0 flex-col gap-1.5">
           <div
             className={cn(
-              "flex size-8 items-center justify-center rounded-lg",
+              "flex size-8 items-center justify-center rounded-md border border-[var(--pulse-line)]",
               styles.icon
             )}
           >

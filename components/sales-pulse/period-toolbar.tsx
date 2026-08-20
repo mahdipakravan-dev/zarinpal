@@ -119,7 +119,7 @@ export function PeriodToolbar({
       </div>
 
       {period && !isInline ? (
-        <p className="rounded-md bg-[var(--pulse-wash)] px-2.5 py-1.5 text-xs text-[var(--pulse-subtle)] sm:text-sm">
+        <p className="border-t border-[var(--pulse-line)] pt-2 text-xs text-[var(--pulse-subtle)] sm:text-sm">
           بازه:{" "}
           <span className="font-semibold text-[var(--pulse-ink)]">{period.range}</span>
         </p>

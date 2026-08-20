@@ -56,18 +56,18 @@ import {
 } from "@/components/ui/select";
 
 const peerTheme = {
-  "--peer-ink": "#1a2148",
-  "--peer-subtle": "#6b7590",
-  "--peer-line": "#e4e9f3",
-  "--peer-wash": "#f6f8fc",
+  "--peer-ink": "#17191d",
+  "--peer-subtle": "#68707d",
+  "--peer-line": "#e6e8ec",
+  "--peer-wash": "#f7f8fa",
   "--peer-navy": "#171f4a",
   "--peer-violet": "#174fd6",
-  "--peer-violet-soft": "#eaf1ff",
-  "--peer-violet-line": "#c8d8ff",
+  "--peer-violet-soft": "#f2f5fb",
+  "--peer-violet-line": "#d7deeb",
   "--peer-teal": "#0f9a84",
-  "--peer-teal-soft": "#e7f8f4",
+  "--peer-teal-soft": "#f1f7f5",
   "--peer-good": "#119a6c",
-  "--peer-good-soft": "#e6f7ef",
+  "--peer-good-soft": "#f1f7f4",
   "--peer-warn": "#e25555",
   "--peer-warn-soft": "#f6f8fc",
   "--peer-amber": "#e8892d",
@@ -102,9 +102,9 @@ const criterionIconMap: Record<PeerCriterion["icon"], LucideIcon> = {
 };
 
 const iconToneClass: Record<PeerTone, string> = {
-  good: "bg-[var(--peer-good-soft)] text-[var(--peer-good)]",
-  warn: "bg-[var(--peer-wash)] text-[var(--peer-warn)] ring-1 ring-[var(--peer-line)]",
-  neutral: "bg-[var(--peer-violet-soft)] text-[var(--peer-violet)]",
+  good: "text-[var(--peer-good)] ring-1 ring-[var(--peer-line)]",
+  warn: "text-[var(--peer-warn)] ring-1 ring-[var(--peer-line)]",
+  neutral: "text-[var(--peer-violet)] ring-1 ring-[var(--peer-line)]",
 };
 
 const percentileTextClass: Record<PeerTone, string> = {
@@ -285,9 +285,9 @@ function KeyInsightBanner() {
             بینش کلیدی
           </h2>
         </div>
-        <p className="text-sm leading-6 text-white/90">
+        <p className="text-sm leading-6 text-[var(--peer-ink)]">
           {PEER_KEY_INSIGHT.headline}{" "}
-          <span className="font-bold text-white">
+          <span className="font-bold text-[var(--peer-ink)]">
             صدک {toPersianDigits(PEER_KEY_INSIGHT.growthPercentile)}
           </span>
           {" — "}
@@ -669,7 +669,7 @@ function CohortCurve() {
           ۱۰۰٪
         </text>
       </svg>
-      <p className="rounded-lg bg-[var(--peer-wash)] px-2.5 py-2 text-center text-xs text-[var(--peer-subtle)]">
+      <p className="border-t border-[var(--peer-line)] pt-2 text-center text-xs leading-5 text-[var(--peer-subtle)]">
         تعداد پذیرندگان با الگوی زمانی مشابه:{" "}
         <span className="font-semibold text-[var(--peer-ink)]">
           {toPersianDigits(COHORT_ACTIVITY.similarCount)}
@@ -703,7 +703,7 @@ function Leaderboard() {
             className={cn(
               "flex min-h-11 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm",
               row.isYou
-                ? "border-[var(--peer-violet-line)] bg-[var(--peer-violet-soft)]"
+                ? "border-[var(--peer-violet)] bg-card"
                 : "border-[var(--peer-line)] bg-card"
             )}
           >
@@ -773,7 +773,7 @@ function PeerGroupAside() {
               key={item.id}
               className="flex items-center gap-2 py-2 text-xs text-[var(--peer-ink)] sm:rounded-lg sm:border sm:border-[var(--peer-line)] sm:px-2 sm:py-2 lg:rounded-none lg:border-0 lg:px-0"
             >
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-[var(--peer-teal-soft)] text-[var(--peer-teal)]">
+              <span className="flex size-7 shrink-0 items-center justify-center text-[var(--peer-teal)]">
                 <Icon className="size-3.5" aria-hidden="true" />
               </span>
               <span className="leading-5">{item.label}</span>
@@ -782,7 +782,7 @@ function PeerGroupAside() {
         })}
       </ul>
 
-      <p className="flex items-start gap-2 rounded-lg bg-[var(--peer-violet-soft)] px-2.5 py-2 text-[11px] leading-5 text-[var(--peer-ink)]">
+      <p className="flex items-start gap-2 border-t border-[var(--peer-line)] pt-2 text-[11px] leading-5 text-[var(--peer-subtle)]">
         <LockIcon
           className="mt-0.5 size-3.5 shrink-0 text-[var(--peer-violet)]"
           aria-hidden="true"
@@ -807,18 +807,18 @@ function Disclaimer() {
 
 export function PeerPositionDashboard() {
   return (
-    <div className="flex flex-col gap-2.5" style={peerTheme}>
+    <div className="flex flex-col gap-2" style={peerTheme}>
       <PeerHeader />
       <PeerStatsBar />
 
-      <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-[minmax(0,1fr)_15rem]">
-        <div className="flex min-w-0 flex-col gap-2.5">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-[minmax(0,1fr)_15rem]">
+        <div className="flex min-w-0 flex-col gap-2">
           <KeyInsightBanner />
           <PercentileSection />
           <KpiGrid />
           <section
             aria-label="نمودارهای مقایسه‌ای"
-            className="grid grid-cols-1 gap-2.5 md:grid-cols-2"
+            className="grid grid-cols-1 gap-2 md:grid-cols-2"
           >
             <RadarChart />
             <CohortLeaderboardSection />

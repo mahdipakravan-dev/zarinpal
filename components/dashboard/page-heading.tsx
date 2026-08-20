@@ -17,7 +17,7 @@ export function PageHeading({
     <header
       data-slot="page-heading"
       className={cn(
-        "flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between",
+        "flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between",
         className
       )}
       {...props}

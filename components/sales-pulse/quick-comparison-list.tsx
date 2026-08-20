@@ -20,7 +20,7 @@ export function QuickComparisonList({ items }: QuickComparisonProps) {
         {items.map((item) => (
           <li
             key={item.label}
-            className="flex min-h-9 items-center justify-between gap-2 rounded-lg border border-[var(--pulse-line)] bg-[var(--pulse-wash)] px-2.5 py-1.5 text-xs transition-colors duration-200 hover:bg-[var(--pulse-violet-soft)] motion-reduce:transition-none sm:text-sm"
+            className="flex min-h-9 items-center justify-between gap-2 border-b border-[var(--pulse-line)] px-1 py-1.5 text-xs transition-colors duration-200 last:border-b-0 hover:text-[var(--pulse-ink)] motion-reduce:transition-none sm:text-sm"
           >
             <span className="text-[var(--pulse-subtle)]">{item.label}</span>
             <span

@@ -144,12 +144,8 @@ export const SALES_PULSE_CUMULATIVE_TREND: TrendPoint[] = [
 ];
 
 export const SALES_PULSE_HOURLY_IMPACT: HourlyImpact[] = [
-  { hour: 0, label: "۰", value: -2.1 },
-  { hour: 3, label: "۳", value: -1.4 },
-  { hour: 6, label: "۶", value: 0.8 },
   { hour: 9, label: "۹", value: 3.2 },
   { hour: 12, label: "۱۲", value: 5.6 },
-  { hour: 15, label: "۱۵", value: 7.1 },
   { hour: 18, label: "۱۸", value: 11.4 },
   { hour: 21, label: "۲۱", value: 8.9 },
 ];

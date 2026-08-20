@@ -31,22 +31,22 @@ import {
 import { cn } from "@/lib/utils";
 
 const pulseTheme = {
-  "--pulse-ink": "#1a2148",
-  "--pulse-subtle": "#6b7590",
-  "--pulse-line": "#e4e9f3",
-  "--pulse-wash": "#f6f8fc",
+  "--pulse-ink": "#17191d",
+  "--pulse-subtle": "#68707d",
+  "--pulse-line": "#e6e8ec",
+  "--pulse-wash": "#f7f8fa",
   "--pulse-blue": "#174fd6",
-  "--pulse-blue-soft": "#eaf1ff",
-  "--pulse-blue-line": "#c8d8ff",
+  "--pulse-blue-soft": "#f2f5fb",
+  "--pulse-blue-line": "#d7deeb",
   "--pulse-violet": "#174fd6",
-  "--pulse-violet-soft": "#eaf1ff",
-  "--pulse-violet-line": "#c8d8ff",
+  "--pulse-violet-soft": "#f2f5fb",
+  "--pulse-violet-line": "#d7deeb",
   "--pulse-teal": "#0f9a84",
   "--pulse-good": "#119a6c",
   "--pulse-warn": "#d44949",
   "--pulse-amber": "#e8892d",
-  "--pulse-amber-soft": "#fff6ea",
-  "--pulse-amber-line": "#ffe0b5",
+  "--pulse-amber-soft": "#fbf7f0",
+  "--pulse-amber-line": "#eadfce",
   "--pulse-yellow": "#ffd60a",
 } as CSSProperties;
 
@@ -90,7 +90,7 @@ export function SalesPulseDashboard() {
   }
 
   return (
-    <div className="flex flex-col gap-2.5 text-[var(--pulse-ink)]" style={pulseTheme}>
+    <div className="flex flex-col gap-2 text-[var(--pulse-ink)]" style={pulseTheme}>
       <SalesPulseHeader
         controls={
           <PeriodToolbar
@@ -111,7 +111,7 @@ export function SalesPulseDashboard() {
 
       <section
         aria-labelledby="growth-breakdown-heading"
-        className="grid grid-cols-1 gap-2.5 lg:grid-cols-2"
+        className="grid grid-cols-1 gap-2 lg:grid-cols-2"
       >
         <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3")}>
           <header>
@@ -149,7 +149,7 @@ export function SalesPulseDashboard() {
 
       <section
         aria-label="نمودارهای تکمیلی"
-        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3"
       >
         <article className={cn(panelClass, "p-2.5 sm:p-3 md:col-span-2 xl:col-span-2")}>
           <header className="mb-2">
@@ -167,7 +167,7 @@ export function SalesPulseDashboard() {
           <QuickComparisonList items={SALES_PULSE_QUICK_COMPARISON} />
         </article>
 
-        <article className={cn(panelClass, "self-start p-2.5 sm:p-3")}>
+        <article className={cn(panelClass, "flex flex-col p-2.5 sm:p-3")}>
           <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               توزیع اثر رشد بر اساس ساعت
@@ -179,7 +179,12 @@ export function SalesPulseDashboard() {
           <HourlyImpactChart data={SALES_PULSE_HOURLY_IMPACT} />
         </article>
 
-        <article className={cn(panelClass, "self-start overflow-x-auto p-2.5 sm:p-3 md:col-span-2")}>
+        <article
+          className={cn(
+            panelClass,
+            "flex flex-col overflow-x-auto p-2.5 sm:p-3 md:col-span-2"
+          )}
+        >
           <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               ماتریس اثر خالص رشد

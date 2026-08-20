@@ -1,15 +1,12 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import {
   CalendarDaysIcon,
-  ChevronDownIcon,
   CreditCardIcon,
   InfoIcon,
-  LightbulbIcon,
   RepeatIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
   StoreIcon,
-  TargetIcon,
   TrendingUpIcon,
   UsersIcon,
   type LucideIcon,
@@ -29,32 +26,38 @@ import {
 } from "@/lib/buyer-loyalty-mock-data";
 import { formatPersianPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 
 const loyaltyTheme = {
-  "--loyalty-ink": "#1a2148",
-  "--loyalty-subtle": "#6b7590",
-  "--loyalty-line": "#e4e9f3",
-  "--loyalty-wash": "#f6f8fc",
+  "--loyalty-ink": "#17191d",
+  "--loyalty-subtle": "#68707d",
+  "--loyalty-line": "#e6e8ec",
+  "--loyalty-wash": "#f7f8fa",
   "--loyalty-navy": "#171f4a",
   "--loyalty-navy-2": "#1e3f85",
   "--loyalty-teal": "#0f9a84",
-  "--loyalty-teal-soft": "#e7f8f4",
-  "--loyalty-teal-line": "#b9eadb",
-  "--loyalty-teal-wash": "#f0fbf7",
+  "--loyalty-teal-soft": "#f1f7f5",
+  "--loyalty-teal-line": "#d6e6e1",
+  "--loyalty-teal-wash": "#f7faf9",
   "--loyalty-mint": "#6ac89e",
-  "--loyalty-mint-soft": "#e7f8ef",
-  "--loyalty-mint-line": "#c7ecd8",
+  "--loyalty-mint-soft": "#f2f7f4",
+  "--loyalty-mint-line": "#dae7df",
   "--loyalty-sky": "#2f6fe8",
-  "--loyalty-sky-soft": "#eaf2ff",
-  "--loyalty-sky-line": "#c8d9fb",
+  "--loyalty-sky-soft": "#f2f5fb",
+  "--loyalty-sky-line": "#d7deeb",
   "--loyalty-violet": "#174fd6",
   "--loyalty-violet-alpha": "color-mix(in oklch, #174fd6 58%, transparent)",
-  "--loyalty-violet-soft": "#eaf1ff",
-  "--loyalty-violet-line": "#c8d8ff",
+  "--loyalty-violet-soft": "#f2f5fb",
+  "--loyalty-violet-line": "#d7deeb",
   "--loyalty-amber": "#e8892d",
   "--loyalty-amber-alpha": "color-mix(in oklch, #e8892d 78%, transparent)",
-  "--loyalty-amber-soft": "#fff3e4",
-  "--loyalty-amber-line": "#ffd8a8",
+  "--loyalty-amber-soft": "#fbf7f0",
+  "--loyalty-amber-line": "#eadfce",
   "--loyalty-rose": "#e25555",
   "--loyalty-rose-soft": "#f6f8fc",
   "--loyalty-rose-line": "#e4e9f3",
@@ -189,35 +192,12 @@ function Panel({
   );
 }
 
-function ToolbarButton({
-  icon: Icon,
-  label,
-  ariaLabel,
-}: {
-  icon: LucideIcon;
-  label: string;
-  ariaLabel: string;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={ariaLabel}
-      className="flex h-10 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-2.5 text-start transition-colors duration-200 hover:bg-[var(--loyalty-wash)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 motion-reduce:transition-none"
-    >
-      <span className="flex min-w-0 items-center gap-2">
-        <Icon className="size-4 shrink-0 text-[var(--loyalty-violet)]" aria-hidden="true" />
-        <span className="truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
-          {label}
-        </span>
-      </span>
-      <ChevronDownIcon className="size-3.5 shrink-0 text-[var(--loyalty-violet)]" aria-hidden="true" />
-    </button>
-  );
-}
+function BuyerLoyaltyHeader() {
+  const [merchantId, setMerchantId] = useState("merchant");
+  const [periodId, setPeriodId] = useState("period");
 
-function BuyerLoyaltyHeader({ className }: { className?: string }) {
   return (
-    <header className={cn("flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between", className)}>
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
       <div className="flex min-w-0 items-center gap-2.5">
         <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)] sm:size-11">
           <UsersIcon className="size-5" aria-hidden="true" />
@@ -232,17 +212,51 @@ function BuyerLoyaltyHeader({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 lg:w-auto lg:min-w-[18rem]">
-        <ToolbarButton
-          icon={StoreIcon}
-          label="پذیرنده"
-          ariaLabel="انتخاب پذیرنده برای تحلیل وفاداری"
-        />
-        <ToolbarButton
-          icon={CalendarDaysIcon}
-          label="بازه"
-          ariaLabel="انتخاب بازه زمانی تحلیل وفاداری"
-        />
+      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
+        <div className="min-w-0 sm:min-w-36">
+          <Select
+            value={merchantId}
+            onValueChange={(value) => value && setMerchantId(value)}
+          >
+            <SelectTrigger
+              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
+              aria-label="انتخاب پذیرنده برای تحلیل وفاداری"
+            >
+              <StoreIcon
+                className="size-4 text-[var(--loyalty-violet)]"
+                aria-hidden="true"
+              />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
+                پذیرنده
+              </span>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="merchant">پذیرنده</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="min-w-0 sm:min-w-36">
+          <Select
+            value={periodId}
+            onValueChange={(value) => value && setPeriodId(value)}
+          >
+            <SelectTrigger
+              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
+              aria-label="انتخاب بازه زمانی تحلیل وفاداری"
+            >
+              <CalendarDaysIcon
+                className="size-4 text-[var(--loyalty-violet)]"
+                aria-hidden="true"
+              />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
+                بازه
+              </span>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="period">بازه</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </header>
   );
@@ -261,14 +275,14 @@ function MetricCard({ metric }: { metric: (typeof BUYER_LOYALTY_METRICS)[number]
         </p>
         <p className="text-[11px] text-[var(--loyalty-subtle)]">{metric.caption}</p>
       </div>
-      <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg border", styles.border, styles.soft, styles.text)}>
+      <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-md border", styles.border, styles.text)}>
         <Icon className="size-3.5" aria-hidden="true" />
       </div>
     </article>
   );
 }
 
-function MetricStrip({ className }: { className?: string }) {
+function MetricStrip() {
   const metrics = BUYER_LOYALTY_METRICS.filter((metric) =>
     primaryMetricIds.has(metric.id)
   );
@@ -276,51 +290,12 @@ function MetricStrip({ className }: { className?: string }) {
   return (
     <section
       aria-label="شاخص‌های خلاصه وفاداری"
-      className={cn("grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5", className)}
+      className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5"
     >
       {metrics.map((metric) => (
         <MetricCard key={metric.id} metric={metric} />
       ))}
     </section>
-  );
-}
-
-function InsightActionPanel({ className }: { className?: string }) {
-  return (
-    <aside
-      aria-labelledby="buyer-loyalty-insight-heading"
-      className={cn(
-        "rail-banner flex flex-col gap-2.5 p-2.5 sm:p-3",
-        className
-      )}
-    >
-      <div className="relative flex items-center gap-2">
-        <div className="flex size-8 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-yellow)]">
-          <LightbulbIcon className="size-4" aria-hidden="true" />
-        </div>
-        <h2 id="buyer-loyalty-insight-heading" className="text-sm font-bold text-white">
-          بینش کلیدی
-        </h2>
-      </div>
-
-      <p className="relative text-sm leading-6 text-white/90">
-        ۱۴٪ کارت‌های اولین‌بار در فروردین طی ۳۰ روز خرید دیگری داشتند؛ همتایان
-        ۲۱٪. با رسیدن به میانه، حدود ۱۸۰ خرید تکراری بیشتر قابل انتظار است.
-      </p>
-
-      <div className="relative flex gap-2 border-t border-white/10 pt-2.5">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-mint)]">
-          <TargetIcon className="size-3.5" aria-hidden="true" />
-        </div>
-        <div className="flex flex-col gap-0.5">
-          <h3 className="text-sm font-semibold text-[var(--loyalty-mint)]">اقدام پیشنهادی</h3>
-          <p className="text-xs leading-5 text-white/85 sm:text-sm sm:leading-6">
-            پیشنهاد خرید دوم را در بازه‌ای اجرا کنید که مشتریان وفادار معمولاً
-            بازمی‌گردند.
-          </p>
-        </div>
-      </div>
-    </aside>
   );
 }
 
@@ -364,11 +339,13 @@ function BehaviorDonutCard({ className }: { className?: string }) {
               />
             ))}
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span className="text-2xl font-extrabold text-[var(--loyalty-ink)]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
+            <span className="text-lg font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-xl">
               ۳۹۶,۳۶۵
             </span>
-            <span className="text-xs text-[var(--loyalty-subtle)]">کارت یکتا</span>
+            <span className="mt-1 text-[11px] text-[var(--loyalty-subtle)]">
+              کارت یکتا
+            </span>
           </div>
         </div>
         <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
@@ -383,7 +360,7 @@ function BehaviorDonutCard({ className }: { className?: string }) {
           ))}
         </ul>
       </figure>
-      <p className="rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]">
+      <p className="border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
         در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده
         است.
       </p>
@@ -593,7 +570,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
           </tbody>
         </table>
       </div>
-      <p className="flex items-start gap-2 rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]">
+      <p className="flex items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
         <InfoIcon className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]" aria-hidden="true" />
         سطرهای اخیر به دلیل right-censoring فرصت کامل برای ۹۰ روز ندارند.
       </p>
@@ -619,18 +596,15 @@ function DataScopeNote() {
 export function BuyerLoyaltyDashboard() {
   return (
     <div
-      className="flex flex-col gap-2.5 text-[var(--loyalty-ink)]"
+      className="flex flex-col gap-2 text-[var(--loyalty-ink)]"
       style={loyaltyTheme}
     >
-      <section className="grid gap-2.5 lg:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)]">
-        <BuyerLoyaltyHeader className="lg:col-start-2" />
-        <InsightActionPanel className="lg:col-start-1 lg:row-span-2 lg:row-start-1" />
-        <MetricStrip className="lg:col-start-2" />
-      </section>
+      <BuyerLoyaltyHeader />
+      <MetricStrip />
 
       <section
         aria-label="تحلیل نگهداشت و فاصله خرید"
-        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-12"
+        className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-12"
       >
         <RetentionCohortCard className="xl:col-span-5" />
         <SecondPurchaseCard className="xl:col-span-4" />

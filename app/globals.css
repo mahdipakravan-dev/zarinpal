@@ -148,6 +148,41 @@
     background: linear-gradient(135deg, #17213f 0%, #1e3f85 56%, #0a8b75 100%);
   }
 
+  .premium-dashboard {
+    --background: #ffffff;
+    --foreground: #17191d;
+    --card: #ffffff;
+    --card-foreground: #17191d;
+    --popover: #ffffff;
+    --popover-foreground: #17191d;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #24272d;
+    --muted: #f4f5f7;
+    --muted-foreground: #68707d;
+    --border: #e6e8ec;
+    --input: #dde1e7;
+    --ring: #174fd6;
+    background: var(--card);
+  }
+
+  .premium-dashboard .rail-panel {
+    border-color: #e6e8ec;
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  .premium-dashboard .rail-panel-interactive:hover {
+    border-color: #cdd2da;
+  }
+
+  .premium-dashboard .rail-banner {
+    border: 1px solid #e6e8ec;
+    border-inline-start: 3px solid #ffd60a;
+    background: #ffffff;
+    color: #17191d;
+    box-shadow: none;
+  }
+
   .rail-empty-grid {
     background-image:
       linear-gradient(90deg, color-mix(in oklch, var(--border) 45%, transparent) 1px, transparent 1px),

@@ -7,24 +7,25 @@ type HourlyImpactChartProps = {
 };
 
 export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
-  const width = 360;
-  const height = 136;
-  const padding = { top: 10, right: 8, bottom: 24, left: 8 };
+  const width = 320;
+  const height = 200;
+  const padding = { top: 18, right: 12, bottom: 28, left: 12 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
   const midY = padding.top + chartHeight / 2;
 
   const maxAbs = Math.max(...data.map((item) => Math.abs(item.value)), 1);
-  const barWidth = chartWidth / data.length - 6;
+  const slotWidth = chartWidth / data.length;
+  const barWidth = Math.min(36, slotWidth * 0.55);
 
   return (
-    <figure className="w-full">
+    <figure className="flex h-full min-h-0 w-full flex-1 items-center">
       <figcaption className="sr-only">
         توزیع اثر خالص رشد فروش بر اساس ساعت روز
       </figcaption>
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="h-auto w-full max-h-36"
+        className="h-full max-h-52 w-full"
         role="img"
         aria-label="نمودار میله‌ای اثر رشد بر اساس ساعت"
       >
@@ -37,8 +38,9 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
         />
 
         {data.map((item, index) => {
-          const barHeight = (Math.abs(item.value) / maxAbs) * (chartHeight / 2 - 4);
-          const x = padding.left + index * (chartWidth / data.length) + 3;
+          const barHeight =
+            (Math.abs(item.value) / maxAbs) * (chartHeight / 2 - 8);
+          const x = padding.left + index * slotWidth + (slotWidth - barWidth) / 2;
           const y = item.value >= 0 ? midY - barHeight : midY;
           const positive = item.value >= 0;
 
@@ -49,29 +51,36 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
                 y={y}
                 width={barWidth}
                 height={Math.max(barHeight, 2)}
-                rx={3}
-                className={cn(positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]")}
+                rx={4}
+                className={cn(
+                  positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]"
+                )}
               />
               <text
                 x={x + barWidth / 2}
-                y={height - 8}
+                y={height - 10}
                 textAnchor="middle"
-                className="fill-muted-foreground text-[9px]"
+                className="fill-muted-foreground text-[10px]"
               >
                 {item.label}
               </text>
-              {Math.abs(item.value) >= 3 ? (
+              {Math.abs(item.value) >= 1 ? (
                 <text
                   x={x + barWidth / 2}
-                  y={positive ? y - 4 : y + barHeight + 12}
+                  y={positive ? y - 6 : y + barHeight + 14}
                   textAnchor="middle"
                   className={cn(
-                    "text-[8px] font-medium",
-                    positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]"
+                    "text-[10px] font-medium",
+                    positive
+                      ? "fill-[var(--pulse-good)]"
+                      : "fill-[var(--pulse-blue)]"
                   )}
                 >
                   {item.value > 0 ? "+" : ""}
-                  {formatPersianNumber(item.value, { maximumFractionDigits: 1 })}٪
+                  {formatPersianNumber(item.value, {
+                    maximumFractionDigits: 1,
+                  })}
+                  ٪
                 </text>
               ) : null}
             </g>

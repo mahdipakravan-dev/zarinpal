@@ -24,6 +24,7 @@ import { PaymentHealthPage } from "@/components/pages/payment-health-page";
 import { PeerPositionPage } from "@/components/pages/peer-position-page";
 import { SalesPulsePage } from "@/components/pages/sales-pulse-page";
 import { type DashboardPage, PAGE_TITLES } from "@/lib/dashboard";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -66,14 +67,14 @@ const linkRows = [
 
 function SearchInput() {
   return (
-    <div className="relative w-full sm:w-56">
+    <div className="relative w-full sm:w-52">
       <SearchIcon className="pointer-events-none absolute top-1/2 start-2.5 -translate-y-1/2 text-muted-foreground" />
       <Input
         aria-label="جستجو"
         placeholder="جستجو"
         className="ps-8 pe-10"
       />
-      <kbd className="pointer-events-none absolute top-1/2 end-2 -translate-y-1/2 rounded-full border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+      <kbd className="pointer-events-none absolute top-1/2 end-2 -translate-y-1/2 rounded border px-1.5 py-0.5 text-[10px] text-muted-foreground">
         /
       </kbd>
     </div>
@@ -91,7 +92,7 @@ function FilterChip({
     <Button
       variant={active ? "default" : "outline"}
       size="sm"
-      className="rounded-full"
+      className="rounded-md"
     >
       {children}
       {active ? <XIcon data-icon="inline-end" /> : <ChevronDownIcon data-icon="inline-end" />}
@@ -122,7 +123,7 @@ function TableFooterBar({ count }: { count: string }) {
 
 function TransactionsPage() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <PageHeading
         title="تراکنش‌ها"
         action={
@@ -133,7 +134,7 @@ function TransactionsPage() {
         }
       />
 
-      <Card className="min-h-[220px]">
+      <Card>
         <CardContent className="flex flex-col gap-2.5 pt-2.5">
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
@@ -145,7 +146,7 @@ function TransactionsPage() {
             <SearchInput />
           </div>
 
-          <Empty className="min-h-36 border-none">
+          <Empty className="min-h-28 gap-2 border-none p-3">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <ReceiptIcon />
@@ -164,7 +165,7 @@ function TransactionsPage() {
 
 function DiscountsPage() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <PageHeading
         title="کدهای تخفیف"
         subtitle="ایجاد و مدیریت کدهای تخفیف برای لینک‌های پرداخت"
@@ -253,7 +254,7 @@ function LinksPage() {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <PageHeading
         title="لینک‌های پرداخت"
         subtitle="ایجاد و مدیریت لینک‌های پرداخت"
@@ -262,8 +263,8 @@ function LinksPage() {
       <Card>
         <CardHeader className="border-b pb-2.5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-2 rounded-full border bg-muted/30 px-2.5 py-1.5">
-              <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border bg-background">
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="flex size-7 shrink-0 items-center justify-center text-muted-foreground">
                 <ReceiptIcon className="text-muted-foreground" />
               </div>
               <div className="min-w-0 text-sm">
@@ -296,7 +297,7 @@ function LinksPage() {
             <SearchInput />
           </div>
 
-          <div className="overflow-hidden rounded-lg border">
+          <div className="overflow-hidden border-t">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -315,7 +316,7 @@ function LinksPage() {
                   <TableRow key={row[0]}>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+                        <div className="flex size-8 shrink-0 items-center justify-center text-muted-foreground">
                           <ReceiptIcon className="text-muted-foreground" />
                         </div>
                         <div>
@@ -395,14 +396,20 @@ export default function Home() {
   return (
     <SidebarProvider>
       <AppSidebar activePage={page} onNavigate={handleNavigate} />
-      <SidebarInset>
-        <DashboardHeader />
+      <SidebarInset className={page === "business-graph" ? undefined : "premium-dashboard"}>
+        <DashboardHeader compact={page !== "business-graph"} />
         <main
           ref={mainRef}
           id="dashboard-main"
           tabIndex={-1}
           aria-label={PAGE_TITLES[page]}
-          className="dashboard-shell flex flex-1 flex-col gap-3 px-3 pb-3 pt-4 outline-none md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6"
+          data-page={page}
+          className={cn(
+            "dashboard-shell flex flex-1 flex-col outline-none",
+            page === "business-graph"
+              ? "gap-3 px-3 pb-3 pt-4 md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6"
+              : "gap-2 px-2.5 pb-2.5 pt-3 md:px-3 md:pb-3 md:pt-3.5 xl:px-4 xl:pb-4 xl:pt-4"
+          )}
         >
           <ActivePage />
         </main>

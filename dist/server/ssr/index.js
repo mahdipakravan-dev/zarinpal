@@ -1836,7 +1836,7 @@ function createInlineScriptTag(content, nonce) {
 * LICENSE file in the root directory of this source tree.
 */
 var require_react_jsx_runtime_production = /* @__PURE__ */ __commonJSMin(((exports) => {
-	var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element");
+	var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
 	function jsxProd(type, config, maybeKey) {
 		var key = null;
 		void 0 !== maybeKey && (key = "" + maybeKey);
@@ -1854,6 +1854,7 @@ var require_react_jsx_runtime_production = /* @__PURE__ */ __commonJSMin(((expor
 			props: maybeKey
 		};
 	}
+	exports.Fragment = REACT_FRAGMENT_TYPE;
 	exports.jsx = jsxProd;
 	exports.jsxs = jsxProd;
 }));
@@ -11628,13 +11629,13 @@ function createFromReadableStream(stream, options = {}) {
 //#region \0virtual:vite-rsc/client-references
 var client_references_default = {
 	"15c18cfaeeff": async () => {
-		const m = await import("./assets/layout-segment-context-Br5wGOk6.js");
+		const m = await import("./assets/layout-segment-context-DLsPtqj5.js");
 		return { get "LayoutSegmentProvider"() {
 			return m["LayoutSegmentProvider"];
 		} };
 	},
 	"593f344dc510": async () => {
-		const m = await import("./assets/error-boundary-CSKZUBb1.js");
+		const m = await import("./assets/error-boundary-B0Lypfi9.js");
 		return {
 			get "ErrorBoundary"() {
 				return m["ErrorBoundary"];
@@ -11654,7 +11655,7 @@ var client_references_default = {
 		};
 	},
 	"6efdf509a785": async () => {
-		const m = await import("./assets/page-C3g_uBp2.js");
+		const m = await import("./assets/page-Dk-K1DYk.js");
 		return { get "default"() {
 			return m["default"];
 		} };
@@ -11674,7 +11675,7 @@ var client_references_default = {
 		};
 	},
 	"b6a451a68c84": async () => {
-		const m = await import("./assets/providers-DMkENMg2.js");
+		const m = await import("./assets/providers-Ju3-tPFX.js");
 		return { get "Providers"() {
 			return m["Providers"];
 		} };

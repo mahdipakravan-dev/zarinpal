@@ -41,22 +41,22 @@ import {
 } from "@/components/ui/select";
 
 const healthTheme = {
-  "--health-ink": "#1a2148",
-  "--health-subtle": "#6b7590",
-  "--health-line": "#e4e9f3",
-  "--health-wash": "#f6f8fc",
+  "--health-ink": "#17191d",
+  "--health-subtle": "#68707d",
+  "--health-line": "#e6e8ec",
+  "--health-wash": "#f7f8fa",
   "--health-violet": "#174fd6",
-  "--health-violet-soft": "#eaf1ff",
-  "--health-violet-line": "#c8d8ff",
+  "--health-violet-soft": "#f2f5fb",
+  "--health-violet-line": "#d7deeb",
   "--health-lavender": "#3b74ef",
   "--health-indigo": "#0f9a84",
   "--health-teal": "#0f9a84",
   "--health-good": "#119a6c",
-  "--health-good-soft": "#e6f7ef",
+  "--health-good-soft": "#f1f7f4",
   "--health-warn": "#e25555",
   "--health-warn-soft": "#f6f8fc",
   "--health-amber": "#e8892d",
-  "--health-amber-soft": "#fff6ea",
+  "--health-amber-soft": "#fbf7f0",
   "--health-yellow": "#ffd60a",
 } as CSSProperties;
 
@@ -73,10 +73,10 @@ const kpiIconMap: Record<HealthKpi["icon"], LucideIcon> = {
 };
 
 const toneIconClass: Record<HealthTone, string> = {
-  good: "bg-[var(--health-good-soft)] text-[var(--health-good)]",
-  warn: "bg-[var(--health-wash)] text-[var(--health-warn)] ring-1 ring-[var(--health-line)]",
-  neutral: "bg-[var(--health-wash)] text-[var(--health-subtle)]",
-  violet: "bg-[var(--health-violet-soft)] text-[var(--health-violet)]",
+  good: "text-[var(--health-good)] ring-1 ring-[var(--health-line)]",
+  warn: "text-[var(--health-warn)] ring-1 ring-[var(--health-line)]",
+  neutral: "text-[var(--health-subtle)] ring-1 ring-[var(--health-line)]",
+  violet: "text-[var(--health-violet)] ring-1 ring-[var(--health-line)]",
 };
 
 const funnelFill: Record<FunnelStage["tone"], string> = {
@@ -201,11 +201,11 @@ function HealthHeader() {
 function PaymentFunnelDiagram() {
   const stages = PAYMENT_FUNNEL;
   const width = 320;
-  const stageH = 46;
-  const gap = 6;
-  const topPad = 8;
+  const stageH = 40;
+  const gap = 4;
+  const topPad = 4;
   const sidePad = 8;
-  const height = topPad + stages.length * stageH + (stages.length - 1) * gap + 8;
+  const height = topPad + stages.length * stageH + (stages.length - 1) * gap + 4;
 
   function stageGeometry(index: number) {
     const t = index / (stages.length - 1);
@@ -223,7 +223,7 @@ function PaymentFunnelDiagram() {
   }
 
   return (
-    <figure className="flex flex-col gap-2.5">
+    <figure className="flex flex-col gap-2">
       <figcaption className="sr-only">
         قیف مسیر پرداخت از نمایش درگاه تا پرداخت موفق.
         {stages
@@ -234,10 +234,10 @@ function PaymentFunnelDiagram() {
           .join("")}
       </figcaption>
 
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem] lg:items-center">
+      <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_10rem] lg:items-stretch">
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="mx-auto h-auto w-full max-w-md"
+          className="mx-auto h-auto w-full max-w-sm"
           role="img"
           aria-hidden="true"
         >
@@ -266,17 +266,17 @@ function PaymentFunnelDiagram() {
                 <polygon points={points} fill="url(#funnel-shine)" />
                 <text
                   x={width / 2}
-                  y={midY - 6}
+                  y={midY - 5}
                   textAnchor="middle"
-                  className="fill-white text-[11px] font-semibold"
+                  className="fill-white text-[10px] font-semibold"
                 >
                   {stage.label}
                 </text>
                 <text
                   x={width / 2}
-                  y={midY + 10}
+                  y={midY + 9}
                   textAnchor="middle"
-                  className="fill-white/95 text-[12px] font-extrabold"
+                  className="fill-white/95 text-[11px] font-extrabold"
                 >
                   {formatPersianNumber(stage.count)}
                 </text>
@@ -285,11 +285,11 @@ function PaymentFunnelDiagram() {
           })}
         </svg>
 
-        <ol className="flex flex-col gap-2">
+        <ol className="flex flex-col justify-center gap-0">
           {stages.map((stage, index) => (
             <li
               key={stage.id}
-              className="flex items-center justify-between gap-2 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2"
+              className="flex items-center justify-between gap-2 border-b border-[var(--health-line)] px-1 py-1.5 last:border-b-0"
             >
               <span className="flex min-w-0 items-center gap-2 text-xs text-[var(--health-ink)]">
                 <span
@@ -321,12 +321,12 @@ function FunnelHero() {
       title="قیف مسیر پرداخت"
       description="از نمایش درگاه تا پرداخت موفق؛ ریزش بین مراحل مسیر فروش بالقوه را نشان می‌دهد"
       headingId="payment-funnel-heading"
-      className="lg:col-span-2"
+      className="h-full lg:col-span-2"
     >
       <PaymentFunnelDiagram />
 
-      <div className="grid gap-2 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] p-2.5 sm:grid-cols-[auto_1fr] sm:items-center">
-        <p className="text-2xl font-extrabold tabular-nums text-[var(--health-warn)]">
+      <div className="grid gap-2 border-t border-[var(--health-line)] pt-2 sm:grid-cols-[auto_1fr] sm:items-center">
+        <p className="text-xl font-extrabold tabular-nums text-[var(--health-warn)] sm:text-2xl">
           {formatPersianPercent(FUNNEL_SUMMARY.postEntrySuccess)}
         </p>
         <div className="flex flex-col gap-0.5 text-xs sm:text-sm">
@@ -341,16 +341,19 @@ function FunnelHero() {
       </div>
 
       <aside
-        className="rail-banner p-2.5 sm:p-3"
+        className="rail-banner p-2.5"
         aria-labelledby="funnel-insight-heading"
       >
         <div className="relative flex items-center gap-2 text-[var(--health-teal)]">
           <TargetIcon className="size-3.5" aria-hidden="true" />
-          <h3 id="funnel-insight-heading" className="text-sm font-bold text-white">
+          <h3
+            id="funnel-insight-heading"
+            className="text-sm font-bold text-[var(--health-ink)]"
+          >
             بینش کلیدی قیف
           </h3>
         </div>
-        <p className="relative mt-1.5 text-sm leading-6 text-white/90">
+        <p className="relative mt-1 text-sm leading-6 text-[var(--health-ink)]">
           {FUNNEL_SUMMARY.headline}{" "}
           <span className="font-medium text-[var(--health-teal)]">
             {FUNNEL_SUMMARY.takeaway}
@@ -364,12 +367,12 @@ function FunnelHero() {
 function DropOffPanel() {
   return (
     <Panel
-      className="self-start"
+      className="h-full"
       title="ریزش بین مراحل"
       description="بزرگ‌ترین گلوگاه مسیر را اول هدف بگیرید"
       headingId="payment-dropoff-heading"
     >
-      <ul className="flex flex-col gap-1.5">
+      <ul className="flex flex-1 flex-col gap-1.5">
         {FUNNEL_DROPOFFS.map((step) => (
           <li
             key={step.id}
@@ -447,13 +450,14 @@ function AmountSuccessChart() {
   const max = 100;
   return (
     <Panel
+      className="h-full"
       title="موفقیت پس از ورود به بانک"
       description="به‌تفکیک بازه مبلغ، در برابر میانه همتایان"
       headingId="amount-success-heading"
     >
-      <ul className="flex flex-col gap-2.5" aria-label="نرخ موفقیت بر اساس مبلغ">
+      <ul className="flex flex-1 flex-col justify-center gap-2" aria-label="نرخ موفقیت بر اساس مبلغ">
         {AMOUNT_BUCKETS.map((bucket) => (
-          <li key={bucket.id} className="flex flex-col gap-1.5">
+          <li key={bucket.id} className="flex flex-col gap-1">
             <div className="flex items-center justify-between gap-2 text-xs">
               <span className="font-medium text-[var(--health-ink)]">{bucket.label}</span>
               <span className="tabular-nums text-[var(--health-subtle)]">
@@ -461,7 +465,7 @@ function AmountSuccessChart() {
                 {formatPersianPercent(bucket.peerMedian)}
               </span>
             </div>
-            <div className="relative h-2.5 overflow-hidden rounded-full bg-[var(--health-wash)]">
+            <div className="relative h-2 overflow-hidden rounded-full bg-[var(--health-wash)]">
               <span
                 className="absolute inset-y-0 start-0 rounded-full bg-[var(--health-violet-line)]"
                 style={{ width: `${(bucket.peerMedian / max) * 100}%` }}
@@ -486,25 +490,26 @@ function AmountSuccessChart() {
 function RetryPanel() {
   return (
     <Panel
+      className="h-full"
       title="بازیابی با Retry"
       description="نشست‌هایی که پس از تلاش مجدد به خرید موفق رسیدند"
       headingId="retry-heading"
     >
-      <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-lg bg-[var(--health-good-soft)] p-2.5">
+      <div className="grid flex-1 grid-cols-2 content-center gap-2">
+        <div className="border-e border-[var(--health-line)] pe-2.5">
           <p className="text-[11px] text-[var(--health-subtle)]">سهم بازیابی</p>
           <p className="mt-1 text-2xl font-extrabold text-[var(--health-good)]">
             {formatPersianPercent(RETRY_STATS.recoveredShare)}
           </p>
         </div>
-        <div className="rounded-lg bg-[var(--health-wash)] p-2.5">
+        <div className="ps-0.5">
           <p className="text-[11px] text-[var(--health-subtle)]">نشست بازیابی‌شده</p>
           <p className="mt-1 text-2xl font-extrabold text-[var(--health-ink)]">
             {formatPersianNumber(RETRY_STATS.recoveredSessions)}
           </p>
         </div>
       </div>
-      <p className="rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2 text-xs leading-5 text-[var(--health-subtle)]">
+      <p className="border-t border-[var(--health-line)] pt-2 text-xs leading-5 text-[var(--health-subtle)]">
         میانگین تلاش تا موفقیت:{" "}
         <span className="font-semibold text-[var(--health-ink)]">
           {toPersianDigits(RETRY_STATS.medianAttempts)}
@@ -518,11 +523,12 @@ function RetryPanel() {
 function TerminalTable() {
   return (
     <Panel
+      className="h-full"
       title="تفاوت ترمینال‌ها"
       description="فقط ترمینال‌هایی با نمونه کافی"
       headingId="terminal-heading"
     >
-      <div className="overflow-x-auto">
+      <div className="flex-1 overflow-x-auto">
         <table className="w-full min-w-[22rem] border-separate border-spacing-0 text-xs">
           <caption className="sr-only">
             مقایسه نرخ موفقیت و NoAttempt بین ترمینال‌های پذیرنده
@@ -573,15 +579,16 @@ function TerminalTable() {
 function PspAnomalyPanel() {
   return (
     <Panel
+      className="h-full"
       title="ناهنجاری PSP یا صادرکننده"
       description="انحراف تعدیل‌شده نسبت به الگوی مورد انتظار"
       headingId="psp-anomaly-heading"
     >
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-1 flex-col justify-center gap-1">
         {PSP_ANOMALIES.map((item) => (
           <li
             key={item.id}
-            className="flex items-start justify-between gap-2.5 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2"
+            className="flex items-start justify-between gap-2.5 border-b border-[var(--health-line)] px-1 py-2 last:border-b-0"
           >
             <div className="min-w-0">
               <p className="text-xs font-bold text-[var(--health-ink)]">{item.label}</p>
@@ -624,12 +631,12 @@ function Disclaimer() {
 
 export function PaymentHealthDashboard() {
   return (
-    <div className="flex flex-col gap-2.5 text-[var(--health-ink)]" style={healthTheme}>
+    <div className="flex flex-col gap-2 text-[var(--health-ink)]" style={healthTheme}>
       <HealthHeader />
 
       <section
         aria-label="شاخص‌های سلامت مسیر"
-        className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-6"
+        className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6"
       >
         {PAYMENT_HEALTH_KPIS.map((kpi) => (
           <KpiCard key={kpi.id} kpi={kpi} />
@@ -638,18 +645,20 @@ export function PaymentHealthDashboard() {
 
       <section
         aria-label="قیف و ریزش مسیر پرداخت"
-        className="grid grid-cols-1 gap-2.5 lg:grid-cols-3"
+        className="grid grid-cols-1 items-stretch gap-2 lg:grid-cols-3"
       >
         <FunnelHero />
-        <DropOffPanel />
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 lg:content-stretch">
+          <DropOffPanel />
+          <RetryPanel />
+        </div>
       </section>
 
       <section
         aria-label="تحلیل‌های تکمیلی مسیر پرداخت"
-        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-2 xl:grid-cols-3"
       >
         <AmountSuccessChart />
-        <RetryPanel />
         <TerminalTable />
         <PspAnomalyPanel />
       </section>

@@ -158,69 +158,68 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
     >
       <SidebarCollapseControl />
 
-      <SidebarHeader className="gap-2.5 p-3 group-data-[collapsible=icon]:p-2">
-        <div className="flex items-center gap-2 group-data-[collapsible=icon]:hidden">
-          <div className="flex min-w-0 items-center group-data-[collapsible=icon]:hidden">
-            <p className="truncate text-sm font-extrabold text-sidebar-foreground">داشبورد زرین‌پال</p>
+      <SidebarHeader className="h-11 shrink-0 justify-center gap-0 p-0 px-3 group-data-[collapsible=icon]:px-2">
+        <button
+          type="button"
+          aria-expanded={accountOpen}
+          aria-controls="sidebar-account-menu"
+          onClick={() => setAccountOpen((open) => !open)}
+          className="flex h-11 w-full cursor-pointer items-center gap-2.5 rounded-none px-0 text-start transition-colors duration-200 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center"
+        >
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-none text-sidebar-foreground">
+            <WalletIcon />
           </div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <button
-            type="button"
-            aria-expanded={accountOpen}
-            aria-controls="sidebar-account-menu"
-            onClick={() => setAccountOpen((open) => !open)}
-            className="flex w-full cursor-pointer items-center gap-3 rounded-xl bg-muted/60 p-2.5 text-start ring-1 ring-sidebar-border transition-colors duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-1.5"
-          >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-sidebar-border bg-sidebar text-sidebar-foreground group-data-[collapsible=icon]:size-8">
-              <WalletIcon />
-            </div>
-            <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-              <p className="truncate text-sm font-bold text-sidebar-foreground">مهدی پاکروان</p>
-              <p className="truncate text-xs text-muted-foreground" dir="ltr">
-                zarinp.al/mahdipakravan
-              </p>
-            </div>
-            <ChevronDownIcon
-              className={cn(
-                "shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
-                accountOpen && "rotate-180"
-              )}
-              aria-hidden="true"
-            />
-          </button>
-
-          <div
-            id="sidebar-account-menu"
+          <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+            <p className="truncate text-sm font-bold leading-none text-sidebar-foreground">
+              مهدی پاکروان
+            </p>
+            <p
+              className="mt-1 truncate text-[11px] leading-none text-muted-foreground"
+              dir="ltr"
+            >
+              zarinp.al/mahdipakravan
+            </p>
+          </div>
+          <ChevronDownIcon
             className={cn(
-              "grid transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
-              accountOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              "size-4 shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
+              accountOpen && "rotate-180"
             )}
-          >
-            <div className="min-h-0 overflow-hidden">
-              <div className="flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1">
-                <button
-                  type="button"
-                  className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
-                >
-                  <WalletIcon className="size-3.5" aria-hidden="true" />
-                  <span>جزئیات پذیرنده</span>
-                </button>
-                <button
-                  type="button"
-                  className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
-                >
-                  <SettingsIcon className="size-3.5" aria-hidden="true" />
-                  <span>تنظیمات حساب</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+            aria-hidden="true"
+          />
+        </button>
       </SidebarHeader>
 
       <SidebarSeparator className="mx-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:w-8" />
+
+      <div
+        id="sidebar-account-menu"
+        className={cn(
+          "grid px-3 transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
+          accountOpen
+            ? "grid-rows-[1fr] opacity-100"
+            : "grid-rows-[0fr] opacity-0"
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1 py-1.5">
+            <button
+              type="button"
+              className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
+            >
+              <WalletIcon className="size-3.5" aria-hidden="true" />
+              <span>جزئیات پذیرنده</span>
+            </button>
+            <button
+              type="button"
+              className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
+            >
+              <SettingsIcon className="size-3.5" aria-hidden="true" />
+              <span>تنظیمات حساب</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <SidebarContent className="pt-2">
         <nav aria-label="بخش‌های داشبورد">
