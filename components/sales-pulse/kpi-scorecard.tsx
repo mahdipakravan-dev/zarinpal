@@ -24,27 +24,23 @@ const iconMap: Record<SalesPulseKpi["icon"], LucideIcon> = {
 
 const accentStyles: Record<
   SalesPulseKpi["accent"],
-  { icon: string; change: string; ring: string }
+  { icon: string; change: string }
 > = {
   emerald: {
-    icon: "bg-emerald-500/10 text-emerald-600",
-    change: "text-emerald-600",
-    ring: "ring-emerald-500/20",
+    icon: "bg-[var(--pulse-good)]/10 text-[var(--pulse-good)]",
+    change: "text-[var(--pulse-good)]",
   },
   violet: {
-    icon: "bg-violet-500/10 text-violet-600",
-    change: "text-violet-600",
-    ring: "ring-violet-500/20",
+    icon: "bg-[var(--pulse-violet-soft)] text-[var(--pulse-violet)]",
+    change: "text-[var(--pulse-violet)]",
   },
   blue: {
-    icon: "bg-blue-500/10 text-blue-600",
-    change: "text-blue-600",
-    ring: "ring-blue-500/20",
+    icon: "bg-sky-500/10 text-sky-600",
+    change: "text-sky-600",
   },
   amber: {
-    icon: "bg-amber-500/10 text-amber-600",
-    change: "text-amber-600",
-    ring: "ring-amber-500/20",
+    icon: "bg-[var(--pulse-amber-soft)] text-[var(--pulse-amber)]",
+    change: "text-[var(--pulse-amber)]",
   },
 };
 
@@ -57,42 +53,41 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
   return (
     <article
       className={cn(
-        "flex min-h-44 flex-col gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10",
-        styles.ring
+        "flex flex-col gap-2 rounded-xl border border-[var(--pulse-line)] bg-card p-3 shadow-[0_12px_36px_rgba(26,33,72,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none"
       )}
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="flex flex-col gap-2">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <div
             className={cn(
-              "flex size-9 items-center justify-center rounded-full",
+              "flex size-8 items-center justify-center rounded-lg",
               styles.icon
             )}
           >
-            <Icon className="size-4" aria-hidden="true" />
+            <Icon className="size-3.5" aria-hidden="true" />
           </div>
-          <h3 className="text-sm font-medium text-muted-foreground">{kpi.label}</h3>
+          <h3 className="text-[11px] font-semibold text-[var(--pulse-subtle)]">{kpi.label}</h3>
         </div>
         <Sparkline data={kpi.trend} accent={kpi.accent} />
       </div>
 
-      <div className="mt-auto flex flex-col gap-1">
-        <p className="font-heading text-2xl font-semibold tracking-tight">
+      <div className="mt-auto flex flex-col gap-0.5">
+        <p className="text-xl font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-2xl">
           {kpi.value}
           {kpi.unit ? (
-            <span className="ms-1 text-sm font-normal text-muted-foreground">
+            <span className="ms-1 text-xs font-normal text-[var(--pulse-subtle)] sm:text-sm">
               {kpi.unit}
             </span>
           ) : null}
         </p>
-        <p className={cn("flex items-center gap-1 text-sm font-medium", styles.change)}>
-          <TrendingUpIcon className="size-3.5" aria-hidden="true" />
+        <p className={cn("flex items-center gap-1 text-xs font-medium sm:text-sm", styles.change)}>
+          <TrendingUpIcon className="size-3.5 shrink-0" aria-hidden="true" />
           <span>
             {kpi.change}
-            <span className="font-normal text-muted-foreground">{changeSuffix}</span>
+            <span className="font-normal text-[var(--pulse-subtle)]">{changeSuffix}</span>
           </span>
         </p>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[11px] text-[var(--pulse-subtle)]">
           {kpi.baselineLabel}: {kpi.baseline}
           {kpi.unit && kpi.id !== "sales-amount" && kpi.id !== "avg-basket"
             ? ""
@@ -109,7 +104,7 @@ export function KpiScorecardGrid({ children }: { children: ReactNode }) {
   return (
     <section
       aria-label="شاخص‌های کلیدی عملکرد"
-      className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5"
+      className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-5"
     >
       {children}
     </section>

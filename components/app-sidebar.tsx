@@ -6,7 +6,6 @@ import {
   ChevronLeftIcon,
   GitGraphIcon,
   HeartPulseIcon,
-  LayoutDashboardIcon,
   RepeatIcon,
   SettingsIcon,
   WalletIcon,
@@ -39,13 +38,6 @@ type NavItem = {
 
 const growthItems: NavItem[] = [
   {
-    id: "dashboard",
-    label: "پیشخوان",
-    icon: LayoutDashboardIcon,
-    page: "dashboard",
-  },
-
-  {
     id: "sales-pulse",
     label: "نبض فروش و مناسبت‌ها",
     icon: HeartPulseIcon,
@@ -69,7 +61,7 @@ const growthItems: NavItem[] = [
     icon: WaypointsIcon,
     page: "payment-health",
   },
-    {
+  {
     id: "business-graph",
     label: "گراف هوشمند کسب و کار",
     icon: GitGraphIcon,

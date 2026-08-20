@@ -17,8 +17,8 @@ import {
 type PeriodToolbarProps = {
   periodId: string;
   merchantId: string;
-  onPeriodChange: (periodId: string) => void;
-  onMerchantChange: (merchantId: string) => void;
+  onPeriodChange: (periodId: string | null) => void;
+  onMerchantChange: (merchantId: string | null) => void;
 };
 
 export function PeriodToolbar({
@@ -30,40 +30,56 @@ export function PeriodToolbar({
   const period = SALES_PULSE_PERIODS.find((item) => item.id === periodId);
 
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-      <div className="flex flex-wrap gap-2">
-        <Select value={merchantId} onValueChange={onMerchantChange}>
-          <SelectTrigger className="h-9 w-full min-w-40 sm:w-44" aria-label="انتخاب پذیرنده">
-            <StoreIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-            <SelectValue placeholder="پذیرنده" />
-          </SelectTrigger>
-          <SelectContent>
-            {SALES_PULSE_MERCHANTS.map((merchant) => (
-              <SelectItem key={merchant.id} value={merchant.id}>
-                {merchant.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <div className="flex flex-col gap-2 rounded-xl border border-[var(--pulse-line)] bg-card p-3 shadow-[0_12px_36px_rgba(26,33,72,0.05)] sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3 sm:p-3.5">
+      <div className="grid w-full grid-cols-1 gap-2 sm:w-auto sm:grid-cols-2 sm:gap-3">
+        <div className="flex min-w-0 flex-col gap-1 sm:min-w-40">
+          <span className="text-[11px] text-[var(--pulse-subtle)]">پذیرنده</span>
+          <Select value={merchantId} onValueChange={onMerchantChange}>
+            <SelectTrigger
+              className="h-9 w-full border-[var(--pulse-line)] bg-card"
+              aria-label="انتخاب پذیرنده"
+            >
+              <StoreIcon className="size-4 text-[var(--pulse-subtle)]" aria-hidden="true" />
+              <SelectValue placeholder="پذیرنده" />
+            </SelectTrigger>
+            <SelectContent>
+              {SALES_PULSE_MERCHANTS.map((merchant) => (
+                <SelectItem key={merchant.id} value={merchant.id}>
+                  {merchant.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Select value={periodId} onValueChange={onPeriodChange}>
-          <SelectTrigger className="h-9 w-full min-w-52 sm:w-56" aria-label="انتخاب بازه تحلیل">
-            <CalendarRangeIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-            <SelectValue placeholder="بازه تحلیل" />
-          </SelectTrigger>
-          <SelectContent>
-            {SALES_PULSE_PERIODS.map((item) => (
-              <SelectItem key={item.id} value={item.id}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex min-w-0 flex-col gap-1 sm:min-w-48">
+          <span className="text-[11px] text-[var(--pulse-subtle)]">بازه تحلیل</span>
+          <Select value={periodId} onValueChange={onPeriodChange}>
+            <SelectTrigger
+              className="h-9 w-full border-[var(--pulse-line)] bg-card"
+              aria-label="انتخاب بازه تحلیل"
+            >
+              <CalendarRangeIcon
+                className="size-4 text-[var(--pulse-subtle)]"
+                aria-hidden="true"
+              />
+              <SelectValue placeholder="بازه تحلیل" />
+            </SelectTrigger>
+            <SelectContent>
+              {SALES_PULSE_PERIODS.map((item) => (
+                <SelectItem key={item.id} value={item.id}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {period ? (
-        <p className="text-sm text-muted-foreground">
-          بازه تحلیل: <span className="font-medium text-foreground">{period.range}</span>
+        <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
+          بازه:{" "}
+          <span className="font-semibold text-[var(--pulse-ink)]">{period.range}</span>
         </p>
       ) : null}
     </div>
@@ -73,19 +89,24 @@ export function PeriodToolbar({
 export function BaselineNote() {
   return (
     <aside
-      className="rounded-xl border border-amber-200/80 bg-amber-50/70 p-4 dark:border-amber-500/20 dark:bg-amber-500/10"
+      className="rounded-xl border border-[var(--pulse-amber-line)] bg-[var(--pulse-amber-soft)] p-3"
       aria-labelledby="baseline-note-heading"
     >
-      <div className="flex gap-3">
-        <InfoIcon className="size-4 shrink-0 text-amber-600" aria-hidden="true" />
-        <div className="flex flex-col gap-1 text-sm">
-          <h3 id="baseline-note-heading" className="font-medium text-amber-900 dark:text-amber-100">
-            نکته مهم درباره baseline
+      <div className="flex gap-2">
+        <InfoIcon
+          className="mt-0.5 size-3.5 shrink-0 text-[var(--pulse-amber)]"
+          aria-hidden="true"
+        />
+        <div className="flex flex-col gap-0.5 text-xs sm:text-sm">
+          <h3
+            id="baseline-note-heading"
+            className="font-semibold text-[var(--pulse-ink)]"
+          >
+            baseline
           </h3>
-          <p className="leading-relaxed text-amber-900/85 dark:text-amber-100/85">
-            baseline از میانگین همان روزهای هفته در بازه ۶ هفته قبل محاسبه می‌شود،
-            با کنترل مبلغ، ساعت و ترکیب خریدار تا حد ممکن. این مقایسه انحراف
-            عملکرد است؛ نه اثبات قطعی اثر فصلی.
+          <p className="leading-5 text-[var(--pulse-subtle)]">
+            میانگین همان روزهای هفته در ۶ هفته قبل؛ انحراف عملکرد است نه اثبات
+            اثر فصلی.
           </p>
         </div>
       </div>
@@ -95,23 +116,15 @@ export function BaselineNote() {
 
 export function DataLimitNote() {
   return (
-    <aside
-      className="rounded-xl bg-muted/50 p-4 ring-1 ring-foreground/8"
-      aria-labelledby="data-limit-note-heading"
-    >
-      <div className="flex gap-3">
-        <InfoIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-        <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-          <h3 id="data-limit-note-heading" className="font-medium text-foreground">
-            توضیح
-          </h3>
-          <p className="leading-relaxed">
-            به‌دلیل محدودیت پنجره داده ۶ ماهه، cohortهای قدیمی‌تر و برخی
-            بازه‌های مناسبت ممکن است ناقص باشند. واحد مبلغ‌ها ریال است؛ در
-            نمایش بالا برای خوانایی به تومان تبدیل شده‌اند.
-          </p>
-        </div>
-      </div>
-    </aside>
+    <p className="flex items-start justify-center gap-2 px-1 text-center text-[11px] leading-5 text-[var(--pulse-subtle)] sm:text-xs">
+      <InfoIcon
+        className="mt-0.5 size-3.5 shrink-0 text-[var(--pulse-violet)]"
+        aria-hidden="true"
+      />
+      <span>
+        پنجره داده ۶ ماهه ممکن است cohortهای قدیمی را ناقص کند. مبالغ به تومان
+        نمایش داده شده‌اند.
+      </span>
+    </p>
   );
 }

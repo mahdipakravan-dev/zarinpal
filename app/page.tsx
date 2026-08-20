@@ -20,7 +20,6 @@ import { PageHeading } from "@/components/dashboard/page-heading";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { BusinessGraphPage } from "@/components/pages/business-graph-page";
 import { BuyerLoyaltyPage } from "@/components/pages/buyer-loyalty-page";
-import { DashboardPage as DashboardHomePage } from "@/components/pages/dashboard-page";
 import { PaymentHealthPage } from "@/components/pages/payment-health-page";
 import { PeerPositionPage } from "@/components/pages/peer-position-page";
 import { SalesPulsePage } from "@/components/pages/sales-pulse-page";
@@ -369,7 +368,6 @@ function RowActions() {
 }
 
 const pages: Record<DashboardPage, ComponentType> = {
-  dashboard: DashboardHomePage,
   "business-graph": BusinessGraphPage,
   "sales-pulse": SalesPulsePage,
   "buyer-loyalty": BuyerLoyaltyPage,
@@ -381,7 +379,7 @@ const pages: Record<DashboardPage, ComponentType> = {
 };
 
 export default function Home() {
-  const [page, setPage] = useState<DashboardPage>("dashboard");
+  const [page, setPage] = useState<DashboardPage>("sales-pulse");
   const ActivePage = pages[page];
 
   const handleNavigate = (nextPage: DashboardPage) => {
