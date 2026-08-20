@@ -1,26 +1,405 @@
 "use client";
+
 import { useState } from "react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  CopyIcon,
+  DownloadIcon,
+  MoreHorizontalIcon,
+  PlusIcon,
+  ReceiptIcon,
+  SearchIcon,
+  Share2Icon,
+  XIcon,
+} from "lucide-react";
+import { toast } from "sonner";
 
-type Page = "transactions" | "discounts" | "links";
-const nav = [
-  ["dashboard","پیشخوان","▦"],["transactions","تراکنش‌ها","⇅"],["settlements","تسویه‌حساب","▤"],
-  ["discounts","کدهای تخفیف","◇"],["links","لینک‌های پرداخت","↗"],
-];
+import { AppSidebar, type DashboardPage } from "@/components/app-sidebar";
+import { DashboardHeader } from "@/components/dashboard-header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const linkRows = [
-  ["منتورشیپ کدریویو","۶۷۳۹۹","۲,۰۰۰,۰۰۰","۰۹ بهمن ۱۴۰۳، ۱۴:۵۰"],
-  ["منتورشیپ فوری","۶۷۳۹۹","۵,۰۰۰,۰۰۰","۰۷ بهمن ۱۴۰۳، ۱۹:۱۷"],
-  ["منتورشیپ آموزشی","۶۷۳۹۲","۱۰,۰۰۰,۰۰۰","۰۷ بهمن ۱۴۰۳، ۱۹:۱۳"],
-];
+  ["منتورشیپ کدریویو", "۶۷۳۹۹", "۲,۰۰۰,۰۰۰", "۰۹ بهمن ۱۴۰۳، ۱۴:۵۰"],
+  ["منتورشیپ فوری", "۶۷۳۹۹", "۵,۰۰۰,۰۰۰", "۰۷ بهمن ۱۴۰۳، ۱۹:۱۷"],
+  ["منتورشیپ آموزشی", "۶۷۳۹۲", "۱۰,۰۰۰,۰۰۰", "۰۷ بهمن ۱۴۰۳، ۱۹:۱۳"],
+] as const;
 
-function Filter({children,active=false}:{children:React.ReactNode;active?:boolean}) { return <button className={`filter ${active?"active":""}`}>{children}<span>{active?"×":"⌄"}</span></button> }
-function Search(){return <label className="search"><span>⌕</span><input aria-label="جستجو" placeholder="جستجو"/><kbd>/</kbd></label>}
-function Heading({title,subtitle,action}:{title:string;subtitle?:string;action?:React.ReactNode}){return <div className="heading"><div><h1>{title}</h1>{subtitle&&<p>{subtitle}</p>}</div>{action}</div>}
+function PageHeading({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-xl font-bold tracking-tight">{title}</h1>
+        {subtitle ? (
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
+        ) : null}
+      </div>
+      {action}
+    </div>
+  );
+}
 
-function Transactions(){return <><Heading title="تراکنش‌ها" action={<button className="btn secondary">↗ <span>ایجاد خروجی</span></button>}/><section className="card transaction-card"><div className="toolbar"><div className="filters"><Filter active>وضعیت: موفق</Filter><Filter>روش پرداخت</Filter><Filter>تاریخ</Filter><Filter>مبلغ</Filter></div><Search/></div><div className="empty"><div className="art"><b>✓</b><i/><i/><em/></div><h2>آخرین تراکنش‌های درگاه</h2><p>تاکنون تراکنشی در این درگاه انجام نشده است</p></div></section></>}
+function SearchInput() {
+  return (
+    <div className="relative w-full sm:w-56">
+      <SearchIcon className="pointer-events-none absolute top-1/2 start-2.5 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        aria-label="جستجو"
+        placeholder="جستجو"
+        className="ps-8 pe-10"
+      />
+      <kbd className="pointer-events-none absolute top-1/2 end-2 -translate-y-1/2 rounded-full border bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+        /
+      </kbd>
+    </div>
+  );
+}
 
-function Discounts(){return <><Heading title="کدهای تخفیف" subtitle="ایجاد و مدیریت کدهای تخفیف برای لینک‌های پرداخت" action={<button className="btn primary">＋ <span>ایجاد کد تخفیف</span></button>}/><section className="card"><div className="toolbar single"><Filter>وضعیت</Filter></div><div className="table-wrap"><table><thead><tr><th>کد تخفیف</th><th>دفعات استفاده شده</th><th>حداکثر قابل استفاده</th><th>تاریخ و ساعت انقضا</th><th>وضعیت</th><th/></tr></thead><tbody><tr><td><code>webinar30</code><small>۳۰ درصد · تمام لینک‌های پرداخت</small></td><td>۰</td><td>نامحدود</td><td>–</td><td><span className="status on">فعال</span></td><td>•••</td></tr><tr><td><code>webinar_30</code><small>۳۰ درصد · تمام لینک‌های پرداخت</small></td><td>۰</td><td>نامحدود</td><td>۱۲ بهمن ۱۴۰۳، ۱۸:۲۰</td><td><span className="status">غیرفعال</span></td><td>•••</td></tr></tbody></table></div><Footer count="۲ نتیجه"/></section></>}
+function FilterChip({
+  children,
+  active = false,
+}: {
+  children: React.ReactNode;
+  active?: boolean;
+}) {
+  return (
+    <Button
+      variant={active ? "default" : "outline"}
+      size="sm"
+      className="rounded-full"
+    >
+      {children}
+      {active ? <XIcon data-icon="inline-end" /> : <ChevronDownIcon data-icon="inline-end" />}
+    </Button>
+  );
+}
 
-function Links(){const [copied,setCopied]=useState(false);return <><Heading title="لینک‌های پرداخت" subtitle="ایجاد و مدیریت لینک‌های پرداخت"/><section className="card"><div className="quick"><div className="quick-url"><span className="product-icon">▱</span><b>لینک پرداخت سریع:</b><span dir="ltr">https://zarinp.al/mahdipakravan</span></div><div><button aria-label="کپی" onClick={()=>{navigator.clipboard?.writeText("https://zarinp.al/mahdipakravan");setCopied(true);setTimeout(()=>setCopied(false),1500)}}>{copied?"✓":"▣"}</button><button aria-label="اشتراک‌گذاری">⌯</button></div></div><div className="toolbar links-toolbar"><div className="filters"><Filter>نوع</Filter><Filter>وضعیت</Filter><Filter>مبلغ</Filter></div><Search/></div><div className="table-wrap"><table><thead><tr><th>عنوان</th><th>مبلغ <small>ریال</small></th><th>موجودی/ظرفیت</th><th>تاریخ ایجاد</th><th>وضعیت</th><th/></tr></thead><tbody>{linkRows.map(r=><tr key={r[0]}><td><div className="title-cell"><span className="product-icon">▱</span><div><b>{r[0]}</b><small>{r[1]} · لینک فروش محصول</small></div></div></td><td>{r[2]}</td><td className="muted">تعیین نشده</td><td>{r[3]}</td><td><span className="status">غیرفعال</span></td><td>•••</td></tr>)}</tbody></table></div><Footer count="۳ نتیجه"/></section></>}
-function Footer({count}:{count:string}){return <div className="table-footer"><div>تعداد سطر در صفحه: <button>۱۵⌄</button></div><span>{count}</span></div>}
+function TableFooterBar({ count }: { count: string }) {
+  return (
+    <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>تعداد سطر در صفحه:</span>
+        <Select defaultValue="15">
+          <SelectTrigger className="h-8 w-20">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="15">۱۵</SelectItem>
+            <SelectItem value="25">۲۵</SelectItem>
+            <SelectItem value="50">۵۰</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <span className="text-sm text-muted-foreground">{count}</span>
+    </div>
+  );
+}
 
-export default function Home(){const [page,setPage]=useState<Page>("transactions");const[open,setOpen]=useState(false);return <div dir="rtl"><header><button className="menu" onClick={()=>setOpen(true)} aria-label="باز کردن منو">☰</button><div className="logo">زرین‌پال<i/></div><div className="header-actions" dir="ltr"><button className="avatar">م</button><button className="bell">♧<span>۱۳</span></button><button>▤ <b>تیکت‌ها</b></button></div></header>{open&&<button className="backdrop" onClick={()=>setOpen(false)} aria-label="بستن منو"/>}<aside className={open?"open":""}><div className="account"><span>▱</span><div><b>مهدی پاکروان نوعیابی</b><small dir="ltr">zarinp.al/mahdipakravan</small></div><em>‹</em></div><nav>{nav.map(([id,label,icon])=><button key={id} onClick={()=>{if(["transactions","discounts","links"].includes(id))setPage(id as Page);setOpen(false)}} className={page===id?"selected":""}><span>{icon}</span>{label}</button>)}<hr/><button><span>⚙</span>تنظیمات زرین‌لینک</button></nav></aside><main><div className="container">{page==="transactions"?<Transactions/>:page==="discounts"?<Discounts/>:<Links/>}</div></main></div>}
+function TransactionsPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <PageHeading
+        title="تراکنش‌ها"
+        action={
+          <Button variant="outline">
+            <DownloadIcon data-icon="inline-start" />
+            ایجاد خروجی
+          </Button>
+        }
+      />
+
+      <Card className="min-h-[420px]">
+        <CardContent className="flex flex-col gap-6 pt-6">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-2">
+              <FilterChip active>وضعیت: موفق</FilterChip>
+              <FilterChip>روش پرداخت</FilterChip>
+              <FilterChip>تاریخ</FilterChip>
+              <FilterChip>مبلغ</FilterChip>
+            </div>
+            <SearchInput />
+          </div>
+
+          <Empty className="min-h-[300px] border-none">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ReceiptIcon />
+              </EmptyMedia>
+              <EmptyTitle>آخرین تراکنش‌های درگاه</EmptyTitle>
+              <EmptyDescription>
+                تاکنون تراکنشی در این درگاه انجام نشده است
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function DiscountsPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <PageHeading
+        title="کدهای تخفیف"
+        subtitle="ایجاد و مدیریت کدهای تخفیف برای لینک‌های پرداخت"
+        action={
+          <Button>
+            <PlusIcon data-icon="inline-start" />
+            ایجاد کد تخفیف
+          </Button>
+        }
+      />
+
+      <Card>
+        <CardHeader className="border-b">
+          <div className="flex flex-wrap gap-2">
+            <FilterChip>وضعیت</FilterChip>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>کد تخفیف</TableHead>
+                <TableHead>دفعات استفاده شده</TableHead>
+                <TableHead>حداکثر قابل استفاده</TableHead>
+                <TableHead>تاریخ و ساعت انقضا</TableHead>
+                <TableHead>وضعیت</TableHead>
+                <TableHead className="w-10" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <code className="text-sm font-medium" dir="ltr">
+                    webinar30
+                  </code>
+                  <p className="text-xs text-muted-foreground">
+                    ۳۰ درصد · تمام لینک‌های پرداخت
+                  </p>
+                </TableCell>
+                <TableCell>۰</TableCell>
+                <TableCell>نامحدود</TableCell>
+                <TableCell>–</TableCell>
+                <TableCell>
+                  <Badge>فعال</Badge>
+                </TableCell>
+                <TableCell>
+                  <RowActions />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <code className="text-sm font-medium" dir="ltr">
+                    webinar_30
+                  </code>
+                  <p className="text-xs text-muted-foreground">
+                    ۳۰ درصد · تمام لینک‌های پرداخت
+                  </p>
+                </TableCell>
+                <TableCell>۰</TableCell>
+                <TableCell>نامحدود</TableCell>
+                <TableCell>۱۲ بهمن ۱۴۰۳، ۱۸:۲۰</TableCell>
+                <TableCell>
+                  <Badge variant="secondary">غیرفعال</Badge>
+                </TableCell>
+                <TableCell>
+                  <RowActions />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <TableFooterBar count="۲ نتیجه" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function LinksPage() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard?.writeText("https://zarinp.al/mahdipakravan");
+    setCopied(true);
+    toast.success("لینک کپی شد");
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <PageHeading
+        title="لینک‌های پرداخت"
+        subtitle="ایجاد و مدیریت لینک‌های پرداخت"
+      />
+
+      <Card>
+        <CardHeader className="border-b pb-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-3 rounded-full border bg-muted/30 px-3 py-2">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border bg-background">
+                <ReceiptIcon className="text-muted-foreground" />
+              </div>
+              <div className="min-w-0 text-sm">
+                <span className="font-medium">لینک پرداخت سریع: </span>
+                <span className="text-muted-foreground" dir="ltr">
+                  https://zarinp.al/mahdipakravan
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="icon-sm" onClick={handleCopy}>
+                {copied ? <CheckIcon /> : <CopyIcon />}
+                <span className="sr-only">کپی</span>
+              </Button>
+              <Button variant="outline" size="icon-sm">
+                <Share2Icon />
+                <span className="sr-only">اشتراک‌گذاری</span>
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-4 pt-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-2">
+              <FilterChip>نوع</FilterChip>
+              <FilterChip>وضعیت</FilterChip>
+              <FilterChip>مبلغ</FilterChip>
+            </div>
+            <SearchInput />
+          </div>
+
+          <div className="overflow-hidden rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>عنوان</TableHead>
+                  <TableHead>
+                    مبلغ <span className="text-xs font-normal text-muted-foreground">ریال</span>
+                  </TableHead>
+                  <TableHead>موجودی/ظرفیت</TableHead>
+                  <TableHead>تاریخ ایجاد</TableHead>
+                  <TableHead>وضعیت</TableHead>
+                  <TableHead className="w-10" />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {linkRows.map((row) => (
+                  <TableRow key={row[0]}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+                          <ReceiptIcon className="text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="font-medium">{row[0]}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {row[1]} · لینک فروش محصول
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{row[2]}</TableCell>
+                    <TableCell className="text-muted-foreground">تعیین نشده</TableCell>
+                    <TableCell>{row[3]}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">غیرفعال</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <RowActions />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <TableFooterBar count="۳ نتیجه" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function RowActions() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="ghost" size="icon-sm">
+            <MoreHorizontalIcon />
+            <span className="sr-only">عملیات</span>
+          </Button>
+        }
+      />
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem>ویرایش</DropdownMenuItem>
+        <DropdownMenuItem>غیرفعال‌سازی</DropdownMenuItem>
+        <DropdownMenuItem variant="destructive">حذف</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export default function Home() {
+  const [page, setPage] = useState<DashboardPage>("transactions");
+
+  return (
+    <SidebarProvider>
+      <AppSidebar activePage={page} onNavigate={setPage} />
+      <SidebarInset>
+        <DashboardHeader />
+        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6">
+          {page === "transactions" ? (
+            <TransactionsPage />
+          ) : page === "discounts" ? (
+            <DiscountsPage />
+          ) : (
+            <LinksPage />
+          )}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
