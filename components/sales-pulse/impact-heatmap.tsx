@@ -11,13 +11,13 @@ type ImpactHeatmapProps = {
 };
 
 function cellColor(value: number): string {
-  if (value >= 6) return "bg-emerald-600 text-white";
-  if (value >= 4) return "bg-emerald-500/80 text-white";
-  if (value >= 2) return "bg-emerald-400/70 text-emerald-950";
-  if (value >= 0.5) return "bg-emerald-300/60 text-emerald-950";
-  if (value >= 0) return "bg-emerald-100 text-emerald-900";
-  if (value >= -0.5) return "bg-violet-100 text-violet-900";
-  return "bg-violet-300/70 text-violet-950";
+  if (value >= 6) return "bg-[var(--pulse-good)] text-white";
+  if (value >= 4) return "bg-[color-mix(in_oklch,var(--pulse-good)_82%,white)] text-white";
+  if (value >= 2) return "bg-[color-mix(in_oklch,var(--pulse-good)_48%,white)] text-[var(--pulse-ink)]";
+  if (value >= 0.5) return "bg-[color-mix(in_oklch,var(--pulse-good)_28%,white)] text-[var(--pulse-ink)]";
+  if (value >= 0) return "bg-[var(--pulse-wash)] text-[var(--pulse-ink)]";
+  if (value >= -0.5) return "bg-[color-mix(in_oklch,var(--pulse-blue)_14%,white)] text-[var(--pulse-ink)]";
+  return "bg-[color-mix(in_oklch,var(--pulse-blue)_32%,white)] text-[var(--pulse-ink)]";
 }
 
 export function ImpactHeatmap({ values }: ImpactHeatmapProps) {
@@ -36,16 +36,16 @@ export function ImpactHeatmap({ values }: ImpactHeatmapProps) {
       </figcaption>
 
       <div
-        className="min-w-[420px]"
+        className="min-w-[360px]"
         role="grid"
         aria-label="ماتریس اثر رشد بر اساس روز و ساعت"
       >
-        <div className="grid grid-cols-[4.5rem_repeat(8,minmax(2.5rem,1fr))] gap-1 text-[10px]">
+        <div className="grid grid-cols-[3.75rem_repeat(8,minmax(2rem,1fr))] gap-0.5 text-[9px]">
           <div aria-hidden="true" />
           {HEATMAP_BLOCKS.map((block) => (
             <div
               key={block}
-              className="pb-1 text-center font-medium text-muted-foreground"
+              className="pb-0.5 text-center font-medium text-muted-foreground"
               role="columnheader"
             >
               {block}
@@ -69,7 +69,7 @@ export function ImpactHeatmap({ values }: ImpactHeatmapProps) {
                     role="gridcell"
                     title={`${day} · ${block}: ${sign}${formatPersianNumber(value, { maximumFractionDigits: 1 })}٪`}
                     className={cn(
-                      "flex aspect-square items-center justify-center rounded-md text-[9px] font-medium tabular-nums motion-reduce:transition-none",
+                      "flex h-6 items-center justify-center rounded-sm text-[8px] font-medium tabular-nums motion-reduce:transition-none sm:h-7 sm:text-[9px]",
                       cellColor(value)
                     )}
                   >
@@ -84,14 +84,14 @@ export function ImpactHeatmap({ values }: ImpactHeatmapProps) {
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground">
+      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">
         <span>کمتر</span>
         <div className="flex gap-0.5" aria-hidden="true">
-          <span className="size-3 rounded-sm bg-violet-300/70" />
-          <span className="size-3 rounded-sm bg-violet-100" />
-          <span className="size-3 rounded-sm bg-emerald-100" />
-          <span className="size-3 rounded-sm bg-emerald-400/70" />
-          <span className="size-3 rounded-sm bg-emerald-600" />
+          <span className="size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-blue)_32%,white)]" />
+          <span className="size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-blue)_14%,white)]" />
+          <span className="size-2.5 rounded-sm bg-[var(--pulse-wash)]" />
+          <span className="size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-good)_48%,white)]" />
+          <span className="size-2.5 rounded-sm bg-[var(--pulse-good)]" />
         </div>
         <span>بیشتر</span>
       </div>

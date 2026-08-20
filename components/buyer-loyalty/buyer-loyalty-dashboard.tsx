@@ -1,21 +1,16 @@
 import type { CSSProperties, ReactNode } from "react";
 import {
-  AlertTriangleIcon,
-  ArrowLeftIcon,
   CalendarDaysIcon,
   ChevronDownIcon,
-  ClockIcon,
   CreditCardIcon,
   InfoIcon,
   LightbulbIcon,
   RepeatIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
-  StarIcon,
   StoreIcon,
   TargetIcon,
   TrendingUpIcon,
-  UserCheckIcon,
   UsersIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -24,22 +19,15 @@ import {
   BEHAVIOR_SEGMENTS,
   BUYER_LOYALTY_METRICS,
   COHORT_HEADERS,
-  INTERVAL_BENCHMARKS,
-  INTERVAL_DISTRIBUTION,
-  LIFECYCLE_STAGES,
-  OCCASION_TREND_LABELS,
-  OCCASION_TREND_SERIES,
   RETENTION_COHORT_ROWS,
-  REVENUE_SEGMENTS,
   SECOND_PURCHASE_LABELS,
   SECOND_PURCHASE_SERIES,
   type BehaviorSegment,
-  type LifecycleStage,
   type LineSeries,
   type LoyaltyMetricIcon,
   type LoyaltyTone,
 } from "@/lib/buyer-loyalty-mock-data";
-import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
+import { formatPersianPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const loyaltyTheme = {
@@ -48,7 +36,7 @@ const loyaltyTheme = {
   "--loyalty-line": "#e4e9f3",
   "--loyalty-wash": "#f6f8fc",
   "--loyalty-navy": "#171f4a",
-  "--loyalty-navy-2": "#2a2470",
+  "--loyalty-navy-2": "#1e3f85",
   "--loyalty-teal": "#0f9a84",
   "--loyalty-teal-soft": "#e7f8f4",
   "--loyalty-teal-line": "#b9eadb",
@@ -59,25 +47,26 @@ const loyaltyTheme = {
   "--loyalty-sky": "#2f6fe8",
   "--loyalty-sky-soft": "#eaf2ff",
   "--loyalty-sky-line": "#c8d9fb",
-  "--loyalty-violet": "#5b4cdb",
-  "--loyalty-violet-alpha": "color-mix(in oklch, #5b4cdb 58%, transparent)",
-  "--loyalty-violet-soft": "#efecff",
-  "--loyalty-violet-line": "#d5ceff",
+  "--loyalty-violet": "#174fd6",
+  "--loyalty-violet-alpha": "color-mix(in oklch, #174fd6 58%, transparent)",
+  "--loyalty-violet-soft": "#eaf1ff",
+  "--loyalty-violet-line": "#c8d8ff",
   "--loyalty-amber": "#e8892d",
   "--loyalty-amber-alpha": "color-mix(in oklch, #e8892d 78%, transparent)",
   "--loyalty-amber-soft": "#fff3e4",
   "--loyalty-amber-line": "#ffd8a8",
   "--loyalty-rose": "#e25555",
-  "--loyalty-rose-soft": "#ffeded",
-  "--loyalty-rose-line": "#ffc9c9",
+  "--loyalty-rose-soft": "#f6f8fc",
+  "--loyalty-rose-line": "#e4e9f3",
   "--loyalty-sky-alpha": "color-mix(in oklch, #2f6fe8 68%, transparent)",
   "--loyalty-mint-alpha": "color-mix(in oklch, #6ac89e 68%, transparent)",
   "--loyalty-teal-alpha": "color-mix(in oklch, #0f9a84 18%, transparent)",
   "--loyalty-muted-line": "#96a3ba",
+  "--loyalty-yellow": "#ffd60a",
 } as CSSProperties;
 
 const panelClass =
-  "rounded-xl border border-[var(--loyalty-line)] bg-card shadow-[0_12px_36px_rgba(26,33,72,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none";
+  "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-violet)] [--rail-line:var(--loyalty-line)]";
 
 const toneStyles: Record<
   LoyaltyTone,
@@ -116,11 +105,11 @@ const toneStyles: Record<
   },
   rose: {
     bg: "bg-[var(--loyalty-rose)]",
-    border: "border-[var(--loyalty-rose-line)]",
-    soft: "bg-[var(--loyalty-rose-soft)]",
+    border: "border-[var(--loyalty-line)]",
+    soft: "bg-[var(--loyalty-wash)]",
     stroke: "stroke-[var(--loyalty-rose)]",
     text: "text-[var(--loyalty-rose)]",
-    wash: "bg-[var(--loyalty-rose-soft)]",
+    wash: "bg-[var(--loyalty-wash)]",
   },
   sky: {
     bg: "bg-[var(--loyalty-sky)]",
@@ -156,12 +145,11 @@ const metricIconMap: Record<LoyaltyMetricIcon, LucideIcon> = {
   users: UsersIcon,
 };
 
-const lifecycleIconMap: Record<string, LucideIcon> = {
-  fresh: UserCheckIcon,
-  loyal: StarIcon,
-  risk: AlertTriangleIcon,
-  single: ShoppingCartIcon,
-};
+const primaryMetricIds = new Set([
+  "verified-purchases",
+  "observed-cards",
+  "returning-rate",
+]);
 
 const behaviorArcs = BEHAVIOR_SEGMENTS.reduce<
   Array<BehaviorSegment & { offset: number }>
@@ -187,7 +175,7 @@ function Panel({
   className?: string;
 }) {
   return (
-    <article className={cn(panelClass, "flex flex-col gap-3 p-3 sm:p-4", className)}>
+    <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3", className)}>
       <header className="flex flex-col gap-0.5">
         <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">{title}</h2>
         {description ? (
@@ -203,40 +191,35 @@ function Panel({
 
 function ToolbarButton({
   icon: Icon,
-  eyebrow,
-  value,
+  label,
   ariaLabel,
 }: {
   icon: LucideIcon;
-  eyebrow: string;
-  value: string;
+  label: string;
   ariaLabel: string;
 }) {
   return (
     <button
       type="button"
       aria-label={ariaLabel}
-      className="flex h-9 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-xl border border-[var(--loyalty-line)] bg-card px-3 text-start transition-colors duration-200 hover:bg-[var(--loyalty-wash)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 motion-reduce:transition-none sm:w-auto sm:min-w-48"
+      className="flex h-10 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-2.5 text-start transition-colors duration-200 hover:bg-[var(--loyalty-wash)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 motion-reduce:transition-none"
     >
       <span className="flex min-w-0 items-center gap-2">
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[var(--loyalty-wash)] text-[var(--loyalty-violet)]">
-          <Icon className="size-3.5" aria-hidden="true" />
-        </span>
-        <span className="flex min-w-0 flex-col">
-          <span className="text-[10px] text-[var(--loyalty-subtle)]">{eyebrow}</span>
-          <span className="truncate text-xs font-semibold text-[var(--loyalty-ink)]">{value}</span>
+        <Icon className="size-4 shrink-0 text-[var(--loyalty-violet)]" aria-hidden="true" />
+        <span className="truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
+          {label}
         </span>
       </span>
-      <ChevronDownIcon className="size-3.5 shrink-0 text-[var(--loyalty-subtle)]" aria-hidden="true" />
+      <ChevronDownIcon className="size-3.5 shrink-0 text-[var(--loyalty-violet)]" aria-hidden="true" />
     </button>
   );
 }
 
 function BuyerLoyaltyHeader({ className }: { className?: string }) {
   return (
-    <header className={cn("flex flex-col gap-3", className)}>
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--loyalty-violet)] text-white shadow-[0_10px_24px_rgba(91,76,219,0.25)] sm:size-11">
+    <header className={cn("flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between", className)}>
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)] sm:size-11">
           <UsersIcon className="size-5" aria-hidden="true" />
         </div>
         <div className="flex min-w-0 flex-col gap-0.5">
@@ -249,18 +232,16 @@ function BuyerLoyaltyHeader({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
-        <ToolbarButton
-          icon={CalendarDaysIcon}
-          eyebrow="بازه زمانی"
-          value="۱ فروردین تا ۳۱ خرداد ۱۴۰۳"
-          ariaLabel="انتخاب بازه زمانی تحلیل وفاداری"
-        />
+      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 lg:w-auto lg:min-w-[18rem]">
         <ToolbarButton
           icon={StoreIcon}
-          eyebrow="پذیرنده"
-          value="انتخاب پذیرنده"
+          label="پذیرنده"
           ariaLabel="انتخاب پذیرنده برای تحلیل وفاداری"
+        />
+        <ToolbarButton
+          icon={CalendarDaysIcon}
+          label="بازه"
+          ariaLabel="انتخاب بازه زمانی تحلیل وفاداری"
         />
       </div>
     </header>
@@ -272,10 +253,10 @@ function MetricCard({ metric }: { metric: (typeof BUYER_LOYALTY_METRICS)[number]
   const styles = toneStyles[metric.tone];
 
   return (
-    <article className={cn(panelClass, "flex items-start justify-between gap-2 p-3")}>
+    <article className={cn(panelClass, "flex items-start justify-between gap-2 p-2.5")}>
       <div className="flex min-w-0 flex-col gap-1">
         <h2 className="text-[11px] font-semibold leading-4 text-[var(--loyalty-ink)]">{metric.label}</h2>
-        <p className={cn("text-xl font-extrabold leading-none tracking-tight sm:text-[1.4rem]", styles.text)}>
+        <p className={cn("text-lg font-extrabold leading-none tracking-tight sm:text-xl", styles.text)}>
           {metric.value}
         </p>
         <p className="text-[11px] text-[var(--loyalty-subtle)]">{metric.caption}</p>
@@ -288,12 +269,16 @@ function MetricCard({ metric }: { metric: (typeof BUYER_LOYALTY_METRICS)[number]
 }
 
 function MetricStrip({ className }: { className?: string }) {
+  const metrics = BUYER_LOYALTY_METRICS.filter((metric) =>
+    primaryMetricIds.has(metric.id)
+  );
+
   return (
     <section
       aria-label="شاخص‌های خلاصه وفاداری"
-      className={cn("grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-5", className)}
+      className={cn("grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5", className)}
     >
-      {BUYER_LOYALTY_METRICS.map((metric) => (
+      {metrics.map((metric) => (
         <MetricCard key={metric.id} metric={metric} />
       ))}
     </section>
@@ -305,20 +290,12 @@ function InsightActionPanel({ className }: { className?: string }) {
     <aside
       aria-labelledby="buyer-loyalty-insight-heading"
       className={cn(
-        "relative flex flex-col gap-2.5 overflow-hidden rounded-xl bg-[linear-gradient(135deg,#151d48_0%,#2a2470_55%,#3b2f8f_100%)] p-3 text-white shadow-[0_14px_32px_rgba(21,29,72,0.24)] sm:p-4",
+        "rail-banner flex flex-col gap-2.5 p-2.5 sm:p-3",
         className
       )}
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30 motion-reduce:hidden"
-        aria-hidden="true"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, rgba(91,76,219,0.45), transparent 42%), radial-gradient(circle at 80% 0%, rgba(15,154,132,0.25), transparent 35%)",
-        }}
-      />
       <div className="relative flex items-center gap-2">
-        <div className="flex size-8 items-center justify-center rounded-lg bg-white/10 text-[var(--loyalty-amber)]">
+        <div className="flex size-8 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-yellow)]">
           <LightbulbIcon className="size-4" aria-hidden="true" />
         </div>
         <h2 id="buyer-loyalty-insight-heading" className="text-sm font-bold text-white">
@@ -332,7 +309,7 @@ function InsightActionPanel({ className }: { className?: string }) {
       </p>
 
       <div className="relative flex gap-2 border-t border-white/10 pt-2.5">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[var(--loyalty-teal-alpha)] text-[var(--loyalty-mint)]">
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-mint)]">
           <TargetIcon className="size-3.5" aria-hidden="true" />
         </div>
         <div className="flex flex-col gap-0.5">
@@ -354,11 +331,11 @@ function BehaviorDonutCard({ className }: { className?: string }) {
       title="تقسیم‌بندی کارت‌ها بر اساس رفتار"
       description="سهم کارت‌های مشاهده‌شده در هر وضعیت رفتاری"
     >
-      <figure className="grid flex-1 items-center gap-4 md:grid-cols-[11rem_1fr]">
+      <figure className="grid flex-1 items-center gap-2.5">
         <figcaption className="sr-only">
           توزیع کارت‌های یکتا بر اساس رفتار خرید و بازگشت.
         </figcaption>
-        <div className="relative mx-auto flex size-44 items-center justify-center">
+        <div className="relative mx-auto flex size-36 items-center justify-center">
           <svg
             viewBox="0 0 120 120"
             className="size-full -rotate-90 motion-reduce:rotate-0"
@@ -394,11 +371,11 @@ function BehaviorDonutCard({ className }: { className?: string }) {
             <span className="text-xs text-[var(--loyalty-subtle)]">کارت یکتا</span>
           </div>
         </div>
-        <ul className="flex flex-col gap-2">
+        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
           {BEHAVIOR_SEGMENTS.map((segment) => (
-            <li key={segment.label} className="grid grid-cols-[auto_1fr_auto] items-center gap-2 text-xs">
+            <li key={segment.label} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-xs">
               <span className={cn("size-3 rounded-sm", toneStyles[segment.tone].bg)} aria-hidden="true" />
-              <span className="text-[var(--loyalty-ink)]">{segment.label}</span>
+              <span className="min-w-0 truncate text-[var(--loyalty-ink)]">{segment.label}</span>
               <span className="tabular-nums text-[var(--loyalty-subtle)]">
                 {formatChartPercent(segment.share)}
               </span>
@@ -406,7 +383,7 @@ function BehaviorDonutCard({ className }: { className?: string }) {
           ))}
         </ul>
       </figure>
-      <p className="rounded-md bg-[var(--loyalty-wash)] px-3 py-2 text-xs text-[var(--loyalty-subtle)]">
+      <p className="rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]">
         در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده
         است.
       </p>
@@ -431,11 +408,13 @@ function buildChartPoints(values: number[], labels: string[], max: number) {
 
 function TrendChart({
   labels,
+  compact = false,
   max,
   series,
   title,
 }: {
   labels: string[];
+  compact?: boolean;
   max: number;
   series: LineSeries[];
   title: string;
@@ -446,9 +425,9 @@ function TrendChart({
   }));
 
   return (
-    <figure className="flex flex-1 flex-col gap-3">
+    <figure className={cn("flex flex-col gap-2.5", !compact && "flex-1")}>
       <figcaption className="sr-only">{title}</figcaption>
-      <div className="flex justify-center gap-6 text-xs text-[var(--loyalty-subtle)]">
+      <div className="flex justify-center gap-4 text-xs text-[var(--loyalty-subtle)]">
         {series.map((item) => (
           <span key={item.label} className="flex items-center gap-2">
             <span
@@ -466,7 +445,12 @@ function TrendChart({
           </span>
         ))}
       </div>
-      <svg viewBox="0 0 560 250" className="min-h-40 w-full sm:min-h-48" role="img" aria-label={title}>
+      <svg
+        viewBox="0 0 560 250"
+        className={cn("h-auto w-full", compact ? "max-h-40" : "min-h-40 sm:min-h-48")}
+        role="img"
+        aria-label={title}
+      >
         <g aria-hidden="true">
           {[0, 10, 20, 30, 40].map((tick) => {
             const y = 210 - (tick / max) * 190;
@@ -555,47 +539,6 @@ function SecondPurchaseCard({ className }: { className?: string }) {
   );
 }
 
-function PurchaseIntervalCard({ className }: { className?: string }) {
-  const maxValue = Math.max(...INTERVAL_BENCHMARKS.map((item) => item.value));
-
-  return (
-    <Panel
-      className={className}
-      title="میانه فاصله بین خریدهای متوالی"
-      description="برای کارت‌های بازگشتی"
-    >
-      <div className="flex flex-1 flex-col justify-between gap-5">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="text-4xl font-extrabold text-[var(--loyalty-ink)]">۲۸</p>
-            <p className="text-sm text-[var(--loyalty-subtle)]">روز</p>
-          </div>
-          <div className="flex size-12 items-center justify-center rounded-lg border border-[var(--loyalty-teal-line)] bg-[var(--loyalty-teal-soft)] text-[var(--loyalty-teal)]">
-            <CalendarDaysIcon aria-hidden="true" />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          {INTERVAL_BENCHMARKS.map((item) => (
-            <div key={item.label} className="grid grid-cols-[5.25rem_1fr_3rem] items-center gap-3 text-xs">
-              <span className="text-[var(--loyalty-subtle)]">{item.label}</span>
-              <span className="h-2 overflow-hidden rounded-full bg-[var(--loyalty-wash)]">
-                <span
-                  className={cn("block h-full rounded-full", toneStyles[item.tone].bg)}
-                  style={{ width: `${(item.value / maxValue) * 100}%` }}
-                />
-              </span>
-              <span className="font-semibold text-[var(--loyalty-ink)]">
-                {formatPersianNumber(item.value)} روز
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Panel>
-  );
-}
-
 function cohortCellStyle(value: number): CSSProperties {
   const mix = Math.min(34 + value * 1.8, 78);
 
@@ -609,7 +552,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
   return (
     <Panel
       className={className}
-      title="Retention Cohort بر اساس ماه ماه اولین مشاهده"
+      title="Retention Cohort بر اساس ماه اولین مشاهده"
       description="درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند"
     >
       <div className="overflow-x-auto">
@@ -650,7 +593,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
           </tbody>
         </table>
       </div>
-      <p className="flex items-start gap-2 rounded-md bg-[var(--loyalty-wash)] px-3 py-2 text-xs text-[var(--loyalty-subtle)]">
+      <p className="flex items-start gap-2 rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]">
         <InfoIcon className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]" aria-hidden="true" />
         سطرهای اخیر به دلیل right-censoring فرصت کامل برای ۹۰ روز ندارند.
       </p>
@@ -658,212 +601,28 @@ function RetentionCohortCard({ className }: { className?: string }) {
   );
 }
 
-function AmountComparisonCard({ className }: { className?: string }) {
+function DataScopeNote() {
   return (
-    <Panel
-      className={className}
-      title="مقایسه مبلغ خرید اول و خریدهای بعدی"
-      description="میانگین مبلغ خرید"
-    >
-      <div className="grid flex-1 items-center gap-4">
-        <div className="rounded-md bg-[var(--loyalty-wash)] p-4 text-center">
-          <p className="text-xs text-[var(--loyalty-subtle)]">خرید اول</p>
-          <p className="mt-2 text-xl font-extrabold text-[var(--loyalty-navy)]">
-            ۷۸۲,۰۰۰
-          </p>
-        </div>
-        <div className="mx-auto flex size-24 flex-col items-center justify-center rounded-full border-2 border-[var(--loyalty-teal)] bg-card shadow-[0_8px_30px_rgba(17,154,124,0.12)]">
-          <span className="text-2xl font-extrabold text-[var(--loyalty-navy)]">+۷۱٪</span>
-          <span className="text-[11px] text-[var(--loyalty-subtle)]">بیشتر</span>
-        </div>
-        <div className="rounded-md bg-[var(--loyalty-amber-soft)] p-4 text-center">
-          <p className="text-xs text-[var(--loyalty-subtle)]">خریدهای بعدی</p>
-          <p className="mt-2 text-xl font-extrabold text-[var(--loyalty-amber)]">
-            ۱,۳۴۰,۰۰۰
-          </p>
-        </div>
-      </div>
-      <p className="text-center text-xs leading-5 text-[var(--loyalty-subtle)]">
-        افزایش متوسط مبلغ در خریدهای بعدی نسبت به خرید اول
-      </p>
-    </Panel>
-  );
-}
-
-function IntervalDistributionCard({ className }: { className?: string }) {
-  const maxValue = Math.max(...INTERVAL_DISTRIBUTION.map((bucket) => bucket.value));
-
-  return (
-    <Panel
-      className={className}
-      title="توزیع فاصله بین خریدهای متوالی (روز)"
-      description="برای کارت‌های بازگشتی"
-    >
-        <div className="grid flex-1 items-stretch gap-5 min-[1800px]:grid-cols-[1fr_8rem]">
-        <figure className="flex min-h-44 flex-col justify-end sm:min-h-52">
-          <figcaption className="sr-only">
-            توزیع فاصله بین خریدهای متوالی برای کارت‌های بازگشتی.
-          </figcaption>
-          <div className="flex h-52 items-end justify-between gap-3 border-b border-[var(--loyalty-line)] px-3">
-            {INTERVAL_DISTRIBUTION.map((bucket) => (
-              <div key={bucket.label} className="flex flex-1 flex-col items-center gap-2">
-                <span className="text-xs font-semibold text-[var(--loyalty-ink)]">
-                  {formatChartPercent(bucket.value)}
-                </span>
-                <span
-                  className="w-full max-w-9 rounded-t-md bg-[linear-gradient(180deg,var(--loyalty-mint),var(--loyalty-teal))]"
-                  style={{ height: `${Math.max((bucket.value / maxValue) * 135, 12)}px` }}
-                  aria-hidden="true"
-                />
-                <span className="text-[11px] text-[var(--loyalty-subtle)]">{bucket.label}</span>
-              </div>
-            ))}
-          </div>
-        </figure>
-        <div className="flex flex-col justify-center rounded-md border border-[var(--loyalty-teal-line)] bg-[var(--loyalty-teal-soft)] p-4 text-center">
-          <ClockIcon className="mx-auto text-[var(--loyalty-teal)]" aria-hidden="true" />
-          <p className="mt-3 text-sm font-bold text-[var(--loyalty-teal)]">
-            بازه رایج بازگشت
-          </p>
-          <p className="mt-2 text-2xl font-extrabold text-[var(--loyalty-navy)]">
-            ۱۵ تا ۴۵ روز
-          </p>
-          <p className="mt-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
-            خریدهای پرتکرار بعدی معمولاً در این محدوده رخ می‌دهد.
-          </p>
-        </div>
-      </div>
-    </Panel>
-  );
-}
-
-function RevenueSegmentCard({ className }: { className?: string }) {
-  return (
-    <Panel
-      className={className}
-      title="درآمد مشاهده‌شده هر بخش"
-      description="سهم از فروش"
-    >
-      <div className="flex flex-1 flex-col justify-center gap-3">
-        {REVENUE_SEGMENTS.map((segment) => (
-          <div
-            key={segment.label}
-            className={cn(
-              "grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border p-3 text-xs",
-              toneStyles[segment.tone].border,
-              toneStyles[segment.tone].wash
-            )}
-          >
-            <span className={cn("flex size-9 items-center justify-center rounded-md", toneStyles[segment.tone].soft, toneStyles[segment.tone].text)}>
-              <TargetIcon aria-hidden="true" />
-            </span>
-            <span className="min-w-0">
-              <span className="block font-semibold text-[var(--loyalty-ink)]">{segment.label}</span>
-              <span className="block text-[var(--loyalty-subtle)]">{segment.amount}</span>
-            </span>
-            <span className={cn("font-extrabold tabular-nums", toneStyles[segment.tone].text)}>
-              {formatChartPercent(segment.share)}
-            </span>
-          </div>
-        ))}
-      </div>
-    </Panel>
-  );
-}
-
-function OccasionReturnTrendCard({ className }: { className?: string }) {
-  return (
-    <Panel
-      className={className}
-      title="تغییر سهم کارت‌های بازگشتی در مناسبت‌ها"
-      description="سهم خریدهای بازگشتی از کل فروش"
-    >
-      <TrendChart
-        labels={OCCASION_TREND_LABELS}
-        max={50}
-        series={OCCASION_TREND_SERIES}
-        title="نمودار تغییر سهم کارت‌های بازگشتی در روزهای قبل و بعد از مناسبت"
+    <p className="flex items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs">
+      <ShieldCheckIcon
+        className="mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-violet)]"
+        aria-hidden="true"
       />
-    </Panel>
-  );
-}
-
-function LifecycleStageItem({
-  index,
-  stage,
-}: {
-  index: number;
-  stage: LifecycleStage;
-}) {
-  const Icon = lifecycleIconMap[stage.id] ?? CreditCardIcon;
-
-  return (
-    <li className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
-      <div className="rounded-xl border border-[var(--loyalty-line)] bg-card p-4 transition-shadow duration-200 hover:shadow-[0_14px_32px_rgba(26,33,72,0.08)] motion-reduce:transition-none">
-        <div className="flex items-start gap-3">
-          <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-full", toneStyles[stage.tone].soft, toneStyles[stage.tone].text)}>
-            <Icon aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <h3 className="font-bold text-[var(--loyalty-ink)]">{stage.title}</h3>
-            <p className="mt-2 text-sm font-semibold text-[var(--loyalty-ink)]">{stage.cards}</p>
-            <p className="text-sm text-[var(--loyalty-subtle)]">{stage.share}</p>
-            <p className="mt-2 text-xs text-[var(--loyalty-subtle)]">{stage.description}</p>
-          </div>
-        </div>
-      </div>
-      {index < LIFECYCLE_STAGES.length - 1 ? (
-        <ArrowLeftIcon
-          className="mx-auto hidden text-[var(--loyalty-navy)] xl:block"
-          aria-hidden="true"
-        />
-      ) : null}
-    </li>
-  );
-}
-
-function LifecycleRail() {
-  return (
-    <section
-      aria-labelledby="buyer-lifecycle-heading"
-      className={cn(panelClass, "p-3 sm:p-4")}
-    >
-      <h2 id="buyer-lifecycle-heading" className="text-center text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">
-        چرخه عمر کارت در بازه
-      </h2>
-      <ol className="mt-3 grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {LIFECYCLE_STAGES.map((stage, index) => (
-          <LifecycleStageItem key={stage.id} index={index} stage={stage} />
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-function ImportantNote() {
-  return (
-    <aside className={cn(panelClass, "flex items-start gap-3 p-3 sm:items-center sm:p-4")}>
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--loyalty-teal-soft)] text-[var(--loyalty-teal)]">
-        <ShieldCheckIcon className="size-4" aria-hidden="true" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <h2 className="text-sm font-bold text-[var(--loyalty-teal)]">نکته مهم</h2>
-        <p className="text-xs leading-5 text-[var(--loyalty-subtle)] sm:text-sm sm:leading-6">
-          به‌دلیل محدودیت شش‌ماهه داده و محاسبه روی payer_card_key، نتایج انحراف
-          عملکرد نسبت به baseline هستند؛ نه اثبات اثر علّی.
-        </p>
-      </div>
-    </aside>
+      <span>
+        محدودیت شش‌ماهه داده و محاسبه روی payer_card_key یعنی نتایج انحراف
+        عملکرد نسبت به baseline هستند، نه اثبات اثر علّی.
+      </span>
+    </p>
   );
 }
 
 export function BuyerLoyaltyDashboard() {
   return (
     <div
-      className="flex flex-col gap-3 text-[var(--loyalty-ink)]"
+      className="flex flex-col gap-2.5 text-[var(--loyalty-ink)]"
       style={loyaltyTheme}
     >
-      <section className="grid gap-3 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)]">
+      <section className="grid gap-2.5 lg:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)]">
         <BuyerLoyaltyHeader className="lg:col-start-2" />
         <InsightActionPanel className="lg:col-start-1 lg:row-span-2 lg:row-start-1" />
         <MetricStrip className="lg:col-start-2" />
@@ -871,28 +630,14 @@ export function BuyerLoyaltyDashboard() {
 
       <section
         aria-label="تحلیل نگهداشت و فاصله خرید"
-        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-12"
+        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-12"
       >
-        <RetentionCohortCard className="xl:col-span-4" />
-        <PurchaseIntervalCard className="xl:col-span-2" />
-        <SecondPurchaseCard className="xl:col-span-3" />
+        <RetentionCohortCard className="xl:col-span-5" />
+        <SecondPurchaseCard className="xl:col-span-4" />
         <BehaviorDonutCard className="xl:col-span-3" />
       </section>
 
-      <section
-        aria-label="رفتار خرید بعدی و درآمد هر بخش"
-        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-12"
-      >
-        <OccasionReturnTrendCard className="xl:col-span-3" />
-        <RevenueSegmentCard className="xl:col-span-3" />
-        <IntervalDistributionCard className="xl:col-span-3" />
-        <AmountComparisonCard className="xl:col-span-3" />
-      </section>
-
-      <section className="grid gap-3 lg:grid-cols-[minmax(18rem,26rem)_minmax(0,1fr)]">
-        <ImportantNote />
-        <LifecycleRail />
-      </section>
+      <DataScopeNote />
     </div>
   );
 }

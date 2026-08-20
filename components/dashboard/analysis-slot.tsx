@@ -21,8 +21,8 @@ export function AnalysisSlot({
       data-slot="analysis-slot"
       data-empty={empty ? "true" : "false"}
       className={cn(
-        "flex min-h-52 flex-col gap-3 rounded-xl bg-card p-4 text-card-foreground ring-1 ring-foreground/10",
-        "data-[empty=true]:border data-[empty=true]:border-dashed data-[empty=true]:border-border data-[empty=true]:bg-muted/25 data-[empty=true]:ring-0",
+        "rail-panel flex min-h-36 flex-col gap-2.5 p-2.5 text-card-foreground sm:p-3",
+        "data-[empty=true]:border-dashed data-[empty=true]:bg-card/70",
         className
       )}
       {...props}
@@ -35,11 +35,11 @@ export function AnalysisSlot({
           <p className="text-sm text-muted-foreground">{description}</p>
         ) : null}
       </header>
-      <div className="flex min-h-32 flex-1 flex-col">
+      <div className="flex min-h-20 flex-1 flex-col">
         {empty ? (
           <div
             aria-hidden="true"
-            className="min-h-32 flex-1 rounded-lg bg-background/70 ring-1 ring-inset ring-foreground/6"
+            className="rail-empty-grid min-h-20 flex-1 rounded-md"
           />
         ) : (
           children

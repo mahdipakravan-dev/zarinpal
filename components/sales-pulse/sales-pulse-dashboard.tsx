@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { ActivityIcon } from "lucide-react";
 
 import { CumulativeTrendChart } from "@/components/sales-pulse/cumulative-trend-chart";
@@ -14,7 +14,6 @@ import { ImpactHeatmap } from "@/components/sales-pulse/impact-heatmap";
 import { InsightPanel } from "@/components/sales-pulse/insight-panel";
 import { KpiScorecard, KpiScorecardGrid } from "@/components/sales-pulse/kpi-scorecard";
 import {
-  BaselineNote,
   DataLimitNote,
   PeriodToolbar,
 } from "@/components/sales-pulse/period-toolbar";
@@ -36,32 +35,43 @@ const pulseTheme = {
   "--pulse-subtle": "#6b7590",
   "--pulse-line": "#e4e9f3",
   "--pulse-wash": "#f6f8fc",
-  "--pulse-violet": "#5b4cdb",
-  "--pulse-violet-soft": "#efecff",
-  "--pulse-violet-line": "#d5ceff",
+  "--pulse-blue": "#174fd6",
+  "--pulse-blue-soft": "#eaf1ff",
+  "--pulse-blue-line": "#c8d8ff",
+  "--pulse-violet": "#174fd6",
+  "--pulse-violet-soft": "#eaf1ff",
+  "--pulse-violet-line": "#c8d8ff",
   "--pulse-teal": "#0f9a84",
   "--pulse-good": "#119a6c",
+  "--pulse-warn": "#d44949",
   "--pulse-amber": "#e8892d",
   "--pulse-amber-soft": "#fff6ea",
   "--pulse-amber-line": "#ffe0b5",
+  "--pulse-yellow": "#ffd60a",
 } as CSSProperties;
 
 const panelClass =
-  "rounded-xl border border-[var(--pulse-line)] bg-card shadow-[0_12px_36px_rgba(26,33,72,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none";
+  "rail-panel rail-panel-interactive [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]";
 
-function SalesPulseHeader() {
+function SalesPulseHeader({ controls }: { controls: ReactNode }) {
   return (
-    <header className="flex min-w-0 items-center gap-3">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--pulse-violet)] text-white shadow-[0_10px_24px_rgba(91,76,219,0.25)] sm:size-11">
-        <ActivityIcon className="size-5" aria-hidden="true" />
+    <header className="flex min-w-0 flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--pulse-yellow)] text-[var(--pulse-ink)] sm:size-11">
+          <ActivityIcon className="size-5" aria-hidden="true" />
+        </div>
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h1 className="text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl">
+            نبض فروش و مناسبت‌ها
+          </h1>
+          <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
+            انحراف مناسبت نسبت به baseline · کنترل مبلغ، ساعت و ترکیب خریدار
+          </p>
+        </div>
       </div>
-      <div className="flex min-w-0 flex-col gap-0.5">
-        <h1 className="text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl">
-          نبض فروش و مناسبت‌ها
-        </h1>
-        <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
-          انحراف مناسبت نسبت به baseline · کنترل مبلغ، ساعت و ترکیب خریدار
-        </p>
+
+      <div className="w-full shrink-0 lg:w-auto">
+        {controls}
       </div>
     </header>
   );
@@ -80,18 +90,18 @@ export function SalesPulseDashboard() {
   }
 
   return (
-    <div className="flex flex-col gap-3 text-[var(--pulse-ink)]" style={pulseTheme}>
-      <SalesPulseHeader />
-
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,16rem)]">
-        <PeriodToolbar
-          periodId={periodId}
-          merchantId={merchantId}
-          onPeriodChange={handlePeriodChange}
-          onMerchantChange={handleMerchantChange}
-        />
-        <BaselineNote />
-      </div>
+    <div className="flex flex-col gap-2.5 text-[var(--pulse-ink)]" style={pulseTheme}>
+      <SalesPulseHeader
+        controls={
+          <PeriodToolbar
+            variant="inline"
+            periodId={periodId}
+            merchantId={merchantId}
+            onPeriodChange={handlePeriodChange}
+            onMerchantChange={handleMerchantChange}
+          />
+        }
+      />
 
       <KpiScorecardGrid>
         {SALES_PULSE_KPIS.map((kpi) => (
@@ -101,9 +111,9 @@ export function SalesPulseDashboard() {
 
       <section
         aria-labelledby="growth-breakdown-heading"
-        className="grid grid-cols-1 gap-3 lg:grid-cols-2"
+        className="grid grid-cols-1 gap-2.5 lg:grid-cols-2"
       >
-        <article className={cn(panelClass, "flex flex-col gap-3 p-3 sm:p-4")}>
+        <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3")}>
           <header>
             <h2
               id="growth-breakdown-heading"
@@ -116,7 +126,7 @@ export function SalesPulseDashboard() {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[7.5rem_1fr] lg:grid-cols-[8rem_1fr]">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-[7.5rem_1fr] lg:grid-cols-[8rem_1fr]">
             <GrowthDonut total={SALES_PULSE_TOTAL_GROWTH} />
             <GrowthWaterfall
               factors={SALES_PULSE_GROWTH_FACTORS}
@@ -139,10 +149,10 @@ export function SalesPulseDashboard() {
 
       <section
         aria-label="نمودارهای تکمیلی"
-        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3"
       >
-        <article className={cn(panelClass, "p-3 sm:p-4 md:col-span-2 xl:col-span-2")}>
-          <header className="mb-3">
+        <article className={cn(panelClass, "p-2.5 sm:p-3 md:col-span-2 xl:col-span-2")}>
+          <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               روند تجمعی فروش موفق
             </h2>
@@ -153,12 +163,12 @@ export function SalesPulseDashboard() {
           <CumulativeTrendChart data={SALES_PULSE_CUMULATIVE_TREND} />
         </article>
 
-        <article className={cn(panelClass, "p-3 sm:p-4")}>
+        <article className={cn(panelClass, "p-2.5 sm:p-3")}>
           <QuickComparisonList items={SALES_PULSE_QUICK_COMPARISON} />
         </article>
 
-        <article className={cn(panelClass, "p-3 sm:p-4")}>
-          <header className="mb-3">
+        <article className={cn(panelClass, "self-start p-2.5 sm:p-3")}>
+          <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               توزیع اثر رشد بر اساس ساعت
             </h2>
@@ -169,8 +179,8 @@ export function SalesPulseDashboard() {
           <HourlyImpactChart data={SALES_PULSE_HOURLY_IMPACT} />
         </article>
 
-        <article className={cn(panelClass, "overflow-x-auto p-3 sm:p-4 md:col-span-2")}>
-          <header className="mb-3">
+        <article className={cn(panelClass, "self-start overflow-x-auto p-2.5 sm:p-3 md:col-span-2")}>
+          <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               ماتریس اثر خالص رشد
             </h2>

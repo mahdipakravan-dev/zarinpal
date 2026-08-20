@@ -53,7 +53,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 
 const peerTheme = {
@@ -62,20 +61,21 @@ const peerTheme = {
   "--peer-line": "#e4e9f3",
   "--peer-wash": "#f6f8fc",
   "--peer-navy": "#171f4a",
-  "--peer-violet": "#5b4cdb",
-  "--peer-violet-soft": "#efecff",
-  "--peer-violet-line": "#d5ceff",
+  "--peer-violet": "#174fd6",
+  "--peer-violet-soft": "#eaf1ff",
+  "--peer-violet-line": "#c8d8ff",
   "--peer-teal": "#0f9a84",
   "--peer-teal-soft": "#e7f8f4",
   "--peer-good": "#119a6c",
   "--peer-good-soft": "#e6f7ef",
   "--peer-warn": "#e25555",
-  "--peer-warn-soft": "#ffeded",
+  "--peer-warn-soft": "#f6f8fc",
   "--peer-amber": "#e8892d",
+  "--peer-yellow": "#ffd60a",
 } as CSSProperties;
 
 const panelClass =
-  "rounded-xl border border-[var(--peer-line)] bg-card shadow-[0_12px_36px_rgba(26,33,72,0.05)]";
+  "rail-panel rail-panel-interactive [--rail-accent:var(--peer-violet)] [--rail-line:var(--peer-line)]";
 
 const metricIconMap: Record<PeerMetricIcon, LucideIcon> = {
   wallet: WalletIcon,
@@ -103,7 +103,7 @@ const criterionIconMap: Record<PeerCriterion["icon"], LucideIcon> = {
 
 const iconToneClass: Record<PeerTone, string> = {
   good: "bg-[var(--peer-good-soft)] text-[var(--peer-good)]",
-  warn: "bg-[var(--peer-warn-soft)] text-[var(--peer-warn)]",
+  warn: "bg-[var(--peer-wash)] text-[var(--peer-warn)] ring-1 ring-[var(--peer-line)]",
   neutral: "bg-[var(--peer-violet-soft)] text-[var(--peer-violet)]",
 };
 
@@ -127,7 +127,7 @@ function Panel({
   headingId?: string;
 }) {
   return (
-    <article className={cn(panelClass, "flex flex-col gap-3 p-3 sm:p-4", className)}>
+    <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3", className)}>
       <header className="flex flex-col gap-0.5">
         <h2
           id={headingId}
@@ -157,9 +157,9 @@ function PeerHeader() {
   }
 
   return (
-    <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--peer-violet)] text-white shadow-[0_10px_24px_rgba(91,76,219,0.25)] sm:size-11">
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--peer-yellow)] text-[var(--peer-ink)] sm:size-11">
           <TrophyIcon className="size-5" aria-hidden="true" />
         </div>
         <div className="flex min-w-0 flex-col gap-0.5">
@@ -172,19 +172,20 @@ function PeerHeader() {
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-2 sm:w-auto sm:grid-cols-2 sm:gap-3">
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-44">
-          <span className="text-[11px] text-[var(--peer-subtle)]">بازه زمانی</span>
+      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
+        <div className="min-w-0 sm:min-w-36">
           <Select value={periodId} onValueChange={handlePeriodChange}>
             <SelectTrigger
-              className="h-9 w-full border-[var(--peer-line)] bg-card"
+              className="h-10 w-full border-[var(--peer-line)] bg-card [&>svg:last-child]:text-[var(--peer-violet)]"
               aria-label="انتخاب بازه زمانی"
             >
               <CalendarDaysIcon
-                className="size-4 text-[var(--peer-subtle)]"
+                className="size-4 text-[var(--peer-violet)]"
                 aria-hidden="true"
               />
-              <SelectValue />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--peer-ink)]">
+                بازه
+              </span>
             </SelectTrigger>
             <SelectContent>
               {PEER_PERIODS.map((period) => (
@@ -196,18 +197,19 @@ function PeerHeader() {
           </Select>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-40">
-          <span className="text-[11px] text-[var(--peer-subtle)]">دسته کسب‌وکار</span>
+        <div className="min-w-0 sm:min-w-36">
           <Select value={categoryId} onValueChange={handleCategoryChange}>
             <SelectTrigger
-              className="h-9 w-full border-[var(--peer-line)] bg-card"
+              className="h-10 w-full border-[var(--peer-line)] bg-card [&>svg:last-child]:text-[var(--peer-violet)]"
               aria-label="انتخاب دسته کسب‌وکار"
             >
               <StoreIcon
-                className="size-4 text-[var(--peer-subtle)]"
+                className="size-4 text-[var(--peer-violet)]"
                 aria-hidden="true"
               />
-              <SelectValue />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--peer-ink)]">
+                دسته
+              </span>
             </SelectTrigger>
             <SelectContent>
               {PEER_CATEGORIES.map((category) => (
@@ -232,7 +234,7 @@ function PeerStatsBar() {
         "grid grid-cols-1 divide-y divide-[var(--peer-line)] sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-[1.1fr_1.1fr_0.9fr_auto] lg:divide-x lg:divide-x-reverse"
       )}
     >
-      <div className="flex flex-col gap-0.5 px-3 py-2.5 sm:px-4">
+      <div className="flex flex-col gap-0.5 px-2.5 py-2 sm:px-3">
         <span className="text-[11px] text-[var(--peer-subtle)]">
           تعداد همتایان در گروه شما
         </span>
@@ -240,13 +242,13 @@ function PeerStatsBar() {
           {formatPersianNumber(PEER_GROUP_STATS.peerCount)} پذیرنده
         </span>
       </div>
-      <div className="flex flex-col gap-0.5 px-3 py-2.5 sm:px-4">
+      <div className="flex flex-col gap-0.5 px-2.5 py-2 sm:px-3">
         <span className="text-[11px] text-[var(--peer-subtle)]">شما در مقایسه با</span>
         <span className="text-sm font-bold text-[var(--peer-ink)]">
           {formatPersianNumber(PEER_GROUP_STATS.comparedTo)} پذیرنده مشابه
         </span>
       </div>
-      <div className="flex flex-col gap-0.5 px-3 py-2.5 sm:px-4">
+      <div className="flex flex-col gap-0.5 px-2.5 py-2 sm:px-3">
         <span className="text-[11px] text-[var(--peer-subtle)]">روش گروه‌بندی</span>
         <span className="flex items-center gap-2 text-sm font-bold text-[var(--peer-ink)]">
           <span
@@ -256,7 +258,7 @@ function PeerStatsBar() {
           {PEER_GROUP_STATS.groupingMethod}
         </span>
       </div>
-      <div className="flex items-center px-3 py-2.5 sm:px-4">
+      <div className="flex items-center px-2.5 py-2 sm:px-3">
         <Button
           variant="outline"
           className="h-9 w-full cursor-pointer gap-2 border-[var(--peer-violet-line)] text-[var(--peer-violet)] hover:bg-[var(--peer-violet-soft)]"
@@ -274,16 +276,8 @@ function KeyInsightBanner() {
   return (
     <aside
       aria-labelledby="peer-key-insight-heading"
-      className="relative overflow-hidden rounded-xl bg-[linear-gradient(135deg,#151d48_0%,#2a2470_55%,#3b2f8f_100%)] p-3 text-white shadow-[0_14px_32px_rgba(21,29,72,0.24)] sm:p-4"
+      className="rail-banner p-2.5 sm:p-3"
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30 motion-reduce:hidden"
-        aria-hidden="true"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, rgba(91,76,219,0.45), transparent 42%), radial-gradient(circle at 80% 0%, rgba(15,154,132,0.25), transparent 35%)",
-        }}
-      />
       <div className="relative flex flex-col gap-1.5">
         <div className="flex items-center gap-2 text-[var(--peer-teal)]">
           <TargetIcon className="size-3.5" aria-hidden="true" />
@@ -364,7 +358,7 @@ function PercentileSection() {
       headingId="peer-percentile-heading"
     >
       <ul
-        className="flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--peer-subtle)]"
+        className="flex flex-wrap items-center justify-center gap-3 text-xs text-[var(--peer-subtle)]"
         aria-label="راهنمای نمودار صدک"
       >
         <li className="flex items-center gap-2">
@@ -387,7 +381,7 @@ function PercentileSection() {
         </li>
       </ul>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
         {PERCENTILE_BARS.map((bar) => (
           <PercentileTrack key={bar.id} bar={bar} />
         ))}
@@ -405,7 +399,7 @@ function KpiCard({ kpi }: { kpi: PeerKpi }) {
     <article
       className={cn(
         panelClass,
-        "flex flex-col gap-2 p-3 transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none"
+        "flex flex-col gap-2 p-2.5"
       )}
     >
       <div className="flex items-start gap-2">
@@ -449,9 +443,9 @@ function KpiGrid() {
   return (
     <section
       aria-labelledby="peer-kpi-heading"
-      className={cn(panelClass, "flex flex-col gap-3 p-3 sm:p-4")}
+      className="flex flex-col gap-2.5"
     >
-      <header className="flex flex-col gap-0.5 sm:items-center sm:text-center">
+      <header className="flex flex-col gap-0.5">
         <h2 id="peer-kpi-heading" className="text-sm font-bold text-[var(--peer-ink)] sm:text-base">
           مقایسه شاخص‌های کلیدی
         </h2>
@@ -459,7 +453,7 @@ function KpiGrid() {
           مقادیر شما و جایگاه صدکی نسبت به گروه همتا
         </p>
       </header>
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-5">
         {PEER_KPIS.map((kpi) => (
           <KpiCard key={kpi.id} kpi={kpi} />
         ))}
@@ -500,7 +494,7 @@ function RadarChart() {
       headingId="peer-radar-heading"
     >
       <ul
-        className="flex flex-wrap items-center gap-3 text-xs text-[var(--peer-subtle)]"
+        className="flex flex-wrap items-center gap-2.5 text-xs text-[var(--peer-subtle)]"
         aria-label="راهنمای نمودار رادار"
       >
         <li className="flex items-center gap-2">
@@ -614,12 +608,12 @@ function CohortCurve() {
   const marker = points[markerIndex] ?? points[points.length - 1];
 
   return (
-    <figure className="flex flex-col gap-3">
+    <figure className="flex flex-col gap-2.5">
       <figcaption className="sr-only">
         توزیع پذیرندگان در cohort فعالیتی؛ جایگاه شما صدک{" "}
         {toPersianDigits(COHORT_ACTIVITY.yourPercentile)}.
       </figcaption>
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-2.5">
         <div>
           <p className="text-xs text-[var(--peer-subtle)]">جایگاه شما</p>
           <p className="text-[11px] text-[var(--peer-subtle)]">درصد پذیرندگان</p>
@@ -675,7 +669,7 @@ function CohortCurve() {
           ۱۰۰٪
         </text>
       </svg>
-      <p className="rounded-lg bg-[var(--peer-wash)] px-3 py-2 text-center text-xs text-[var(--peer-subtle)]">
+      <p className="rounded-lg bg-[var(--peer-wash)] px-2.5 py-2 text-center text-xs text-[var(--peer-subtle)]">
         تعداد پذیرندگان با الگوی زمانی مشابه:{" "}
         <span className="font-semibold text-[var(--peer-ink)]">
           {toPersianDigits(COHORT_ACTIVITY.similarCount)}
@@ -693,7 +687,7 @@ function Leaderboard() {
   } as const;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2.5">
       <div>
         <h3 className="text-sm font-bold text-[var(--peer-ink)]">
           پذیرندگان برتر گروه شما
@@ -707,7 +701,7 @@ function Leaderboard() {
           <li
             key={row.id}
             className={cn(
-              "flex min-h-11 items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm",
+              "flex min-h-11 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm",
               row.isYou
                 ? "border-[var(--peer-violet-line)] bg-[var(--peer-violet-soft)]"
                 : "border-[var(--peer-line)] bg-card"
@@ -740,11 +734,12 @@ function Leaderboard() {
 function CohortLeaderboardSection() {
   return (
     <Panel
+      className="self-start"
       title="مقایسه در Cohort فعالیتی شما"
       description={`ساعت اوج خرید شما: ${COHORT_ACTIVITY.peakHours}`}
       headingId="peer-cohort-heading"
     >
-      <div className="grid flex-1 gap-4 md:grid-cols-2">
+      <div className="grid gap-2.5 md:grid-cols-2">
         <CohortCurve />
         <Leaderboard />
       </div>
@@ -758,7 +753,7 @@ function PeerGroupAside() {
       aria-labelledby="peer-group-heading"
       className={cn(
         panelClass,
-        "flex h-fit flex-col gap-3 p-3 sm:p-4 lg:sticky lg:top-4"
+        "flex h-fit flex-col gap-2.5 p-2.5 sm:p-3 lg:sticky lg:top-4"
       )}
     >
       <header className="flex flex-col gap-1">
@@ -812,18 +807,18 @@ function Disclaimer() {
 
 export function PeerPositionDashboard() {
   return (
-    <div className="flex flex-col gap-3" style={peerTheme}>
+    <div className="flex flex-col gap-2.5" style={peerTheme}>
       <PeerHeader />
       <PeerStatsBar />
 
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_15rem]">
-        <div className="flex min-w-0 flex-col gap-3">
+      <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-[minmax(0,1fr)_15rem]">
+        <div className="flex min-w-0 flex-col gap-2.5">
           <KeyInsightBanner />
           <PercentileSection />
           <KpiGrid />
           <section
             aria-label="نمودارهای مقایسه‌ای"
-            className="grid grid-cols-1 gap-3 md:grid-cols-2"
+            className="grid grid-cols-1 gap-2.5 md:grid-cols-2"
           >
             <RadarChart />
             <CohortLeaderboardSection />

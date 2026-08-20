@@ -35,8 +35,8 @@ const accentStyles: Record<
     change: "text-[var(--pulse-violet)]",
   },
   blue: {
-    icon: "bg-sky-500/10 text-sky-600",
-    change: "text-sky-600",
+    icon: "bg-[var(--pulse-blue-soft)] text-[var(--pulse-blue)]",
+    change: "text-[var(--pulse-blue)]",
   },
   amber: {
     icon: "bg-[var(--pulse-amber-soft)] text-[var(--pulse-amber)]",
@@ -53,7 +53,7 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
   return (
     <article
       className={cn(
-        "flex flex-col gap-2 rounded-xl border border-[var(--pulse-line)] bg-card p-3 shadow-[0_12px_36px_rgba(26,33,72,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none"
+        "rail-panel rail-panel-interactive flex flex-col gap-2 p-2.5 [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]"
       )}
     >
       <div className="flex items-start justify-between gap-2">
@@ -72,7 +72,7 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
       </div>
 
       <div className="mt-auto flex flex-col gap-0.5">
-        <p className="text-xl font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-2xl">
+        <p className="text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl">
           {kpi.value}
           {kpi.unit ? (
             <span className="ms-1 text-xs font-normal text-[var(--pulse-subtle)] sm:text-sm">
@@ -104,7 +104,7 @@ export function KpiScorecardGrid({ children }: { children: ReactNode }) {
   return (
     <section
       aria-label="شاخص‌های کلیدی عملکرد"
-      className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-5"
+      className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-5"
     >
       {children}
     </section>

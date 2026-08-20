@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 const accentStroke: Record<string, string> = {
-  emerald: "stroke-emerald-500",
-  violet: "stroke-violet-500",
-  blue: "stroke-blue-500",
-  amber: "stroke-amber-500",
+  emerald: "stroke-[var(--pulse-good)]",
+  violet: "stroke-[var(--pulse-violet)]",
+  blue: "stroke-[var(--pulse-blue)]",
+  amber: "stroke-[var(--pulse-amber)]",
 };
 
 type SparklineProps = {

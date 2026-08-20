@@ -76,7 +76,7 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
         <path
           d={actualPath}
           fill="none"
-          className="stroke-emerald-500"
+          className="stroke-[var(--pulse-good)]"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -88,7 +88,7 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
               cx={toX(index)}
               cy={toY(point.actual)}
               r="3.5"
-              className="fill-emerald-500"
+              className="fill-[var(--pulse-good)]"
             />
             <text
               x={toX(index)}
@@ -102,9 +102,9 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
         ))}
       </svg>
 
-      <div className="mt-2 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+      <div className="mt-2 flex flex-wrap justify-center gap-3 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-5 rounded bg-emerald-500" aria-hidden="true" />
+          <span className="inline-block h-0.5 w-5 rounded bg-[var(--pulse-good)]" aria-hidden="true" />
           عملکرد واقعی
         </span>
         <span className="flex items-center gap-1.5">

@@ -38,7 +38,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 
 const healthTheme = {
@@ -46,22 +45,23 @@ const healthTheme = {
   "--health-subtle": "#6b7590",
   "--health-line": "#e4e9f3",
   "--health-wash": "#f6f8fc",
-  "--health-violet": "#5b4cdb",
-  "--health-violet-soft": "#efecff",
-  "--health-violet-line": "#d5ceff",
-  "--health-lavender": "#8b7cf0",
-  "--health-indigo": "#6e8cff",
+  "--health-violet": "#174fd6",
+  "--health-violet-soft": "#eaf1ff",
+  "--health-violet-line": "#c8d8ff",
+  "--health-lavender": "#3b74ef",
+  "--health-indigo": "#0f9a84",
   "--health-teal": "#0f9a84",
   "--health-good": "#119a6c",
   "--health-good-soft": "#e6f7ef",
   "--health-warn": "#e25555",
-  "--health-warn-soft": "#ffeded",
+  "--health-warn-soft": "#f6f8fc",
   "--health-amber": "#e8892d",
   "--health-amber-soft": "#fff6ea",
+  "--health-yellow": "#ffd60a",
 } as CSSProperties;
 
 const panelClass =
-  "rounded-xl border border-[var(--health-line)] bg-card shadow-[0_12px_36px_rgba(26,33,72,0.05)] transition-shadow duration-200 hover:shadow-[0_16px_40px_rgba(26,33,72,0.08)] motion-reduce:transition-none";
+  "rail-panel rail-panel-interactive [--rail-accent:var(--health-violet)] [--rail-line:var(--health-line)]";
 
 const kpiIconMap: Record<HealthKpi["icon"], LucideIcon> = {
   bank: Building2Icon,
@@ -74,7 +74,7 @@ const kpiIconMap: Record<HealthKpi["icon"], LucideIcon> = {
 
 const toneIconClass: Record<HealthTone, string> = {
   good: "bg-[var(--health-good-soft)] text-[var(--health-good)]",
-  warn: "bg-[var(--health-warn-soft)] text-[var(--health-warn)]",
+  warn: "bg-[var(--health-wash)] text-[var(--health-warn)] ring-1 ring-[var(--health-line)]",
   neutral: "bg-[var(--health-wash)] text-[var(--health-subtle)]",
   violet: "bg-[var(--health-violet-soft)] text-[var(--health-violet)]",
 };
@@ -100,7 +100,7 @@ function Panel({
   headingId?: string;
 }) {
   return (
-    <article className={cn(panelClass, "flex flex-col gap-3 p-3 sm:p-4", className)}>
+    <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3", className)}>
       <header className="flex flex-col gap-0.5">
         <h2
           id={headingId}
@@ -124,9 +124,9 @@ function HealthHeader() {
   );
 
   return (
-    <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--health-violet)] text-white shadow-[0_10px_24px_rgba(91,76,219,0.25)] sm:size-11">
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--health-yellow)] text-[var(--health-ink)] sm:size-11">
           <ShieldCheckIcon className="size-5" aria-hidden="true" />
         </div>
         <div className="flex min-w-0 flex-col gap-0.5">
@@ -139,19 +139,20 @@ function HealthHeader() {
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-2 sm:w-auto sm:grid-cols-2 sm:gap-3">
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-40">
-          <span className="text-[11px] text-[var(--health-subtle)]">پذیرنده</span>
+      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
+        <div className="min-w-0 sm:min-w-36">
           <Select
             value={merchantId}
             onValueChange={(value) => value && setMerchantId(value)}
           >
             <SelectTrigger
-              className="h-9 w-full border-[var(--health-line)] bg-card"
+              className="h-10 w-full border-[var(--health-line)] bg-card [&>svg:last-child]:text-[var(--health-violet)]"
               aria-label="انتخاب پذیرنده"
             >
-              <StoreIcon className="size-4 text-[var(--health-subtle)]" aria-hidden="true" />
-              <SelectValue />
+              <StoreIcon className="size-4 text-[var(--health-violet)]" aria-hidden="true" />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--health-ink)]">
+                پذیرنده
+              </span>
             </SelectTrigger>
             <SelectContent>
               {PAYMENT_HEALTH_MERCHANTS.map((merchant) => (
@@ -162,21 +163,22 @@ function HealthHeader() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-44">
-          <span className="text-[11px] text-[var(--health-subtle)]">بازه زمانی</span>
+        <div className="min-w-0 sm:min-w-36">
           <Select
             value={periodId}
             onValueChange={(value) => value && setPeriodId(value)}
           >
             <SelectTrigger
-              className="h-9 w-full border-[var(--health-line)] bg-card"
+              className="h-10 w-full border-[var(--health-line)] bg-card [&>svg:last-child]:text-[var(--health-violet)]"
               aria-label="انتخاب بازه زمانی"
             >
               <CalendarDaysIcon
-                className="size-4 text-[var(--health-subtle)]"
+                className="size-4 text-[var(--health-violet)]"
                 aria-hidden="true"
               />
-              <SelectValue />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--health-ink)]">
+                بازه
+              </span>
             </SelectTrigger>
             <SelectContent>
               {PAYMENT_HEALTH_PERIODS.map((period) => (
@@ -221,7 +223,7 @@ function PaymentFunnelDiagram() {
   }
 
   return (
-    <figure className="flex flex-col gap-3">
+    <figure className="flex flex-col gap-2.5">
       <figcaption className="sr-only">
         قیف مسیر پرداخت از نمایش درگاه تا پرداخت موفق.
         {stages
@@ -232,7 +234,7 @@ function PaymentFunnelDiagram() {
           .join("")}
       </figcaption>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_11rem] lg:items-center">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem] lg:items-center">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="mx-auto h-auto w-full max-w-md"
@@ -323,7 +325,7 @@ function FunnelHero() {
     >
       <PaymentFunnelDiagram />
 
-      <div className="grid gap-2 rounded-xl bg-[var(--health-warn-soft)] p-3 sm:grid-cols-[auto_1fr] sm:items-center">
+      <div className="grid gap-2 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] p-2.5 sm:grid-cols-[auto_1fr] sm:items-center">
         <p className="text-2xl font-extrabold tabular-nums text-[var(--health-warn)]">
           {formatPersianPercent(FUNNEL_SUMMARY.postEntrySuccess)}
         </p>
@@ -339,17 +341,9 @@ function FunnelHero() {
       </div>
 
       <aside
-        className="relative overflow-hidden rounded-xl bg-[linear-gradient(135deg,#151d48_0%,#2a2470_55%,#3b2f8f_100%)] p-3 text-white sm:p-4"
+        className="rail-banner p-2.5 sm:p-3"
         aria-labelledby="funnel-insight-heading"
       >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-30 motion-reduce:hidden"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 18% 20%, rgba(91,76,219,0.45), transparent 42%), radial-gradient(circle at 85% 0%, rgba(15,154,132,0.22), transparent 36%)",
-          }}
-        />
         <div className="relative flex items-center gap-2 text-[var(--health-teal)]">
           <TargetIcon className="size-3.5" aria-hidden="true" />
           <h3 id="funnel-insight-heading" className="text-sm font-bold text-white">
@@ -370,18 +364,19 @@ function FunnelHero() {
 function DropOffPanel() {
   return (
     <Panel
+      className="self-start"
       title="ریزش بین مراحل"
       description="بزرگ‌ترین گلوگاه مسیر را اول هدف بگیرید"
       headingId="payment-dropoff-heading"
     >
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-1.5">
         {FUNNEL_DROPOFFS.map((step) => (
           <li
             key={step.id}
             className={cn(
-              "rounded-xl border p-3",
+              "rounded-lg border p-2",
               step.severity === "high"
-                ? "border-[var(--health-warn)]/25 bg-[var(--health-warn-soft)]"
+                ? "border-[var(--health-warn)]/25 bg-card"
                 : step.severity === "medium"
                   ? "border-[var(--health-amber)]/30 bg-[var(--health-amber-soft)]"
                   : "border-[var(--health-line)] bg-[var(--health-wash)]"
@@ -421,7 +416,7 @@ function DropOffPanel() {
 function KpiCard({ kpi }: { kpi: HealthKpi }) {
   const Icon = kpiIconMap[kpi.icon];
   return (
-    <article className={cn(panelClass, "flex flex-col gap-2 p-3")}>
+    <article className={cn(panelClass, "flex flex-col gap-2 p-2.5")}>
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-[11px] font-semibold leading-4 text-[var(--health-ink)]">
           {kpi.label}
@@ -437,7 +432,7 @@ function KpiCard({ kpi }: { kpi: HealthKpi }) {
       </div>
       <p
         className={cn(
-          "text-xl font-extrabold tracking-tight",
+          "text-lg font-extrabold tracking-tight sm:text-xl",
           kpi.tone === "warn" ? "text-[var(--health-warn)]" : "text-[var(--health-ink)]"
         )}
       >
@@ -456,7 +451,7 @@ function AmountSuccessChart() {
       description="به‌تفکیک بازه مبلغ، در برابر میانه همتایان"
       headingId="amount-success-heading"
     >
-      <ul className="flex flex-col gap-3" aria-label="نرخ موفقیت بر اساس مبلغ">
+      <ul className="flex flex-col gap-2.5" aria-label="نرخ موفقیت بر اساس مبلغ">
         {AMOUNT_BUCKETS.map((bucket) => (
           <li key={bucket.id} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between gap-2 text-xs">
@@ -496,20 +491,20 @@ function RetryPanel() {
       headingId="retry-heading"
     >
       <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-[var(--health-good-soft)] p-3">
+        <div className="rounded-lg bg-[var(--health-good-soft)] p-2.5">
           <p className="text-[11px] text-[var(--health-subtle)]">سهم بازیابی</p>
           <p className="mt-1 text-2xl font-extrabold text-[var(--health-good)]">
             {formatPersianPercent(RETRY_STATS.recoveredShare)}
           </p>
         </div>
-        <div className="rounded-xl bg-[var(--health-wash)] p-3">
+        <div className="rounded-lg bg-[var(--health-wash)] p-2.5">
           <p className="text-[11px] text-[var(--health-subtle)]">نشست بازیابی‌شده</p>
           <p className="mt-1 text-2xl font-extrabold text-[var(--health-ink)]">
             {formatPersianNumber(RETRY_STATS.recoveredSessions)}
           </p>
         </div>
       </div>
-      <p className="rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-3 py-2 text-xs leading-5 text-[var(--health-subtle)]">
+      <p className="rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2 text-xs leading-5 text-[var(--health-subtle)]">
         میانگین تلاش تا موفقیت:{" "}
         <span className="font-semibold text-[var(--health-ink)]">
           {toPersianDigits(RETRY_STATS.medianAttempts)}
@@ -586,7 +581,7 @@ function PspAnomalyPanel() {
         {PSP_ANOMALIES.map((item) => (
           <li
             key={item.id}
-            className="flex items-start justify-between gap-3 rounded-xl border border-[var(--health-line)] bg-[var(--health-wash)] px-3 py-2.5"
+            className="flex items-start justify-between gap-2.5 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2"
           >
             <div className="min-w-0">
               <p className="text-xs font-bold text-[var(--health-ink)]">{item.label}</p>
@@ -629,12 +624,12 @@ function Disclaimer() {
 
 export function PaymentHealthDashboard() {
   return (
-    <div className="flex flex-col gap-3 text-[var(--health-ink)]" style={healthTheme}>
+    <div className="flex flex-col gap-2.5 text-[var(--health-ink)]" style={healthTheme}>
       <HealthHeader />
 
       <section
         aria-label="شاخص‌های سلامت مسیر"
-        className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-6"
+        className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-6"
       >
         {PAYMENT_HEALTH_KPIS.map((kpi) => (
           <KpiCard key={kpi.id} kpi={kpi} />
@@ -643,7 +638,7 @@ export function PaymentHealthDashboard() {
 
       <section
         aria-label="قیف و ریزش مسیر پرداخت"
-        className="grid grid-cols-1 gap-3 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-2.5 lg:grid-cols-3"
       >
         <FunnelHero />
         <DropOffPanel />
@@ -651,7 +646,7 @@ export function PaymentHealthDashboard() {
 
       <section
         aria-label="تحلیل‌های تکمیلی مسیر پرداخت"
-        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3"
       >
         <AmountSuccessChart />
         <RetryPanel />

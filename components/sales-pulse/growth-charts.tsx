@@ -27,7 +27,7 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
       </figcaption>
 
       <div
-        className="flex flex-1 items-end justify-center gap-3 px-2 pt-4 sm:gap-4"
+        className="flex flex-1 items-end justify-center gap-2.5 px-2 pt-3 sm:gap-3"
         aria-hidden="true"
       >
         {factors.map((factor) => {
@@ -38,7 +38,7 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
               <span
                 className={cn(
                   "text-xs font-semibold tabular-nums",
-                  factor.positive ? "text-emerald-600" : "text-rose-500"
+                  factor.positive ? "text-[var(--pulse-good)]" : "text-[var(--pulse-warn)]"
                 )}
               >
                 {formatFactorValue(factor.value)}
@@ -50,7 +50,7 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
                 <div
                   className={cn(
                     "w-full rounded-t-md motion-reduce:transition-none",
-                    factor.positive ? "bg-emerald-500" : "bg-rose-400"
+                    factor.positive ? "bg-[var(--pulse-good)]" : "bg-[var(--pulse-warn)]"
                   )}
                   style={{ height: Math.max(barHeight, 8) }}
                 />
@@ -63,7 +63,7 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
         })}
 
         <div className="flex max-w-16 flex-1 flex-col items-center gap-2">
-          <span className="text-xs font-bold text-emerald-700">
+          <span className="text-xs font-bold text-[var(--pulse-good)]">
             +{formatPersianNumber(total)}٪
           </span>
           <div
@@ -71,7 +71,7 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
             style={{ height: maxBarHeight }}
           >
             <div
-              className="w-full rounded-t-md bg-emerald-600"
+              className="w-full rounded-t-md bg-[var(--pulse-good)]"
               style={{ height: (total / maxAbs) * maxBarHeight }}
             />
           </div>
@@ -110,7 +110,7 @@ export function GrowthDonut({ total }: { total: number }) {
           cy="64"
           r={radius}
           fill="none"
-          className="stroke-emerald-500"
+          className="stroke-[var(--pulse-good)]"
           strokeWidth="12"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -118,7 +118,7 @@ export function GrowthDonut({ total }: { total: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold text-emerald-600">
+        <span className="text-2xl font-bold text-[var(--pulse-good)]">
           +{formatPersianNumber(total)}٪
         </span>
         <span className="text-xs text-muted-foreground">رشد کل</span>
@@ -146,10 +146,10 @@ export function GrowthBreakdownBlocks({
           ) : null}
           <span
             className={cn(
-              "rounded-lg px-3 py-2 font-medium",
+              "rounded-lg px-2.5 py-1.5 font-medium",
               factor.positive
-                ? "bg-emerald-500/10 text-emerald-700"
-                : "bg-rose-500/10 text-rose-600"
+                ? "bg-[var(--pulse-good)]/10 text-[var(--pulse-good)]"
+                : "bg-[var(--pulse-wash)] text-[var(--pulse-warn)] ring-1 ring-[var(--pulse-line)]"
             )}
           >
             {factor.label}{" "}
@@ -158,7 +158,7 @@ export function GrowthBreakdownBlocks({
         </div>
       ))}
       <span className="text-muted-foreground">=</span>
-      <span className="rounded-lg bg-emerald-600 px-3 py-2 font-bold text-white">
+      <span className="rounded-md bg-[var(--pulse-good)] px-2.5 py-1.5 font-bold text-white">
         {formatPersianNumber(total)}٪ رشد کل
       </span>
     </div>

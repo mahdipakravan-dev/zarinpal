@@ -8,8 +8,8 @@ type HourlyImpactChartProps = {
 
 export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
   const width = 360;
-  const height = 160;
-  const padding = { top: 12, right: 8, bottom: 28, left: 8 };
+  const height = 136;
+  const padding = { top: 10, right: 8, bottom: 24, left: 8 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
   const midY = padding.top + chartHeight / 2;
@@ -24,7 +24,7 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
       </figcaption>
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="h-auto w-full max-h-44"
+        className="h-auto w-full max-h-36"
         role="img"
         aria-label="نمودار میله‌ای اثر رشد بر اساس ساعت"
       >
@@ -50,7 +50,7 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
                 width={barWidth}
                 height={Math.max(barHeight, 2)}
                 rx={3}
-                className={cn(positive ? "fill-emerald-500" : "fill-violet-400")}
+                className={cn(positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]")}
               />
               <text
                 x={x + barWidth / 2}
@@ -67,7 +67,7 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
                   textAnchor="middle"
                   className={cn(
                     "text-[8px] font-medium",
-                    positive ? "fill-emerald-600" : "fill-violet-600"
+                    positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]"
                   )}
                 >
                   {item.value > 0 ? "+" : ""}

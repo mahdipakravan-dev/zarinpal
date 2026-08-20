@@ -6,12 +6,13 @@ import {
   SALES_PULSE_MERCHANTS,
   SALES_PULSE_PERIODS,
 } from "@/lib/sales-pulse-mock-data";
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 
 type PeriodToolbarProps = {
@@ -19,6 +20,7 @@ type PeriodToolbarProps = {
   merchantId: string;
   onPeriodChange: (periodId: string | null) => void;
   onMerchantChange: (merchantId: string | null) => void;
+  variant?: "panel" | "inline";
 };
 
 export function PeriodToolbar({
@@ -26,91 +28,103 @@ export function PeriodToolbar({
   merchantId,
   onPeriodChange,
   onMerchantChange,
+  variant = "panel",
 }: PeriodToolbarProps) {
+  const isInline = variant === "inline";
   const period = SALES_PULSE_PERIODS.find((item) => item.id === periodId);
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-[var(--pulse-line)] bg-card p-3 shadow-[0_12px_36px_rgba(26,33,72,0.05)] sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-3 sm:p-3.5">
-      <div className="grid w-full grid-cols-1 gap-2 sm:w-auto sm:grid-cols-2 sm:gap-3">
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-40">
-          <span className="text-[11px] text-[var(--pulse-subtle)]">پذیرنده</span>
+    <div
+      className={cn(
+        isInline
+          ? "flex w-full flex-col gap-2 lg:w-auto"
+          : "rail-panel flex flex-col gap-2 p-2.5 [--rail-line:var(--pulse-line)] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2.5 sm:p-3"
+      )}
+    >
+      <div
+        className={cn(
+          "grid w-full grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5",
+          isInline ? "lg:w-auto lg:min-w-[18rem]" : "sm:w-auto"
+        )}
+      >
+        <div className="min-w-0 sm:min-w-36">
           <Select value={merchantId} onValueChange={onMerchantChange}>
             <SelectTrigger
-              className="h-9 w-full border-[var(--pulse-line)] bg-card"
+              className="h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]"
               aria-label="انتخاب پذیرنده"
             >
-              <StoreIcon className="size-4 text-[var(--pulse-subtle)]" aria-hidden="true" />
-              <SelectValue placeholder="پذیرنده" />
+              <StoreIcon className="size-4 shrink-0 text-[var(--pulse-blue)]" aria-hidden="true" />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]">
+                پذیرنده
+              </span>
             </SelectTrigger>
-            <SelectContent>
-              {SALES_PULSE_MERCHANTS.map((merchant) => (
-                <SelectItem key={merchant.id} value={merchant.id}>
-                  {merchant.label}
-                </SelectItem>
-              ))}
+            <SelectContent className="min-w-56 rounded-lg p-1.5">
+              <SelectGroup>
+                {SALES_PULSE_MERCHANTS.map((merchant, index) => (
+                  <SelectItem
+                    key={merchant.id}
+                    value={merchant.id}
+                    label={merchant.label}
+                    className="py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]"
+                  >
+                    <span className="flex min-w-0 flex-col gap-0.5">
+                      <span className="text-sm font-semibold text-[var(--pulse-ink)]">
+                        {merchant.label}
+                      </span>
+                      <span className="text-[11px] text-[var(--pulse-subtle)]">
+                        {index === 0 ? "پذیرنده اصلی داشبورد" : "قابل مقایسه با همین baseline"}
+                      </span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-1 sm:min-w-48">
-          <span className="text-[11px] text-[var(--pulse-subtle)]">بازه تحلیل</span>
+        <div className="min-w-0 sm:min-w-36">
           <Select value={periodId} onValueChange={onPeriodChange}>
             <SelectTrigger
-              className="h-9 w-full border-[var(--pulse-line)] bg-card"
+              className="h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]"
               aria-label="انتخاب بازه تحلیل"
             >
-              <CalendarRangeIcon
-                className="size-4 text-[var(--pulse-subtle)]"
-                aria-hidden="true"
-              />
-              <SelectValue placeholder="بازه تحلیل" />
+              <CalendarRangeIcon className="size-4 shrink-0 text-[var(--pulse-blue)]" aria-hidden="true" />
+              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]">
+                بازه
+              </span>
             </SelectTrigger>
-            <SelectContent>
-              {SALES_PULSE_PERIODS.map((item) => (
-                <SelectItem key={item.id} value={item.id}>
-                  {item.label}
-                </SelectItem>
-              ))}
+            <SelectContent className="min-w-64 rounded-lg p-1.5">
+              <SelectGroup>
+                {SALES_PULSE_PERIODS.map((item) => (
+                  <SelectItem
+                    key={item.id}
+                    value={item.id}
+                    label={item.label}
+                    className="py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]"
+                  >
+                    <span className="flex min-w-0 flex-col gap-0.5">
+                      <span className="text-sm font-semibold text-[var(--pulse-ink)]">
+                        {item.label}
+                      </span>
+                      <span className="text-[11px] text-[var(--pulse-subtle)]">
+                        {item.range}
+                      </span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      {period ? (
-        <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
+      {period && !isInline ? (
+        <p className="rounded-md bg-[var(--pulse-wash)] px-2.5 py-1.5 text-xs text-[var(--pulse-subtle)] sm:text-sm">
           بازه:{" "}
           <span className="font-semibold text-[var(--pulse-ink)]">{period.range}</span>
         </p>
       ) : null}
     </div>
-  );
-}
-
-export function BaselineNote() {
-  return (
-    <aside
-      className="rounded-xl border border-[var(--pulse-amber-line)] bg-[var(--pulse-amber-soft)] p-3"
-      aria-labelledby="baseline-note-heading"
-    >
-      <div className="flex gap-2">
-        <InfoIcon
-          className="mt-0.5 size-3.5 shrink-0 text-[var(--pulse-amber)]"
-          aria-hidden="true"
-        />
-        <div className="flex flex-col gap-0.5 text-xs sm:text-sm">
-          <h3
-            id="baseline-note-heading"
-            className="font-semibold text-[var(--pulse-ink)]"
-          >
-            baseline
-          </h3>
-          <p className="leading-5 text-[var(--pulse-subtle)]">
-            میانگین همان روزهای هفته در ۶ هفته قبل؛ انحراف عملکرد است نه اثبات
-            اثر فصلی.
-          </p>
-        </div>
-      </div>
-    </aside>
   );
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentType, useState } from "react";
+import { type ComponentType, useRef, useState } from "react";
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -101,7 +101,7 @@ function FilterChip({
 
 function TableFooterBar({ count }: { count: string }) {
   return (
-    <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-2 border-t px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span>تعداد سطر در صفحه:</span>
         <Select defaultValue="15">
@@ -122,7 +122,7 @@ function TableFooterBar({ count }: { count: string }) {
 
 function TransactionsPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-3">
       <PageHeading
         title="تراکنش‌ها"
         action={
@@ -133,9 +133,9 @@ function TransactionsPage() {
         }
       />
 
-      <Card className="min-h-[420px]">
-        <CardContent className="flex flex-col gap-6 pt-6">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <Card className="min-h-[220px]">
+        <CardContent className="flex flex-col gap-2.5 pt-2.5">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
               <FilterChip active>وضعیت: موفق</FilterChip>
               <FilterChip>روش پرداخت</FilterChip>
@@ -145,7 +145,7 @@ function TransactionsPage() {
             <SearchInput />
           </div>
 
-          <Empty className="min-h-[300px] border-none">
+          <Empty className="min-h-36 border-none">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <ReceiptIcon />
@@ -164,7 +164,7 @@ function TransactionsPage() {
 
 function DiscountsPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-3">
       <PageHeading
         title="کدهای تخفیف"
         subtitle="ایجاد و مدیریت کدهای تخفیف برای لینک‌های پرداخت"
@@ -253,17 +253,17 @@ function LinksPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-3">
       <PageHeading
         title="لینک‌های پرداخت"
         subtitle="ایجاد و مدیریت لینک‌های پرداخت"
       />
 
       <Card>
-        <CardHeader className="border-b pb-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3 rounded-full border bg-muted/30 px-3 py-2">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border bg-background">
+        <CardHeader className="border-b pb-2.5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-2 rounded-full border bg-muted/30 px-2.5 py-1.5">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border bg-background">
                 <ReceiptIcon className="text-muted-foreground" />
               </div>
               <div className="min-w-0 text-sm">
@@ -286,8 +286,8 @@ function LinksPage() {
           </div>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-4 pt-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <CardContent className="flex flex-col gap-2.5 pt-2.5">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
               <FilterChip>نوع</FilterChip>
               <FilterChip>وضعیت</FilterChip>
@@ -314,8 +314,8 @@ function LinksPage() {
                 {linkRows.map((row) => (
                   <TableRow key={row[0]}>
                     <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+                      <div className="flex items-center gap-2">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
                           <ReceiptIcon className="text-muted-foreground" />
                         </div>
                         <div>
@@ -380,12 +380,15 @@ const pages: Record<DashboardPage, ComponentType> = {
 
 export default function Home() {
   const [page, setPage] = useState<DashboardPage>("sales-pulse");
+  const mainRef = useRef<HTMLElement>(null);
   const ActivePage = pages[page];
 
   const handleNavigate = (nextPage: DashboardPage) => {
     setPage(nextPage);
     requestAnimationFrame(() => {
-      document.getElementById("dashboard-main")?.focus();
+      window.scrollTo(0, 0);
+      mainRef.current?.scrollTo(0, 0);
+      mainRef.current?.focus({ preventScroll: true });
     });
   };
 
@@ -395,10 +398,11 @@ export default function Home() {
       <SidebarInset>
         <DashboardHeader />
         <main
+          ref={mainRef}
           id="dashboard-main"
           tabIndex={-1}
           aria-label={PAGE_TITLES[page]}
-          className="flex flex-1 flex-col gap-4 p-4 outline-none md:p-6"
+          className="dashboard-shell flex flex-1 flex-col gap-3 px-3 pb-3 pt-4 outline-none md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6"
         >
           <ActivePage />
         </main>

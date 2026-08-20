@@ -274,38 +274,18 @@ var HeartPulse = createLucideIcon("heart-pulse", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var LayoutDashboard = createLucideIcon("layout-dashboard", [
-	["rect", {
-		width: "7",
-		height: "9",
-		x: "3",
-		y: "3",
-		rx: "1",
-		key: "10lvy0"
+var LogOut = createLucideIcon("log-out", [
+	["path", {
+		d: "m16 17 5-5-5-5",
+		key: "1bji2h"
 	}],
-	["rect", {
-		width: "7",
-		height: "5",
-		x: "14",
-		y: "3",
-		rx: "1",
-		key: "16une8"
+	["path", {
+		d: "M21 12H9",
+		key: "dn1m92"
 	}],
-	["rect", {
-		width: "7",
-		height: "9",
-		x: "14",
-		y: "12",
-		rx: "1",
-		key: "1hutg5"
-	}],
-	["rect", {
-		width: "7",
-		height: "5",
-		x: "3",
-		y: "16",
-		rx: "1",
-		key: "ldoo1y"
+	["path", {
+		d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4",
+		key: "1uf3rs"
 	}]
 ]);
 /**
@@ -3078,7 +3058,7 @@ var SIDEBAR_COOKIE_NAME = "sidebar_state";
 var SIDEBAR_COOKIE_MAX_AGE = 3600 * 24 * 7;
 var SIDEBAR_WIDTH = "16rem";
 var SIDEBAR_WIDTH_MOBILE = "18rem";
-var SIDEBAR_WIDTH_ICON = "3rem";
+var SIDEBAR_WIDTH_ICON = "4rem";
 var SIDEBAR_KEYBOARD_SHORTCUT = "b";
 var SidebarContext = import_react.createContext(null);
 function useSidebar() {
@@ -3164,7 +3144,7 @@ function Sidebar({ side = "left", variant = "sidebar", collapsible = "offcanvas"
 			"data-sidebar": "sidebar",
 			"data-slot": "sidebar",
 			"data-mobile": "true",
-			className: "w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden",
+			className: cn("w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden", className),
 			style: { "--sidebar-width": SIDEBAR_WIDTH_MOBILE },
 			side,
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetHeader, {
@@ -3246,7 +3226,7 @@ function SidebarSeparator({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Separator, {
 		"data-slot": "sidebar-separator",
 		"data-sidebar": "separator",
-		className: cn("mx-2 w-auto bg-sidebar-border", className),
+		className: cn("mx-2 bg-sidebar-border data-horizontal:w-auto", className),
 		...props
 	});
 }
@@ -3347,92 +3327,185 @@ function SidebarMenuButton({ render, isActive = false, variant = "default", size
 //#region components/app-sidebar.tsx
 var growthItems = [
 	{
-		id: "dashboard",
-		label: "پیشخوان",
-		icon: LayoutDashboard,
-		page: "dashboard"
-	},
-	{
 		id: "sales-pulse",
-		label: "نبض فروش و مناسبت‌ها",
+		label: "نبض فروش",
 		icon: HeartPulse,
 		page: "sales-pulse"
 	},
 	{
 		id: "buyer-loyalty",
-		label: "رفتار و وفاداری خریداران",
+		label: "وفاداری خریداران",
 		icon: Repeat,
 		page: "buyer-loyalty"
 	},
 	{
 		id: "peer-position",
-		label: "جایگاه در میان کسب‌وکارهای مشابه",
+		label: "جایگاه همتا",
 		icon: ChartNoAxesColumn,
 		page: "peer-position"
 	},
 	{
 		id: "payment-health",
-		label: "سلامت مسیر پرداخت",
+		label: "سلامت پرداخت",
 		icon: Waypoints,
 		page: "payment-health"
 	},
 	{
 		id: "business-graph",
-		label: "گراف هوشمند کسب و کار",
+		label: "گراف کسب‌وکار",
 		icon: GitGraph,
 		page: "business-graph"
 	}
 ];
 function NavGroup({ label, items, activePage, onNavigate }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, { children: label }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: items.map(({ id, label: itemLabel, icon: Icon, page }) => {
-		const isActive = page ? activePage === page : false;
-		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, {
-			isActive,
-			tooltip: itemLabel,
-			"aria-current": isActive ? "page" : void 0,
-			className: "h-auto min-h-11 items-start py-2 whitespace-normal [&>span:last-child]:overflow-visible [&>span:last-child]:text-wrap [&>span:last-child]:whitespace-normal",
-			onClick: () => page && onNavigate(page),
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: "mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: itemLabel })]
-		}) }, id);
-	}) }) })] });
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, {
+		className: "px-2 py-1",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, {
+			className: "h-7 px-3 text-[10px] font-semibold text-sidebar-foreground/55",
+			children: label
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, {
+			className: "gap-1",
+			children: items.map(({ id, label: itemLabel, icon: Icon, page }) => {
+				const isActive = page ? activePage === page : false;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, {
+					isActive,
+					tooltip: {
+						children: itemLabel,
+						side: "left"
+					},
+					"aria-current": isActive ? "page" : void 0,
+					className: cn("h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:bg-muted motion-reduce:transition-none", "data-active:bg-muted data-active:text-sidebar-foreground", "group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"),
+					onClick: () => page && onNavigate(page),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: itemLabel })]
+				}) }, id);
+			})
+		}) })]
+	});
+}
+function SidebarCollapseControl() {
+	const { state, toggleSidebar } = useSidebar();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+		type: "button",
+		"aria-label": state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار",
+		title: state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار",
+		onClick: toggleSidebar,
+		className: "absolute top-1/2 -left-3 z-10 hidden size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_8px_20px_rgba(15,23,42,0.10)] transition-colors duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-border motion-reduce:transition-none md:flex",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, {
+			className: cn("size-4 transition-transform duration-200 motion-reduce:transition-none", state === "collapsed" && "rotate-180"),
+			"aria-hidden": "true"
+		})
+	});
 }
 function AppSidebar({ activePage, onNavigate }) {
+	const [accountOpen, setAccountOpen] = (0, import_react.useState)(false);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Sidebar, {
 		side: "right",
-		variant: "inset",
-		collapsible: "offcanvas",
+		variant: "floating",
+		collapsible: "icon",
+		className: "zarin-clean-sidebar",
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-3 rounded-xl bg-gradient-to-br from-[#3158ff] to-primary px-3 py-3 text-primary-foreground shadow-lg shadow-primary/20",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/15",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-w-0 flex-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "truncate text-sm font-semibold",
-							children: "مهدی پاکروان نوعیابی"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "truncate text-xs opacity-80",
-							dir: "ltr",
-							children: "zarinp.al/mahdipakravan"
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "size-4 shrink-0 opacity-70" })
-				]
-			}) }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-				"aria-label": "بخش‌های داشبورد",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NavGroup, {
-					label: "رشد کسب‌وکار",
-					items: growthItems,
-					activePage,
-					onNavigate
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarCollapseControl, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarHeader, {
+				className: "gap-2.5 p-3 group-data-[collapsible=icon]:p-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex items-center gap-2 group-data-[collapsible=icon]:hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex min-w-0 items-center group-data-[collapsible=icon]:hidden",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "truncate text-sm font-extrabold text-sidebar-foreground",
+							children: "داشبورد زرین‌پال"
+						})
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-1.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						"aria-expanded": accountOpen,
+						"aria-controls": "sidebar-account-menu",
+						onClick: () => setAccountOpen((open) => !open),
+						className: "flex w-full cursor-pointer items-center gap-3 rounded-xl bg-muted/60 p-2.5 text-start ring-1 ring-sidebar-border transition-colors duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-1.5",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex size-9 shrink-0 items-center justify-center rounded-xl border border-sidebar-border bg-sidebar text-sidebar-foreground group-data-[collapsible=icon]:size-8",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "min-w-0 flex-1 group-data-[collapsible=icon]:hidden",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "truncate text-sm font-bold text-sidebar-foreground",
+									children: "مهدی پاکروان"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "truncate text-xs text-muted-foreground",
+									dir: "ltr",
+									children: "zarinp.al/mahdipakravan"
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
+								className: cn("shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen && "rotate-180"),
+								"aria-hidden": "true"
+							})
+						]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						id: "sidebar-account-menu",
+						className: cn("grid transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"),
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "min-h-0 overflow-hidden",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									className: "flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {
+										className: "size-3.5",
+										"aria-hidden": "true"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "جزئیات پذیرنده" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									className: "flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {
+										className: "size-3.5",
+										"aria-hidden": "true"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات حساب" })]
+								})]
+							})
+						})
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarSeparator, { className: "mx-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:w-8" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarContent, {
+				className: "pt-2",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+					"aria-label": "بخش‌های داشبورد",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NavGroup, {
+						label: "رشد کسب‌وکار",
+						items: growthItems,
+						activePage,
+						onNavigate
+					})
 				})
-			}) }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarFooter, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarSeparator, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات زرین‌لینک" })] }) }) })] })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarFooter, {
+				className: "mt-auto gap-1 p-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarSeparator, { className: "mx-2 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:w-8" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenu, {
+					className: "gap-1 pt-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, {
+						tooltip: {
+							children: "تنظیمات زرین‌لینک",
+							side: "left"
+						},
+						className: "h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات زرین‌لینک" })]
+					}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, {
+						tooltip: {
+							children: "خروج",
+							side: "left"
+						},
+						className: "h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/58 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogOut, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "خروج" })]
+					}) })]
+				})]
+			})
 		]
 	});
 }
@@ -3441,15 +3514,15 @@ function AppSidebar({ activePage, onNavigate }) {
 function PageHeading({ title, subtitle, action, className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 		"data-slot": "page-heading",
-		className: cn("flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between", className),
+		className: cn("flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between", className),
 		...props,
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex min-w-0 flex-col gap-1",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-xl font-bold tracking-tight",
+				className: "text-lg font-extrabold tracking-tight sm:text-xl",
 				children: title
 			}), subtitle ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "max-w-2xl text-sm text-muted-foreground",
+				className: "max-w-2xl text-xs leading-5 text-muted-foreground sm:text-sm",
 				children: subtitle
 			}) : null]
 		}), action]
@@ -3493,87 +3566,6 @@ var Ticket = createLucideIcon("ticket", [
 	}]
 ]);
 //#endregion
-//#region node_modules/@base-ui/react/avatar/root/AvatarRootContext.mjs
-var AvatarRootContext = /* @__PURE__ */ import_react.createContext(void 0);
-function useAvatarRootContext() {
-	const context = import_react.useContext(AvatarRootContext);
-	if (context === void 0) throw new Error(formatErrorMessage(13));
-	return context;
-}
-//#endregion
-//#region node_modules/@base-ui/react/avatar/root/stateAttributesMapping.mjs
-var avatarStateAttributesMapping = { imageLoadingStatus: () => null };
-//#endregion
-//#region node_modules/@base-ui/react/avatar/root/AvatarRoot.mjs
-/**
-* Displays a user's profile picture, initials, or fallback icon.
-* Renders a `<span>` element.
-*
-* Documentation: [Base UI Avatar](https://base-ui.com/react/components/avatar)
-*/
-var AvatarRoot = /* @__PURE__ */ import_react.forwardRef(function AvatarRoot(componentProps, forwardedRef) {
-	const { className, render, style, ...elementProps } = componentProps;
-	const [imageLoadingStatus, setImageLoadingStatus] = import_react.useState("idle");
-	const state = { imageLoadingStatus };
-	const contextValue = import_react.useMemo(() => ({
-		imageLoadingStatus,
-		setImageLoadingStatus
-	}), [imageLoadingStatus, setImageLoadingStatus]);
-	const element = useRenderElement("span", componentProps, {
-		state,
-		ref: forwardedRef,
-		props: elementProps,
-		stateAttributesMapping: avatarStateAttributesMapping
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarRootContext.Provider, {
-		value: contextValue,
-		children: element
-	});
-});
-//#endregion
-//#region node_modules/@base-ui/react/avatar/fallback/AvatarFallback.mjs
-/**
-* Rendered when the image fails to load or when no image is provided.
-* Renders a `<span>` element.
-*
-* Documentation: [Base UI Avatar](https://base-ui.com/react/components/avatar)
-*/
-var AvatarFallback$1 = /* @__PURE__ */ import_react.forwardRef(function AvatarFallback(componentProps, forwardedRef) {
-	const { className, render, delay = 0, style, ...elementProps } = componentProps;
-	const { imageLoadingStatus } = useAvatarRootContext();
-	const [delayPassed, setDelayPassed] = import_react.useState(delay === 0);
-	const timeout = useTimeout();
-	import_react.useEffect(() => {
-		if (delay > 0) timeout.start(delay, () => setDelayPassed(true));
-		else setDelayPassed(true);
-		return timeout.clear;
-	}, [timeout, delay]);
-	return useRenderElement("span", componentProps, {
-		state: { imageLoadingStatus },
-		ref: forwardedRef,
-		props: elementProps,
-		stateAttributesMapping: avatarStateAttributesMapping,
-		enabled: imageLoadingStatus !== "loaded" && (delay === 0 || delayPassed)
-	});
-});
-//#endregion
-//#region components/ui/avatar.tsx
-function Avatar({ className, size = "default", ...props }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarRoot, {
-		"data-slot": "avatar",
-		"data-size": size,
-		className: cn("group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten", className),
-		...props
-	});
-}
-function AvatarFallback({ className, ...props }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback$1, {
-		"data-slot": "avatar-fallback",
-		className: cn("flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs", className),
-		...props
-	});
-}
-//#endregion
 //#region components/ui/badge.tsx
 var badgeVariants = cva("group/badge inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-4xl border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3!", {
 	variants: { variant: {
@@ -3601,57 +3593,134 @@ function Badge({ className, variant = "default", render, ...props }) {
 //#region components/dashboard-header.tsx
 function DashboardHeader() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-		className: "sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur-sm",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "md:hidden" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-xl font-black tracking-tight",
-					children: "زرین‌پال"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "inline-block size-4 skew-x-[-12deg] rounded-sm bg-[#ffd400]" })]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "ms-auto flex items-center gap-2",
-				dir: "ltr",
+		className: "sticky top-0 z-20 flex h-12 shrink-0 items-center justify-between gap-3 border-b bg-background/90 px-3 backdrop-blur-sm md:px-4",
+		dir: "ltr",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center gap-2",
+			dir: "ltr",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "ghost",
+				size: "sm",
+				className: "hidden sm:inline-flex",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ticket, { "data-icon": "inline-start" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-semibold",
+					children: "تیکت‌ها"
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+				variant: "ghost",
+				size: "icon-sm",
+				className: "relative",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "ghost",
-						size: "sm",
-						className: "hidden sm:inline-flex",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ticket, { "data-icon": "inline-start" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-semibold",
-							children: "تیکت‌ها"
-						})]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+						className: "absolute -top-1 -right-1 size-5 justify-center rounded-full p-0 text-[10px]",
+						children: "۱۳"
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-						variant: "ghost",
-						size: "icon-sm",
-						className: "relative",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-								className: "absolute -top-1 -right-1 size-5 justify-center rounded-full p-0 text-[10px]",
-								children: "۱۳"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "sr-only",
-								children: "اعلان‌ها"
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Avatar, {
-						size: "sm",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AvatarFallback, {
-							className: "bg-muted text-muted-foreground",
-							children: "م"
-						})
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "sr-only",
+						children: "اعلان‌ها"
 					})
 				]
-			})
-		]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-center gap-2",
+			"aria-label": "زرین‌پال",
+			dir: "rtl",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+				src: "/zarinpal-logo.svg",
+				alt: "زرین‌پال",
+				className: "h-7 w-auto"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "md:hidden" })]
+		})]
 	});
 }
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Clock = createLucideIcon("clock", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "M12 6v6l4 2",
+	key: "mmk7yg"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var CreditCard = createLucideIcon("credit-card", [["rect", {
+	width: "20",
+	height: "14",
+	x: "2",
+	y: "5",
+	rx: "2",
+	key: "ynyp8z"
+}], ["line", {
+	x1: "2",
+	x2: "22",
+	y1: "10",
+	y2: "10",
+	key: "1b3vmo"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var ShieldCheck = createLucideIcon("shield-check", [["path", {
+	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+	key: "oel41y"
+}], ["path", {
+	d: "m9 12 2 2 4-4",
+	key: "dzmm74"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Target = createLucideIcon("target", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "6",
+		key: "1vlfrh"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "2",
+		key: "1c9p78"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var TrendingUp = createLucideIcon("trending-up", [["path", {
+	d: "M16 7h6v6",
+	key: "box55l"
+}], ["path", {
+	d: "m22 7-8.5 8.5-5-5L2 17",
+	key: "1t1m79"
+}]]);
 //#endregion
 //#region components/dashboard/analysis-slot.tsx
 function AnalysisSlot({ title, description, children, className, ...props }) {
@@ -3661,7 +3730,7 @@ function AnalysisSlot({ title, description, children, className, ...props }) {
 		"aria-labelledby": headingId,
 		"data-slot": "analysis-slot",
 		"data-empty": empty ? "true" : "false",
-		className: cn("flex min-h-52 flex-col gap-3 rounded-xl bg-card p-4 text-card-foreground ring-1 ring-foreground/10", "data-[empty=true]:border data-[empty=true]:border-dashed data-[empty=true]:border-border data-[empty=true]:bg-muted/25 data-[empty=true]:ring-0", className),
+		className: cn("rail-panel flex min-h-36 flex-col gap-2.5 p-2.5 text-card-foreground sm:p-3", "data-[empty=true]:border-dashed data-[empty=true]:bg-card/70", className),
 		...props,
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 			className: "flex flex-col gap-1",
@@ -3674,10 +3743,10 @@ function AnalysisSlot({ title, description, children, className, ...props }) {
 				children: description
 			}) : null]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "flex min-h-32 flex-1 flex-col",
+			className: "flex min-h-20 flex-1 flex-col",
 			children: empty ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				"aria-hidden": "true",
-				className: "min-h-32 flex-1 rounded-lg bg-background/70 ring-1 ring-inset ring-foreground/6"
+				className: "rail-empty-grid min-h-20 flex-1 rounded-md"
 			}) : children
 		})]
 	});
@@ -3687,7 +3756,7 @@ function AnalysisSlot({ title, description, children, className, ...props }) {
 function InsightPage({ title, story, note, children, className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		"data-slot": "insight-page",
-		className: cn("flex flex-col gap-6", className),
+		className: cn("flex flex-col gap-2.5", className),
 		...props,
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PageHeading, {
@@ -3695,11 +3764,11 @@ function InsightPage({ title, story, note, children, className, ...props }) {
 				subtitle: story
 			}),
 			note ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "max-w-3xl text-sm text-muted-foreground",
+				className: "max-w-3xl text-xs leading-5 text-muted-foreground sm:text-sm",
 				children: note
 			}) : null,
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "grid grid-cols-1 gap-4 md:grid-cols-2",
+				className: "grid grid-cols-1 gap-2.5 md:grid-cols-2",
 				children
 			})
 		]
@@ -3707,59 +3776,216 @@ function InsightPage({ title, story, note, children, className, ...props }) {
 }
 //#endregion
 //#region components/pages/business-graph-page.tsx
+var impactNodes = [
+	{
+		label: "مناسبت",
+		value: "+۲۸٪",
+		x: 410,
+		y: 54,
+		tone: "accent"
+	},
+	{
+		label: "فروش موفق",
+		value: "۶۸۲م",
+		x: 250,
+		y: 132,
+		tone: "primary"
+	},
+	{
+		label: "خریدار بازگشتی",
+		value: "۳۹٪",
+		x: 92,
+		y: 84,
+		tone: "good"
+	},
+	{
+		label: "ساعت اوج",
+		value: "۲۰-۲۲",
+		x: 108,
+		y: 218,
+		tone: "muted"
+	},
+	{
+		label: "NoAttempt",
+		value: "۷.۸٪",
+		x: 374,
+		y: 230,
+		tone: "warn"
+	}
+];
+var graphEdges = [
+	["مناسبت", "فروش موفق"],
+	["خریدار بازگشتی", "فروش موفق"],
+	["ساعت اوج", "فروش موفق"],
+	["NoAttempt", "فروش موفق"]
+];
+var nodeToneClass = {
+	accent: "fill-accent stroke-primary/25",
+	good: "fill-[color-mix(in_oklch,var(--chart-2)_14%,white)] stroke-[var(--chart-2)]/45",
+	muted: "fill-muted stroke-border",
+	primary: "fill-primary stroke-primary",
+	warn: "fill-card stroke-[var(--chart-5)]/45"
+};
+function nodePoint(label) {
+	const node = impactNodes.find((item) => item.label === label);
+	if (!node) throw new Error(`Unknown graph node: ${label}`);
+	return node;
+}
+function GraphPreview() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "rail-empty-grid min-h-72 overflow-hidden rounded-md border border-border bg-card",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
+			className: "sr-only",
+			children: "گراف روابط بین مناسبت، خریدار بازگشتی، ساعت اوج، NoAttempt و فروش موفق."
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+			viewBox: "0 0 500 300",
+			className: "h-full min-h-72 w-full",
+			role: "img",
+			"aria-label": "پیش‌نمایش گراف هوشمند کسب‌وکار",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+				"aria-hidden": "true",
+				children: graphEdges.map(([from, to]) => {
+					const start = nodePoint(from);
+					const end = nodePoint(to);
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+						x1: start.x,
+						x2: end.x,
+						y1: start.y,
+						y2: end.y,
+						className: "stroke-primary/35",
+						strokeWidth: "2",
+						strokeLinecap: "round",
+						strokeDasharray: from === "NoAttempt" ? "5 6" : void 0
+					}, `${from}-${to}`);
+				})
+			}), impactNodes.map((node) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: node.x - 58,
+					y: node.y - 28,
+					width: "116",
+					height: "56",
+					rx: "8",
+					className: nodeToneClass[node.tone],
+					strokeWidth: "1.5"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+					x: node.x,
+					y: node.y - 4,
+					textAnchor: "middle",
+					className: "fill-foreground text-[12px] font-bold",
+					children: node.label
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+					x: node.x,
+					y: node.y + 16,
+					textAnchor: "middle",
+					className: "fill-muted-foreground text-[11px] font-semibold",
+					children: node.value
+				})
+			] }, node.label))]
+		})]
+	});
+}
+function CompactList({ items }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+		className: "flex flex-col gap-2",
+		children: items.map(({ icon: Icon, label, value }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+			className: "grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-md border border-border bg-muted/35 px-2.5 py-2 text-xs",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "flex size-7 items-center justify-center rounded-md bg-card text-primary",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+						className: "size-3.5",
+						"aria-hidden": "true"
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-medium text-foreground",
+					children: label
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-extrabold tabular-nums text-foreground",
+					children: value
+				})
+			]
+		}, label))
+	});
+}
 function BusinessGraphPage() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(InsightPage, {
-		title: "گراف هوشمند کسب و کار",
-		story: "روابط پنهان بین فروش، خریدار، زمان و مسیر پرداخت را ببینید",
+		title: "گراف هوشمند کسب‌وکار",
+		story: "روابط پنهان بین فروش، خریدار، زمان و مسیر پرداخت را روی یک نقشه عملیاتی ببینید",
 		note: "گراف از داده‌های تجمیع‌شده ساخته می‌شود و هویت سایر پذیرنده‌ها یا خریداران افشا نمی‌شود.",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
 				className: "md:col-span-2",
 				title: "نمای گراف تعاملی",
-				description: "گراف روابط بین شاخص‌های فروش، وفاداری، سلامت پرداخت و مناسبت‌ها."
+				description: "هر گره یک متغیر اثرگذار است؛ ضخامت ارتباط‌ها با قدرت همبستگی تغییر می‌کند.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GraphPreview, {})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
 				title: "گره‌های پرتأثیر",
-				description: "مهم‌ترین متغیرها و ارتباط‌هایی که بیشترین سهم را در تغییر فروش دارند."
+				description: "متغیرهایی که بیشترین سهم را در تغییر فروش دارند.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CompactList, { items: [
+					{
+						icon: TrendingUp,
+						label: "رشد مناسبت",
+						value: "+۲۸٪"
+					},
+					{
+						icon: Repeat,
+						label: "خریدار بازگشتی",
+						value: "۳۹٪"
+					},
+					{
+						icon: CreditCard,
+						label: "میانگین سبد",
+						value: "۹۸۲ه"
+					}
+				] })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
 				title: "مسیرهای علّی محتمل",
-				description: "زنجیره‌های محتمل از رویداد تا نتیجه، با سطح اطمینان آماری."
+				description: "زنجیره‌های قابل بررسی، با سطح اطمینان آماری.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CompactList, { items: [
+					{
+						icon: Clock,
+						label: "اوج ۲۰ تا ۲۲ ← فروش",
+						value: "۰.۷۴"
+					},
+					{
+						icon: TriangleAlert,
+						label: "NoAttempt ← افت موفقیت",
+						value: "۰.۶۲"
+					},
+					{
+						icon: ShieldCheck,
+						label: "Retry ← بازیابی نشست",
+						value: "۰.۵۷"
+					}
+				] })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
 				className: "md:col-span-2",
 				title: "پیشنهاد مداخله",
-				description: "اقداماتی که بیشترین اثر را بر اساس ساختار گراف دارند."
+				description: "اقدام پیشنهادی بر اساس ساختار فعلی گراف.",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "rail-banner grid gap-2.5 p-2.5 sm:grid-cols-[auto_1fr] sm:items-center",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "flex size-9 items-center justify-center rounded-md bg-white/10 text-accent",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
+							className: "size-4",
+							"aria-hidden": "true"
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm leading-6 text-white/90",
+						children: "پیشنهاد خرید دوم را در بازه ۱۵ تا ۴۵ روز پس از خرید اول فعال کنید و همزمان ترمینال‌های دارای NoAttempt بالا را از قیف پرداخت جداگانه پایش کنید."
+					})]
+				})
 			})
 		]
 	});
 }
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var ArrowLeft = createLucideIcon("arrow-left", [["path", {
-	d: "m12 19-7-7 7-7",
-	key: "1l729n"
-}], ["path", {
-	d: "M19 12H5",
-	key: "x3x0zl"
-}]]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var ArrowUpRight = createLucideIcon("arrow-up-right", [["path", {
-	d: "M7 7h10v10",
-	key: "1tivn9"
-}], ["path", {
-	d: "M7 17 17 7",
-	key: "1vkiza"
-}]]);
 /**
 * @license lucide-react v1.33.0 - ISC
 *
@@ -3818,41 +4044,6 @@ var CalendarDays = createLucideIcon("calendar-days", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Clock = createLucideIcon("clock", [["circle", {
-	cx: "12",
-	cy: "12",
-	r: "10",
-	key: "1mglay"
-}], ["path", {
-	d: "M12 6v6l4 2",
-	key: "mmk7yg"
-}]]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var CreditCard = createLucideIcon("credit-card", [["rect", {
-	width: "20",
-	height: "14",
-	x: "2",
-	y: "5",
-	rx: "2",
-	key: "ynyp8z"
-}], ["line", {
-	x1: "2",
-	x2: "22",
-	y1: "10",
-	y2: "10",
-	key: "1b3vmo"
-}]]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
 var Lightbulb = createLucideIcon("lightbulb", [
 	["path", {
 		d: "M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5",
@@ -3867,19 +4058,6 @@ var Lightbulb = createLucideIcon("lightbulb", [
 		key: "ceow96"
 	}]
 ]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var ShieldCheck = createLucideIcon("shield-check", [["path", {
-	d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-	key: "oel41y"
-}], ["path", {
-	d: "m9 12 2 2 4-4",
-	key: "dzmm74"
-}]]);
 /**
 * @license lucide-react v1.33.0 - ISC
 *
@@ -3910,16 +4088,6 @@ var ShoppingCart = createLucideIcon("shopping-cart", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Star = createLucideIcon("star", [["path", {
-	d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
-	key: "r04s7s"
-}]]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
 var Store = createLucideIcon("store", [
 	["path", {
 		d: "M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5",
@@ -3932,67 +4100,6 @@ var Store = createLucideIcon("store", [
 	["path", {
 		d: "M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05",
 		key: "wn3emo"
-	}]
-]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var Target = createLucideIcon("target", [
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "10",
-		key: "1mglay"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "6",
-		key: "1vlfrh"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "2",
-		key: "1c9p78"
-	}]
-]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var TrendingUp = createLucideIcon("trending-up", [["path", {
-	d: "M16 7h6v6",
-	key: "box55l"
-}], ["path", {
-	d: "m22 7-8.5 8.5-5-5L2 17",
-	key: "1t1m79"
-}]]);
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var UserCheck = createLucideIcon("user-check", [
-	["path", {
-		d: "m16 11 2 2 4-4",
-		key: "9rsbq5"
-	}],
-	["path", {
-		d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
-		key: "1yyitq"
-	}],
-	["circle", {
-		cx: "9",
-		cy: "7",
-		r: "4",
-		key: "nufk8"
 	}]
 ]);
 /**
@@ -4122,28 +4229,6 @@ var SECOND_PURCHASE_SERIES = [{
 	],
 	tone: "muted"
 }];
-var INTERVAL_BENCHMARKS = [
-	{
-		label: "میانه",
-		value: 28,
-		tone: "teal"
-	},
-	{
-		label: "میانگین",
-		value: 34,
-		tone: "teal"
-	},
-	{
-		label: "چارک اول (p25)",
-		value: 14,
-		tone: "sky"
-	},
-	{
-		label: "چارک سوم (p75)",
-		value: 46,
-		tone: "teal"
-	}
-];
 var COHORT_HEADERS = [
 	"روز ۷",
 	"روز ۳۰",
@@ -4197,120 +4282,6 @@ var RETENTION_COHORT_ROWS = [
 		]
 	}
 ];
-var INTERVAL_DISTRIBUTION = [
-	{
-		label: "۰-۷",
-		value: 12
-	},
-	{
-		label: "۷-۱۵",
-		value: 18
-	},
-	{
-		label: "۱۵-۳۰",
-		value: 23
-	},
-	{
-		label: "۳۰-۶۰",
-		value: 28
-	},
-	{
-		label: "۶۰-۹۰",
-		value: 13
-	},
-	{
-		label: "+۹۰",
-		value: 6
-	}
-];
-var REVENUE_SEGMENTS = [
-	{
-		label: "کارت بازگشتی (۲+ خرید)",
-		amount: "۲۳,۶۳۰,۰۰۰,۰۰۰",
-		share: 62,
-		tone: "teal"
-	},
-	{
-		label: "کارت تک‌خریدی",
-		amount: "۷,۶۹۰,۰۰۰,۰۰۰",
-		share: 21,
-		tone: "amber"
-	},
-	{
-		label: "کارت تازه",
-		amount: "۳,۶۸۰,۰۰۰,۰۰۰",
-		share: 10,
-		tone: "violet"
-	},
-	{
-		label: "کارت در معرض ریزش",
-		amount: "۲,۸۴۵,۰۰۰,۰۰۰",
-		share: 7,
-		tone: "rose"
-	}
-];
-var OCCASION_TREND_LABELS = [
-	"عادی قبل",
-	"۷ روز قبل",
-	"مناسبت",
-	"۷ روز بعد",
-	"عادی بعد"
-];
-var OCCASION_TREND_SERIES = [{
-	label: "پذیرنده شما",
-	values: [
-		31,
-		34,
-		43,
-		35,
-		34
-	],
-	tone: "teal"
-}, {
-	label: "میانه همتایان",
-	values: [
-		25,
-		29,
-		36,
-		29,
-		26
-	],
-	tone: "muted"
-}];
-var LIFECYCLE_STAGES = [
-	{
-		id: "fresh",
-		title: "تازه",
-		cards: "۸۵,۰۱۲ کارت",
-		share: "۲۱.۶٪",
-		description: "اولین خرید در بازه",
-		tone: "teal"
-	},
-	{
-		id: "single",
-		title: "تک‌خریدی",
-		cards: "۲۱۸,۳۴۲ کارت",
-		share: "۵۵.۰۹٪",
-		description: "هنوز خرید دوم نداشته‌اند",
-		tone: "violet"
-	},
-	{
-		id: "risk",
-		title: "در معرض ریزش",
-		cards: "۱۱,۹۰۲ کارت",
-		share: "۳.۰۲٪",
-		description: "۶۰ تا ۹۰ روز از آخرین خرید",
-		tone: "rose"
-	},
-	{
-		id: "loyal",
-		title: "وفادار (۳+ خرید)",
-		cards: "۴۱,۲۱۲ کارت",
-		share: "۱۰.۳۹٪",
-		description: "۳ خرید یا بیشتر داشته‌اند",
-		tone: "mint"
-	}
-];
 //#endregion
 //#region lib/format.ts
 var persianDigits = [
@@ -4337,14 +4308,14 @@ function formatPersianPercent(value, signed = false) {
 //#endregion
 //#region components/buyer-loyalty/buyer-loyalty-dashboard.tsx
 var loyaltyTheme = {
-	"--loyalty-ink": "#17213f",
-	"--loyalty-subtle": "#69748e",
-	"--loyalty-line": "#dfe6f2",
-	"--loyalty-wash": "#f7f9fc",
-	"--loyalty-navy": "#151d48",
-	"--loyalty-navy-2": "#1d275c",
-	"--loyalty-teal": "#119a7c",
-	"--loyalty-teal-soft": "#dff6ee",
+	"--loyalty-ink": "#1a2148",
+	"--loyalty-subtle": "#6b7590",
+	"--loyalty-line": "#e4e9f3",
+	"--loyalty-wash": "#f6f8fc",
+	"--loyalty-navy": "#171f4a",
+	"--loyalty-navy-2": "#1e3f85",
+	"--loyalty-teal": "#0f9a84",
+	"--loyalty-teal-soft": "#e7f8f4",
 	"--loyalty-teal-line": "#b9eadb",
 	"--loyalty-teal-wash": "#f0fbf7",
 	"--loyalty-mint": "#6ac89e",
@@ -4353,23 +4324,24 @@ var loyaltyTheme = {
 	"--loyalty-sky": "#2f6fe8",
 	"--loyalty-sky-soft": "#eaf2ff",
 	"--loyalty-sky-line": "#c8d9fb",
-	"--loyalty-violet": "#7a5cff",
-	"--loyalty-violet-alpha": "color-mix(in oklch, #7a5cff 58%, transparent)",
-	"--loyalty-violet-soft": "#efeaff",
-	"--loyalty-violet-line": "#d8ccff",
-	"--loyalty-amber": "#f79a2e",
-	"--loyalty-amber-alpha": "color-mix(in oklch, #f79a2e 78%, transparent)",
+	"--loyalty-violet": "#174fd6",
+	"--loyalty-violet-alpha": "color-mix(in oklch, #174fd6 58%, transparent)",
+	"--loyalty-violet-soft": "#eaf1ff",
+	"--loyalty-violet-line": "#c8d8ff",
+	"--loyalty-amber": "#e8892d",
+	"--loyalty-amber-alpha": "color-mix(in oklch, #e8892d 78%, transparent)",
 	"--loyalty-amber-soft": "#fff3e4",
 	"--loyalty-amber-line": "#ffd8a8",
-	"--loyalty-rose": "#ee6868",
-	"--loyalty-rose-soft": "#ffeded",
-	"--loyalty-rose-line": "#ffc9c9",
+	"--loyalty-rose": "#e25555",
+	"--loyalty-rose-soft": "#f6f8fc",
+	"--loyalty-rose-line": "#e4e9f3",
 	"--loyalty-sky-alpha": "color-mix(in oklch, #2f6fe8 68%, transparent)",
 	"--loyalty-mint-alpha": "color-mix(in oklch, #6ac89e 68%, transparent)",
-	"--loyalty-teal-alpha": "color-mix(in oklch, #119a7c 18%, transparent)",
-	"--loyalty-muted-line": "#96a3ba"
+	"--loyalty-teal-alpha": "color-mix(in oklch, #0f9a84 18%, transparent)",
+	"--loyalty-muted-line": "#96a3ba",
+	"--loyalty-yellow": "#ffd60a"
 };
-var panelClass = "rounded-lg border border-[var(--loyalty-line)] bg-card shadow-[0_14px_40px_rgba(23,33,63,0.06)]";
+var panelClass$3 = "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-violet)] [--rail-line:var(--loyalty-line)]";
 var toneStyles = {
 	amber: {
 		bg: "bg-[var(--loyalty-amber)]",
@@ -4397,11 +4369,11 @@ var toneStyles = {
 	},
 	rose: {
 		bg: "bg-[var(--loyalty-rose)]",
-		border: "border-[var(--loyalty-rose-line)]",
-		soft: "bg-[var(--loyalty-rose-soft)]",
+		border: "border-[var(--loyalty-line)]",
+		soft: "bg-[var(--loyalty-wash)]",
 		stroke: "stroke-[var(--loyalty-rose)]",
 		text: "text-[var(--loyalty-rose)]",
-		wash: "bg-[var(--loyalty-rose-soft)]"
+		wash: "bg-[var(--loyalty-wash)]"
 	},
 	sky: {
 		bg: "bg-[var(--loyalty-sky)]",
@@ -4428,19 +4400,18 @@ var toneStyles = {
 		wash: "bg-[var(--loyalty-violet-soft)]"
 	}
 };
-var metricIconMap = {
+var metricIconMap$1 = {
 	card: CreditCard,
 	cart: ShoppingCart,
 	repeat: Repeat,
 	trend: TrendingUp,
 	users: Users
 };
-var lifecycleIconMap = {
-	fresh: UserCheck,
-	loyal: Star,
-	risk: TriangleAlert,
-	single: ShoppingCart
-};
+var primaryMetricIds = new Set([
+	"verified-purchases",
+	"observed-cards",
+	"returning-rate"
+]);
 var behaviorArcs = BEHAVIOR_SEGMENTS.reduce((items, segment) => {
 	const offset = items.reduce((sum, item) => sum + item.share, 0);
 	return [...items, {
@@ -4451,13 +4422,13 @@ var behaviorArcs = BEHAVIOR_SEGMENTS.reduce((items, segment) => {
 function formatChartPercent(value) {
 	return formatPersianPercent(value);
 }
-function Panel({ title, description, children, className }) {
+function Panel$2({ title, description, children, className }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: cn(panelClass, "flex min-h-72 flex-col gap-4 p-4", className),
+		className: cn(panelClass$3, "flex flex-col gap-2.5 p-2.5 sm:p-3", className),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex flex-col gap-1",
+			className: "flex flex-col gap-0.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-base font-bold text-[var(--loyalty-ink)]",
+				className: "text-sm font-bold text-[var(--loyalty-ink)] sm:text-base",
 				children: title
 			}), description ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-xs leading-5 text-[var(--loyalty-subtle)]",
@@ -4466,202 +4437,158 @@ function Panel({ title, description, children, className }) {
 		}), children]
 	});
 }
-function ToolbarButton({ icon: Icon, eyebrow, value, ariaLabel }) {
+function ToolbarButton({ icon: Icon, label, ariaLabel }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 		type: "button",
 		"aria-label": ariaLabel,
-		className: "flex min-h-14 min-w-56 items-center justify-between gap-4 rounded-lg border border-[var(--loyalty-line)] bg-card px-4 py-2 text-start shadow-[0_8px_24px_rgba(23,33,63,0.04)] transition-colors hover:bg-[var(--loyalty-wash)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 motion-reduce:transition-none",
+		className: "flex h-10 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-2.5 text-start transition-colors duration-200 hover:bg-[var(--loyalty-wash)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/40 motion-reduce:transition-none",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-			className: "flex items-center gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "flex size-9 items-center justify-center rounded-md border border-[var(--loyalty-line)] bg-[var(--loyalty-wash)] text-[var(--loyalty-navy)]",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { "aria-hidden": "true" })
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-				className: "flex flex-col gap-1",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-[11px] text-[var(--loyalty-subtle)]",
-					children: eyebrow
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-xs font-medium text-[var(--loyalty-ink)]",
-					children: value
-				})]
+			className: "flex min-w-0 items-center gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+				className: "size-4 shrink-0 text-[var(--loyalty-violet)]",
+				"aria-hidden": "true"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "truncate text-xs font-extrabold text-[var(--loyalty-ink)]",
+				children: label
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
-			className: "text-[var(--loyalty-subtle)]",
+			className: "size-3.5 shrink-0 text-[var(--loyalty-violet)]",
 			"aria-hidden": "true"
 		})]
 	});
 }
 function BuyerLoyaltyHeader({ className }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-		className: cn("flex flex-col gap-4", className),
+		className: cn("flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between", className),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex min-w-0 items-center gap-4",
+			className: "flex min-w-0 items-center gap-2.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex size-14 shrink-0 items-center justify-center rounded-lg bg-[var(--loyalty-navy)] text-white shadow-[0_14px_30px_rgba(21,29,72,0.25)]",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { "aria-hidden": "true" })
+				className: "flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)] sm:size-11",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, {
+					className: "size-5",
+					"aria-hidden": "true"
+				})
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex min-w-0 flex-col gap-1",
+				className: "flex min-w-0 flex-col gap-0.5",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-					className: "text-2xl font-extrabold tracking-tight text-[var(--loyalty-ink)]",
+					className: "text-lg font-extrabold tracking-tight text-[var(--loyalty-ink)] sm:text-xl",
 					children: "رفتار و وفاداری خریداران"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-sm text-[var(--loyalty-subtle)]",
+					className: "text-xs text-[var(--loyalty-subtle)] sm:text-sm",
 					children: "تحلیل رفتار کارت‌ها بر اساس خریدهای قابل شناسایی"
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-wrap gap-3",
+			className: "grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 lg:w-auto lg:min-w-[18rem]",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
-				icon: CalendarDays,
-				eyebrow: "بازه زمانی",
-				value: "۱ فروردین ۱۴۰۳ تا ۳۱ خرداد ۱۴۰۳",
-				ariaLabel: "انتخاب بازه زمانی تحلیل وفاداری"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
 				icon: Store,
-				eyebrow: "پذیرنده",
-				value: "انتخاب پذیرنده",
+				label: "پذیرنده",
 				ariaLabel: "انتخاب پذیرنده برای تحلیل وفاداری"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ToolbarButton, {
+				icon: CalendarDays,
+				label: "بازه",
+				ariaLabel: "انتخاب بازه زمانی تحلیل وفاداری"
 			})]
 		})]
 	});
 }
 function MetricCard({ metric }) {
-	const Icon = metricIconMap[metric.icon];
+	const Icon = metricIconMap$1[metric.icon];
 	const styles = toneStyles[metric.tone];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: cn(panelClass, "flex min-h-24 items-start justify-between gap-3 p-3"),
+		className: cn(panelClass$3, "flex items-start justify-between gap-2 p-2.5"),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex min-w-0 flex-col gap-2",
+			className: "flex min-w-0 flex-col gap-1",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-					className: "text-[11px] font-semibold leading-5 text-[var(--loyalty-ink)]",
+					className: "text-[11px] font-semibold leading-4 text-[var(--loyalty-ink)]",
 					children: metric.label
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: cn("text-[1.65rem] font-extrabold leading-none tracking-tight", styles.text),
+					className: cn("text-lg font-extrabold leading-none tracking-tight sm:text-xl", styles.text),
 					children: metric.value
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-xs text-[var(--loyalty-subtle)]",
+					className: "text-[11px] text-[var(--loyalty-subtle)]",
 					children: metric.caption
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: cn("flex size-10 shrink-0 items-center justify-center rounded-lg border", styles.border, styles.soft, styles.text),
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { "aria-hidden": "true" })
+			className: cn("flex size-8 shrink-0 items-center justify-center rounded-lg border", styles.border, styles.soft, styles.text),
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+				className: "size-3.5",
+				"aria-hidden": "true"
+			})
 		})]
 	});
 }
 function MetricStrip({ className }) {
+	const metrics = BUYER_LOYALTY_METRICS.filter((metric) => primaryMetricIds.has(metric.id));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 		"aria-label": "شاخص‌های خلاصه وفاداری",
-		className: cn("grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5", className),
-		children: BUYER_LOYALTY_METRICS.map((metric) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricCard, { metric }, metric.id))
-	});
-}
-function TargetIllustration() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "relative flex min-h-20 flex-1 items-end justify-end overflow-hidden rounded-lg border border-white/10 bg-white/5 px-4 pb-3",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "absolute bottom-3 right-5 flex items-end gap-1.5",
-				"aria-hidden": "true",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-7 w-3 rounded-t-sm bg-[var(--loyalty-violet-alpha)]" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-12 w-3 rounded-t-sm bg-[var(--loyalty-sky-alpha)]" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-8 w-3 rounded-t-sm bg-[var(--loyalty-mint-alpha)]" })
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "absolute bottom-5 left-5 size-20 rounded-full border-[10px] border-[var(--loyalty-teal)] bg-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.25)]",
-				"aria-hidden": "true",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-3 rounded-full border-[8px] border-[var(--loyalty-violet)]" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-[1.95rem] rounded-full bg-[var(--loyalty-navy)]" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowUpRight, {
-						className: "absolute -top-5 left-8 text-white drop-shadow",
-						"aria-hidden": "true"
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "absolute bottom-4 left-28 flex items-end gap-1",
-				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-10 w-7 rounded-t-md bg-[var(--loyalty-amber-alpha)]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-14 w-8 rounded-t-md bg-[var(--loyalty-violet-alpha)]" })]
-			})
-		]
+		className: cn("grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5", className),
+		children: metrics.map((metric) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricCard, { metric }, metric.id))
 	});
 }
 function InsightActionPanel({ className }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
 		"aria-labelledby": "buyer-loyalty-insight-heading",
-		className: cn("flex min-h-64 flex-col gap-3 rounded-lg bg-[var(--loyalty-navy)] p-4 text-white shadow-[0_20px_50px_rgba(21,29,72,0.28)]", className),
+		className: cn("rail-banner flex flex-col gap-2.5 p-2.5 sm:p-3", className),
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-3",
+				className: "relative flex items-center gap-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex size-10 items-center justify-center rounded-lg bg-white/10 text-[var(--loyalty-amber)]",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lightbulb, { "aria-hidden": "true" })
+					className: "flex size-8 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-yellow)]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lightbulb, {
+						className: "size-4",
+						"aria-hidden": "true"
+					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 					id: "buyer-loyalty-insight-heading",
-					className: "text-base font-bold",
+					className: "text-sm font-bold text-white",
 					children: "بینش کلیدی"
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-sm leading-6 text-white/85",
-				children: "۱۴٪ کارت‌های اولین‌بار مشاهده‌شده در فروردین طی ۳۰ روز خرید دیگری انجام دادند. این عدد برای همتایان شما ۲۱٪ است."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-sm leading-6 text-white/75",
-				children: "با رسیدن به میانه هم‌صنف‌ها، حدود ۱۸۰ خرید تکراری بیشتر در یک cohort مشابه قابل انتظار است."
+				className: "relative text-sm leading-6 text-white/90",
+				children: "۱۴٪ کارت‌های اولین‌بار در فروردین طی ۳۰ روز خرید دیگری داشتند؛ همتایان ۲۱٪. با رسیدن به میانه، حدود ۱۸۰ خرید تکراری بیشتر قابل انتظار است."
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-auto grid gap-3 border-t border-white/10 pt-3 lg:grid-cols-[1fr_7rem]",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex gap-3",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--loyalty-teal-alpha)] text-[var(--loyalty-mint)]",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { "aria-hidden": "true" })
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col gap-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-							className: "font-semibold text-[var(--loyalty-mint)]",
-							children: "اقدام پیشنهادی"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm leading-6 text-white/82",
-							children: "پیشنهاد خرید دوم را در فاصله زمانی اجرا کنید که مشتریان وفادار فعلی معمولاً بازمی‌گردند."
-						})]
+				className: "relative flex gap-2 border-t border-white/10 pt-2.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex size-8 shrink-0 items-center justify-center rounded-md bg-white/10 text-[var(--loyalty-mint)]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
+						className: "size-3.5",
+						"aria-hidden": "true"
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-0.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						className: "text-sm font-semibold text-[var(--loyalty-mint)]",
+						children: "اقدام پیشنهادی"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs leading-5 text-white/85 sm:text-sm sm:leading-6",
+						children: "پیشنهاد خرید دوم را در بازه‌ای اجرا کنید که مشتریان وفادار معمولاً بازمی‌گردند."
 					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TargetIllustration, {})]
+				})]
 			})
 		]
 	});
 }
-function MethodNote() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-		className: "flex items-start justify-center gap-2 rounded-lg bg-[var(--loyalty-wash)] px-4 py-3 text-center text-xs leading-5 text-[var(--loyalty-subtle)]",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
-			className: "mt-0.5 shrink-0 text-[var(--loyalty-navy)]",
-			"aria-hidden": "true"
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تمام محاسبات بر اساس payer_card_key و در سطح این پذیرنده انجام شده است." })]
-	});
-}
 function BehaviorDonutCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$2, {
 		className,
 		title: "تقسیم‌بندی کارت‌ها بر اساس رفتار",
 		description: "سهم کارت‌های مشاهده‌شده در هر وضعیت رفتاری",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-			className: "grid flex-1 items-center gap-4 md:grid-cols-[11rem_1fr]",
+			className: "grid flex-1 items-center gap-2.5",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
 					className: "sr-only",
 					children: "توزیع کارت‌های یکتا بر اساس رفتار خرید و بازگشت."
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative mx-auto flex size-44 items-center justify-center",
+					className: "relative mx-auto flex size-36 items-center justify-center",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 						viewBox: "0 0 120 120",
 						className: "size-full -rotate-90 motion-reduce:rotate-0",
@@ -4696,16 +4623,16 @@ function BehaviorDonutCard({ className }) {
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-					className: "flex flex-col gap-2",
+					className: "grid grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-1",
 					children: BEHAVIOR_SEGMENTS.map((segment) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-						className: "grid grid-cols-[auto_1fr_auto] items-center gap-2 text-xs",
+						className: "grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-xs",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: cn("size-3 rounded-sm", toneStyles[segment.tone].bg),
 								"aria-hidden": "true"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-[var(--loyalty-ink)]",
+								className: "min-w-0 truncate text-[var(--loyalty-ink)]",
 								children: segment.label
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -4717,7 +4644,7 @@ function BehaviorDonutCard({ className }) {
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "rounded-md bg-[var(--loyalty-wash)] px-3 py-2 text-xs text-[var(--loyalty-subtle)]",
+			className: "rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]",
 			children: "در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده است."
 		})]
 	});
@@ -4735,20 +4662,20 @@ function buildChartPoints(values, labels, max) {
 		y: top + height - value / max * height
 	}));
 }
-function TrendChart({ labels, max, series, title }) {
+function TrendChart({ labels, compact = false, max, series, title }) {
 	const chartSeries = series.map((item) => ({
 		...item,
 		points: buildChartPoints(item.values, labels, max)
 	}));
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "flex flex-1 flex-col gap-3",
+		className: cn("flex flex-col gap-2.5", !compact && "flex-1"),
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
 				className: "sr-only",
 				children: title
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex justify-center gap-6 text-xs text-[var(--loyalty-subtle)]",
+				className: "flex justify-center gap-4 text-xs text-[var(--loyalty-subtle)]",
 				children: series.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "flex items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -4759,7 +4686,7 @@ function TrendChart({ labels, max, series, title }) {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 560 250",
-				className: "min-h-48 w-full",
+				className: cn("h-auto w-full", compact ? "max-h-40" : "min-h-40 sm:min-h-48"),
 				role: "img",
 				"aria-label": title,
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
@@ -4836,7 +4763,7 @@ function TrendChart({ labels, max, series, title }) {
 	});
 }
 function SecondPurchaseCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$2, {
 		className,
 		title: "نرخ خرید دوم یا بعدی در بازه‌های زمانی",
 		description: "از بین کارت‌های اولین‌بار مشاهده‌شده",
@@ -4848,52 +4775,6 @@ function SecondPurchaseCard({ className }) {
 		})
 	});
 }
-function PurchaseIntervalCard({ className }) {
-	const maxValue = Math.max(...INTERVAL_BENCHMARKS.map((item) => item.value));
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-		className,
-		title: "میانه فاصله بین خریدهای متوالی",
-		description: "برای کارت‌های بازگشتی",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-1 flex-col justify-between gap-5",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-between gap-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-4xl font-extrabold text-[var(--loyalty-ink)]",
-					children: "۲۸"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-sm text-[var(--loyalty-subtle)]",
-					children: "روز"
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex size-12 items-center justify-center rounded-lg border border-[var(--loyalty-teal-line)] bg-[var(--loyalty-teal-soft)] text-[var(--loyalty-teal)]",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarDays, { "aria-hidden": "true" })
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex flex-col gap-3",
-				children: INTERVAL_BENCHMARKS.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-[5.25rem_1fr_3rem] items-center gap-3 text-xs",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-[var(--loyalty-subtle)]",
-							children: item.label
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "h-2 overflow-hidden rounded-full bg-[var(--loyalty-wash)]",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: cn("block h-full rounded-full", toneStyles[item.tone].bg),
-								style: { width: `${item.value / maxValue * 100}%` }
-							})
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "font-semibold text-[var(--loyalty-ink)]",
-							children: [formatPersianNumber(item.value), " روز"]
-						})
-					]
-				}, item.label))
-			})]
-		})
-	});
-}
 function cohortCellStyle(value) {
 	return {
 		backgroundColor: `color-mix(in oklch, var(--loyalty-violet) ${Math.min(34 + value * 1.8, 78)}%, white)`,
@@ -4901,9 +4782,9 @@ function cohortCellStyle(value) {
 	};
 }
 function RetentionCohortCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$2, {
 		className,
-		title: "Retention Cohort بر اساس ماه ماه اولین مشاهده",
+		title: "Retention Cohort بر اساس ماه اولین مشاهده",
 		description: "درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			className: "overflow-x-auto",
@@ -4935,7 +4816,7 @@ function RetentionCohortCard({ className }) {
 				]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-			className: "flex items-start gap-2 rounded-md bg-[var(--loyalty-wash)] px-3 py-2 text-xs text-[var(--loyalty-subtle)]",
+			className: "flex items-start gap-2 rounded-md bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs text-[var(--loyalty-subtle)]",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
 				className: "mt-0.5 shrink-0 text-[var(--loyalty-navy)]",
 				"aria-hidden": "true"
@@ -4943,267 +4824,38 @@ function RetentionCohortCard({ className }) {
 		})]
 	});
 }
-function AmountComparisonCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
-		className,
-		title: "مقایسه مبلغ خرید اول و خریدهای بعدی",
-		description: "میانگین مبلغ خرید",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid flex-1 items-center gap-4",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "rounded-md bg-[var(--loyalty-wash)] p-4 text-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs text-[var(--loyalty-subtle)]",
-						children: "خرید اول"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mt-2 text-xl font-extrabold text-[var(--loyalty-navy)]",
-						children: "۷۸۲,۰۰۰"
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mx-auto flex size-24 flex-col items-center justify-center rounded-full border-2 border-[var(--loyalty-teal)] bg-card shadow-[0_8px_30px_rgba(17,154,124,0.12)]",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "text-2xl font-extrabold text-[var(--loyalty-navy)]",
-						children: "+۷۱٪"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "text-[11px] text-[var(--loyalty-subtle)]",
-						children: "بیشتر"
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "rounded-md bg-[var(--loyalty-amber-soft)] p-4 text-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs text-[var(--loyalty-subtle)]",
-						children: "خریدهای بعدی"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mt-2 text-xl font-extrabold text-[var(--loyalty-amber)]",
-						children: "۱,۳۴۰,۰۰۰"
-					})]
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "text-center text-xs leading-5 text-[var(--loyalty-subtle)]",
-			children: "افزایش متوسط مبلغ در خریدهای بعدی نسبت به خرید اول"
-		})]
-	});
-}
-function IntervalDistributionCard({ className }) {
-	const maxValue = Math.max(...INTERVAL_DISTRIBUTION.map((bucket) => bucket.value));
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-		className,
-		title: "توزیع فاصله بین خریدهای متوالی (روز)",
-		description: "برای کارت‌های بازگشتی",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid flex-1 items-stretch gap-5 min-[1800px]:grid-cols-[1fr_8rem]",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-				className: "flex min-h-56 flex-col justify-end",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
-					className: "sr-only",
-					children: "توزیع فاصله بین خریدهای متوالی برای کارت‌های بازگشتی."
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex h-52 items-end justify-between gap-3 border-b border-[var(--loyalty-line)] px-3",
-					children: INTERVAL_DISTRIBUTION.map((bucket) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-1 flex-col items-center gap-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-xs font-semibold text-[var(--loyalty-ink)]",
-								children: formatChartPercent(bucket.value)
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "w-full max-w-9 rounded-t-md bg-[linear-gradient(180deg,var(--loyalty-mint),var(--loyalty-teal))]",
-								style: { height: `${Math.max(bucket.value / maxValue * 135, 12)}px` },
-								"aria-hidden": "true"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-[11px] text-[var(--loyalty-subtle)]",
-								children: bucket.label
-							})
-						]
-					}, bucket.label))
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col justify-center rounded-md border border-[var(--loyalty-teal-line)] bg-[var(--loyalty-teal-soft)] p-4 text-center",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, {
-						className: "mx-auto text-[var(--loyalty-teal)]",
-						"aria-hidden": "true"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mt-3 text-sm font-bold text-[var(--loyalty-teal)]",
-						children: "بازه رایج بازگشت"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mt-2 text-2xl font-extrabold text-[var(--loyalty-navy)]",
-						children: "۱۵ تا ۴۵ روز"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "mt-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
-						children: "خریدهای پرتکرار بعدی معمولاً در این محدوده رخ می‌دهد."
-					})
-				]
-			})]
-		})
-	});
-}
-function RevenueSegmentCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-		className,
-		title: "درآمد مشاهده‌شده هر بخش",
-		description: "سهم از فروش",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "flex flex-1 flex-col justify-center gap-3",
-			children: REVENUE_SEGMENTS.map((segment) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: cn("grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md border p-3 text-xs", toneStyles[segment.tone].border, toneStyles[segment.tone].wash),
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: cn("flex size-9 items-center justify-center rounded-md", toneStyles[segment.tone].soft, toneStyles[segment.tone].text),
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, { "aria-hidden": "true" })
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: "min-w-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "block font-semibold text-[var(--loyalty-ink)]",
-							children: segment.label
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "block text-[var(--loyalty-subtle)]",
-							children: segment.amount
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: cn("font-extrabold tabular-nums", toneStyles[segment.tone].text),
-						children: formatChartPercent(segment.share)
-					})
-				]
-			}, segment.label))
-		})
-	});
-}
-function OccasionReturnTrendCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-		className,
-		title: "تغییر سهم کارت‌های بازگشتی در مناسبت‌ها",
-		description: "سهم خریدهای بازگشتی از کل فروش",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendChart, {
-			labels: OCCASION_TREND_LABELS,
-			max: 50,
-			series: OCCASION_TREND_SERIES,
-			title: "نمودار تغییر سهم کارت‌های بازگشتی در روزهای قبل و بعد از مناسبت"
-		})
-	});
-}
-function LifecycleStageItem({ index, stage }) {
-	const Icon = lifecycleIconMap[stage.id] ?? CreditCard;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-		className: "grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "rounded-lg border border-[var(--loyalty-line)] bg-card p-4 shadow-[0_10px_30px_rgba(23,33,63,0.05)]",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-start gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: cn("flex size-12 shrink-0 items-center justify-center rounded-full", toneStyles[stage.tone].soft, toneStyles[stage.tone].text),
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { "aria-hidden": "true" })
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "min-w-0",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-							className: "font-bold text-[var(--loyalty-ink)]",
-							children: stage.title
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-2 text-sm font-semibold text-[var(--loyalty-ink)]",
-							children: stage.cards
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm text-[var(--loyalty-subtle)]",
-							children: stage.share
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-2 text-xs text-[var(--loyalty-subtle)]",
-							children: stage.description
-						})
-					]
-				})]
-			})
-		}), index < LIFECYCLE_STAGES.length - 1 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, {
-			className: "hidden text-[var(--loyalty-navy)] min-[1800px]:block",
+function DataScopeNote() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+		className: "flex items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, {
+			className: "mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-violet)]",
 			"aria-hidden": "true"
-		}) : null]
-	});
-}
-function LifecycleRail() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-		"aria-labelledby": "buyer-lifecycle-heading",
-		className: cn(panelClass, "p-4"),
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-			id: "buyer-lifecycle-heading",
-			className: "text-center text-base font-bold text-[var(--loyalty-ink)]",
-			children: "چرخه عمر کارت در بازه"
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
-			className: "mt-4 grid gap-3 lg:grid-cols-2 min-[1800px]:grid-cols-[repeat(4,minmax(0,1fr))]",
-			children: LIFECYCLE_STAGES.map((stage, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LifecycleStageItem, {
-				index,
-				stage
-			}, stage.id))
-		})]
-	});
-}
-function ImportantNote() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-		className: cn(panelClass, "flex min-h-40 items-center gap-5 p-5"),
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "flex size-16 shrink-0 items-center justify-center rounded-lg bg-[var(--loyalty-teal-soft)] text-[var(--loyalty-teal)]",
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { "aria-hidden": "true" })
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-col gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-base font-bold text-[var(--loyalty-teal)]",
-				children: "نکته مهم"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-sm leading-7 text-[var(--loyalty-subtle)]",
-				children: "به دلیل محدودیت شش‌ماهه داده، این نتایج نشان‌دهنده انحراف عملکرد در بازه نسبت به baseline مورد انتظار هستند، نه اثبات اثر قطعی با رابطه علّی."
-			})]
-		})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "محدودیت شش‌ماهه داده و محاسبه روی payer_card_key یعنی نتایج انحراف عملکرد نسبت به baseline هستند، نه اثبات اثر علّی." })]
 	});
 }
 function BuyerLoyaltyDashboard() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-4 text-[var(--loyalty-ink)]",
+		className: "flex flex-col gap-2.5 text-[var(--loyalty-ink)]",
 		style: loyaltyTheme,
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "grid gap-4 xl:grid-cols-[minmax(19rem,24rem)_minmax(0,1fr)]",
+				className: "grid gap-2.5 lg:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)]",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BuyerLoyaltyHeader, { className: "xl:col-start-2" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightActionPanel, { className: "xl:col-start-1 xl:row-span-2 xl:row-start-1" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricStrip, { className: "xl:col-start-2" })
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BuyerLoyaltyHeader, { className: "lg:col-start-2" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightActionPanel, { className: "lg:col-start-1 lg:row-span-2 lg:row-start-1" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricStrip, { className: "lg:col-start-2" })
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MethodNote, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				"aria-label": "تحلیل نگهداشت و فاصله خرید",
-				className: "grid grid-cols-1 gap-4 xl:grid-cols-12",
+				className: "grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-12",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetentionCohortCard, { className: "xl:col-span-4" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PurchaseIntervalCard, { className: "xl:col-span-2" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SecondPurchaseCard, { className: "xl:col-span-3" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetentionCohortCard, { className: "xl:col-span-5" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SecondPurchaseCard, { className: "xl:col-span-4" }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BehaviorDonutCard, { className: "xl:col-span-3" })
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				"aria-label": "رفتار خرید بعدی و درآمد هر بخش",
-				className: "grid grid-cols-1 gap-4 xl:grid-cols-12",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(OccasionReturnTrendCard, { className: "xl:col-span-3" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RevenueSegmentCard, { className: "xl:col-span-3" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(IntervalDistributionCard, { className: "xl:col-span-3" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AmountComparisonCard, { className: "xl:col-span-3" })
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "grid gap-4 xl:grid-cols-[minmax(22rem,31rem)_minmax(0,1fr)]",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ImportantNote, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LifecycleRail, {})]
-			})
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DataScopeNote, {})
 		]
 	});
 }
@@ -5212,456 +4864,108 @@ function BuyerLoyaltyDashboard() {
 function BuyerLoyaltyPage() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BuyerLoyaltyDashboard, {});
 }
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Building2 = createLucideIcon("building-2", [
+	["path", {
+		d: "M10 12h4",
+		key: "a56b0p"
+	}],
+	["path", {
+		d: "M10 8h4",
+		key: "1sr2af"
+	}],
+	["path", {
+		d: "M14 21v-3a2 2 0 0 0-4 0v3",
+		key: "1rgiei"
+	}],
+	["path", {
+		d: "M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2",
+		key: "secmi2"
+	}],
+	["path", {
+		d: "M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16",
+		key: "16ra0t"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var RefreshCw = createLucideIcon("refresh-cw", [
+	["path", {
+		d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8",
+		key: "v9h5vc"
+	}],
+	["path", {
+		d: "M21 3v5h-5",
+		key: "1q7to0"
+	}],
+	["path", {
+		d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16",
+		key: "3uifl3"
+	}],
+	["path", {
+		d: "M8 16H3v5",
+		key: "1cv678"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var ShieldAlert = createLucideIcon("shield-alert", [
+	["path", {
+		d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+		key: "oel41y"
+	}],
+	["path", {
+		d: "M12 8v4",
+		key: "1got3b"
+	}],
+	["path", {
+		d: "M12 16h.01",
+		key: "1drbdi"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Terminal = createLucideIcon("terminal", [["path", {
+	d: "M12 19h8",
+	key: "baeox8"
+}], ["path", {
+	d: "m4 17 6-6-6-6",
+	key: "1yngyt"
+}]]);
 //#endregion
-//#region components/pages/dashboard-page.tsx
-function DashboardPage() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(InsightPage, {
-		title: "پیشخوان",
-		story: "خلاصه وضعیت فروش، پرداخت و رشد کسب‌وکار در یک نگاه",
-		note: "داده‌های این صفحه از تحلیل‌های بخش رشد کسب‌وکار جمع‌بندی می‌شوند.",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "خلاصه فروش ۳۰ روز اخیر",
-				description: "مبلغ فروش موفق، تعداد خرید و رشد نسبت به دوره قبل."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "نرخ موفقیت پرداخت",
-				description: "سهم نشست‌هایی که به خرید موفق رسیده‌اند."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "کارت‌های بازگشتی",
-				description: "سهم خرید از کارت‌هایی با سابقه خرید موفق از همین پذیرنده."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "فعالیت‌های پیشنهادی",
-				description: "اقدامات کوتاه‌مدت بر اساس تحلیل‌های اخیر."
-			})
-		]
-	});
-}
-//#endregion
-//#region components/pages/payment-health-page.tsx
-function PaymentHealthPage() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(InsightPage, {
-		title: "سلامت مسیر پرداخت",
-		story: "در کدام مرحله پرداخت، فروش بالقوه از دست می‌رود؟",
-		note: "نشست ناموفق الزاماً با اصلاح مسیر به خرید موفق تبدیل نمی‌شد؛ اثر مالی را سناریویی بخوانید، نه درآمد قطعی ازدست‌رفته.",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "قیف مسیر پرداخت",
-				description: "پیش از بانک (NoAttempt)، ورود به بانک و ناموفق ماندن، بازیابی با retry، و وضعیت Paid یا مشکل verify."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "ورود به مرحله بانکی",
-				description: "نرخ رسیدن کاربر به بانک در مقایسه با همتایان مشابه پس از تعدیل ترکیب مبلغ و PSP."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "موفقیت پس از ورود به بانک",
-				description: "افت موفقیت بعد از ورود به بانک، به‌تفکیک بازه مبلغ و در صورت نمونه کافی به‌تفکیک PSP."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "بازیابی با retry",
-				description: "سهم نشست‌هایی که پس از تلاش مجدد به خرید موفق رسیده‌اند."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "تفاوت ترمینال‌ها",
-				description: "نرخ موفقیت و NoAttempt بین ترمینال‌های همین پذیرنده، فقط با نمونه کافی."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "ناهنجاری PSP یا صادرکننده",
-				description: "انحراف تعدیل‌شده در PSP یا issuer نسبت به الگوی مورد انتظار همین پذیرنده و گروه همتا."
-			})
-		]
-	});
-}
-//#endregion
-//#region components/pages/peer-position-page.tsx
-function PeerPositionPage() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(InsightPage, {
-		title: "جایگاه در میان کسب‌وکارهای مشابه",
-		story: "در مقایسه با کسب‌وکارهای مشابه کجا قرار دارم؟",
-		note: "هویت سایر پذیرنده‌ها نمایش داده نمی‌شود. مقایسه فقط وقتی گروه همتا حداقل ۱۰ عضو داشته باشد.",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "جایگاه صدکی",
-				description: "percentile مبلغ فروش موفق، رشد ماهانه، متوسط مبلغ خرید و نرخ خرید مجدد ۳۰روزه در گروه همتا."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "جذب در برابر نگهداشت",
-				description: "آیا مسئله اصلی جذب خریدار جدید است یا بازگشت کارت‌های دیده‌شده."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "سهم فروش بازگشتی",
-				description: "سهم فروش از کارت‌های بازگشتی در مقایسه با میانه همتایان مشابه."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "پایداری فروش",
-				description: "نوسان فروش و پایداری روند نسبت به کسب‌وکارهای هم‌اندازه و هم‌صنف."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				title: "فشار کارمزد تعدیل‌شده",
-				description: "شاخص نسبی adjusted_fee در گروه همتا؛ بدون افشای پذیرنده دیگر."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AnalysisSlot, {
-				className: "md:col-span-2",
-				title: "تعریف گروه همتا",
-				description: "دسته کسب‌وکار، اندازه بر اساس تعداد پرداخت، بازه متوسط مبلغ، الگوی زمانی، سهم بازگشت و نوع verify."
-			})
-		]
-	});
-}
-//#endregion
-//#region components/sales-pulse/cumulative-trend-chart.tsx
-function CumulativeTrendChart({ data }) {
-	const width = 520;
-	const height = 200;
-	const padding = {
-		top: 16,
-		right: 12,
-		bottom: 32,
-		left: 40
-	};
-	const chartWidth = width - padding.left - padding.right;
-	const chartHeight = height - padding.top - padding.bottom;
-	const values = data.flatMap((point) => [point.actual, point.baseline]);
-	const maxValue = Math.max(...values) * 1.08;
-	const minValue = 0;
-	const xStep = chartWidth / (data.length - 1);
-	const toX = (index) => padding.left + index * xStep;
-	const toY = (value) => padding.top + chartHeight - (value - minValue) / (maxValue - minValue) * chartHeight;
-	const actualPath = data.map((point, index) => `${index === 0 ? "M" : "L"} ${toX(index)} ${toY(point.actual)}`).join(" ");
-	const baselinePath = data.map((point, index) => `${index === 0 ? "M" : "L"} ${toX(index)} ${toY(point.baseline)}`).join(" ");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "w-full",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
-				className: "sr-only",
-				children: "روند تجمعی فروش موفق در بازه مناسبت در مقایسه با baseline"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-				viewBox: `0 0 ${width} ${height}`,
-				className: "h-auto w-full max-h-52",
-				role: "img",
-				"aria-label": "نمودار خطی روند تجمعی فروش موفق",
-				children: [
-					[
-						0,
-						.25,
-						.5,
-						.75,
-						1
-					].map((tick) => {
-						const y = padding.top + chartHeight * (1 - tick);
-						const value = minValue + (maxValue - minValue) * tick;
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-							x1: padding.left,
-							x2: width - padding.right,
-							y1: y,
-							y2: y,
-							className: "stroke-border",
-							strokeDasharray: "4 4"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-							x: padding.left - 6,
-							y: y + 4,
-							textAnchor: "end",
-							className: "fill-muted-foreground text-[9px]",
-							children: formatPersianNumber(value, { maximumFractionDigits: 0 })
-						})] }, tick);
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: baselinePath,
-						fill: "none",
-						className: "stroke-muted-foreground/60",
-						strokeWidth: "2",
-						strokeDasharray: "6 4"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: actualPath,
-						fill: "none",
-						className: "stroke-emerald-500",
-						strokeWidth: "2.5",
-						strokeLinecap: "round",
-						strokeLinejoin: "round"
-					}),
-					data.map((point, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-						cx: toX(index),
-						cy: toY(point.actual),
-						r: "3.5",
-						className: "fill-emerald-500"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-						x: toX(index),
-						y: height - 8,
-						textAnchor: "middle",
-						className: "fill-muted-foreground text-[9px]",
-						children: point.date
-					})] }, point.date))
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-2 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: "flex items-center gap-1.5",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "inline-block h-0.5 w-5 rounded bg-emerald-500",
-						"aria-hidden": "true"
-					}), "عملکرد واقعی"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: "flex items-center gap-1.5",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "inline-block h-0.5 w-5 rounded border-t-2 border-dashed border-muted-foreground/60",
-						"aria-hidden": "true"
-					}), "baseline"]
-				})]
-			})
-		]
-	});
-}
-//#endregion
-//#region components/sales-pulse/growth-charts.tsx
-function formatFactorValue(value) {
-	return `${value > 0 ? "+" : ""}${formatPersianNumber(value, { maximumFractionDigits: 1 })}٪`;
-}
-function GrowthWaterfall({ factors, total }) {
-	const maxBarHeight = 128;
-	const maxAbs = Math.max(...factors.map((f) => Math.abs(f.value)), total);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "flex h-full flex-col",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
-			className: "sr-only",
-			children: [
-				"نمودار آبشاری تجزیه رشد فروش:",
-				" ",
-				factors.map((f) => `${f.label} ${formatFactorValue(f.value)}`).join("، "),
-				" ",
-				"مجموع ",
-				formatPersianNumber(total),
-				"٪"
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-1 items-end justify-center gap-3 px-2 pt-4 sm:gap-4",
-			"aria-hidden": "true",
-			children: [factors.map((factor) => {
-				const barHeight = Math.abs(factor.value) / maxAbs * maxBarHeight;
-				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex max-w-16 flex-1 flex-col items-center gap-2",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: cn("text-xs font-semibold tabular-nums", factor.positive ? "text-emerald-600" : "text-rose-500"),
-							children: formatFactorValue(factor.value)
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex w-full max-w-10 items-end justify-center",
-							style: { height: maxBarHeight },
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: cn("w-full rounded-t-md motion-reduce:transition-none", factor.positive ? "bg-emerald-500" : "bg-rose-400"),
-								style: { height: Math.max(barHeight, 8) }
-							})
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-center text-[11px] leading-tight text-muted-foreground",
-							children: factor.label
-						})
-					]
-				}, factor.label);
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex max-w-16 flex-1 flex-col items-center gap-2",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: "text-xs font-bold text-emerald-700",
-						children: [
-							"+",
-							formatPersianNumber(total),
-							"٪"
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "flex w-full max-w-10 items-end justify-center",
-						style: { height: maxBarHeight },
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "w-full rounded-t-md bg-emerald-600",
-							style: { height: total / maxAbs * maxBarHeight }
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "text-center text-[11px] font-medium leading-tight",
-						children: "رشد خالص فروش"
-					})
-				]
-			})]
-		})]
-	});
-}
-function GrowthDonut({ total }) {
-	const radius = 54;
-	const circumference = 2 * Math.PI * radius;
-	const dashOffset = circumference * (1 - Math.min(total / 40, 1));
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "relative mx-auto flex size-36 items-center justify-center",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-			viewBox: "0 0 128 128",
-			className: "size-full -rotate-90 motion-reduce:rotate-0",
-			"aria-hidden": "true",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-				cx: "64",
-				cy: "64",
-				r: radius,
-				fill: "none",
-				className: "stroke-muted",
-				strokeWidth: "12"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-				cx: "64",
-				cy: "64",
-				r: radius,
-				fill: "none",
-				className: "stroke-emerald-500",
-				strokeWidth: "12",
-				strokeLinecap: "round",
-				strokeDasharray: circumference,
-				strokeDashoffset: dashOffset
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "absolute inset-0 flex flex-col items-center justify-center",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-				className: "text-2xl font-bold text-emerald-600",
-				children: [
-					"+",
-					formatPersianNumber(total),
-					"٪"
-				]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "text-xs text-muted-foreground",
-				children: "رشد کل"
-			})]
-		})]
-	});
-}
-function GrowthBreakdownBlocks({ factors, total }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-wrap items-center justify-center gap-2 text-sm",
-		"aria-hidden": "true",
-		children: [
-			factors.map((factor, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-2",
-				children: [index > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-muted-foreground",
-					children: factor.positive ? "+" : "−"
-				}) : null, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: cn("rounded-lg px-3 py-2 font-medium", factor.positive ? "bg-emerald-500/10 text-emerald-700" : "bg-rose-500/10 text-rose-600"),
-					children: [
-						factor.label,
-						" ",
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-bold",
-							children: formatFactorValue(factor.value)
-						})
-					]
-				})]
-			}, factor.label)),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "text-muted-foreground",
-				children: "="
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-				className: "rounded-lg bg-emerald-600 px-3 py-2 font-bold text-white",
-				children: [formatPersianNumber(total), "٪ رشد کل"]
-			})
-		]
-	});
-}
-//#endregion
-//#region components/sales-pulse/hourly-impact-chart.tsx
-function HourlyImpactChart({ data }) {
-	const width = 360;
-	const height = 160;
-	const padding = {
-		top: 12,
-		right: 8,
-		bottom: 28,
-		left: 8
-	};
-	const chartWidth = width - padding.left - padding.right;
-	const chartHeight = height - padding.top - padding.bottom;
-	const midY = padding.top + chartHeight / 2;
-	const maxAbs = Math.max(...data.map((item) => Math.abs(item.value)), 1);
-	const barWidth = chartWidth / data.length - 6;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "w-full",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
-			className: "sr-only",
-			children: "توزیع اثر خالص رشد فروش بر اساس ساعت روز"
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-			viewBox: `0 0 ${width} ${height}`,
-			className: "h-auto w-full max-h-44",
-			role: "img",
-			"aria-label": "نمودار میله‌ای اثر رشد بر اساس ساعت",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-				x1: padding.left,
-				x2: width - padding.right,
-				y1: midY,
-				y2: midY,
-				className: "stroke-border"
-			}), data.map((item, index) => {
-				const barHeight = Math.abs(item.value) / maxAbs * (chartHeight / 2 - 4);
-				const x = padding.left + index * (chartWidth / data.length) + 3;
-				const y = item.value >= 0 ? midY - barHeight : midY;
-				const positive = item.value >= 0;
-				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
-						x,
-						y,
-						width: barWidth,
-						height: Math.max(barHeight, 2),
-						rx: 3,
-						className: cn(positive ? "fill-emerald-500" : "fill-violet-400")
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-						x: x + barWidth / 2,
-						y: height - 8,
-						textAnchor: "middle",
-						className: "fill-muted-foreground text-[9px]",
-						children: item.label
-					}),
-					Math.abs(item.value) >= 3 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("text", {
-						x: x + barWidth / 2,
-						y: positive ? y - 4 : y + barHeight + 12,
-						textAnchor: "middle",
-						className: cn("text-[8px] font-medium", positive ? "fill-emerald-600" : "fill-violet-600"),
-						children: [
-							item.value > 0 ? "+" : "",
-							formatPersianNumber(item.value, { maximumFractionDigits: 1 }),
-							"٪"
-						]
-					}) : null
-				] }, item.hour);
-			})]
-		})]
-	});
-}
-//#endregion
-//#region lib/sales-pulse-mock-data.ts
-var SALES_PULSE_PERIODS = [
+//#region lib/payment-health-mock-data.ts
+var PAYMENT_HEALTH_PERIODS = [
 	{
-		id: "nowruz-1403",
-		label: "نوروز ۱۴۰۳",
-		range: "۱۵ اسفند ۱۴۰۳ – ۴ فروردین ۱۴۰۴"
+		id: "khordad-1403",
+		label: "۱ تا ۳۱ خرداد ۱۴۰۳"
 	},
 	{
-		id: "yalda-1403",
-		label: "یلدا ۱۴۰۳",
-		range: "۲۹ آذر – ۱ دی ۱۴۰۳"
+		id: "ordibehesht-1403",
+		label: "۱ تا ۳۱ اردیبهشت ۱۴۰۳"
 	},
 	{
-		id: "black-friday",
-		label: "جمعه سیاه",
-		range: "۲۴ – ۳۰ آبان ۱۴۰۳"
+		id: "farvardin-1403",
+		label: "۱ تا ۳۱ فروردین ۱۴۰۳"
 	}
 ];
-var SALES_PULSE_MERCHANTS = [
+var PAYMENT_HEALTH_MERCHANTS = [
 	{
 		id: "merchant-a",
 		label: "پذیرنده الف"
@@ -5675,731 +4979,205 @@ var SALES_PULSE_MERCHANTS = [
 		label: "پذیرنده ج"
 	}
 ];
-var SALES_PULSE_KPIS = [
+/** Classic payment-path funnel from gateway display to verified paid. */
+var PAYMENT_FUNNEL = [
 	{
-		id: "successful-count",
-		label: "تعداد خرید موفق",
-		value: "۱۲۳٬۴۵۰",
-		change: "+۲۶٪",
-		changeType: "percent",
-		baseline: "۹۸٬۰۰۰",
-		baselineLabel: "baseline",
-		trend: [
-			72,
-			78,
-			75,
-			82,
-			88,
-			91,
-			95,
-			100
-		],
-		accent: "emerald",
-		icon: "receipt"
+		id: "gateway",
+		label: "نمایش درگاه",
+		count: 1684214,
+		rate: 100,
+		tone: "violet"
 	},
 	{
-		id: "sales-amount",
-		label: "مبلغ فروش موفق",
-		value: "۴۲٫۸",
-		unit: "میلیارد تومان",
-		change: "+۲۷٪",
-		changeType: "percent",
-		baseline: "۳۳٫۷",
-		baselineLabel: "baseline",
-		trend: [
-			68,
-			74,
-			79,
-			83,
-			87,
-			92,
-			96,
-			100
-		],
-		accent: "violet",
-		icon: "wallet"
+		id: "bank-entry",
+		label: "ورود به بانک",
+		count: 1222873,
+		rate: 72.6,
+		tone: "lavender"
 	},
 	{
-		id: "avg-basket",
-		label: "متوسط مبلغ هر خرید",
-		value: "۳۴۷",
-		unit: "هزار تومان",
-		change: "+۸٪",
-		changeType: "percent",
-		baseline: "۳۲۱",
-		baselineLabel: "baseline",
-		trend: [
-			88,
-			89,
-			90,
-			91,
-			93,
-			95,
-			97,
-			100
-		],
-		accent: "blue",
-		icon: "basket"
+		id: "bank-success",
+		label: "موفقیت در بانک",
+		count: 1045230,
+		rate: 62.1,
+		tone: "indigo"
 	},
 	{
-		id: "success-rate",
-		label: "نرخ موفقیت پرداخت",
-		value: "۸۴٫۷٪",
-		change: "+۳٫۲",
-		changeType: "points",
-		baseline: "۸۱٫۵٪",
-		baselineLabel: "baseline",
-		trend: [
-			78,
-			80,
-			81,
-			82,
-			83,
-			84,
-			84.5,
-			84.7
-		],
-		accent: "emerald",
+		id: "paid",
+		label: "پرداخت موفق",
+		count: 1025627,
+		rate: 60.9,
+		tone: "green"
+	}
+];
+var FUNNEL_SUMMARY = {
+	postEntrySuccess: 84.2,
+	vsPeerPoints: -6.4,
+	peerMedian: 90.6,
+	headline: "بیشترین ریزش بین نمایش درگاه و ورود به بانک است.",
+	takeaway: "مسئله اصلی NoAttempt است؛ نه لزوماً شکست بانکی."
+};
+var PAYMENT_HEALTH_KPIS = [
+	{
+		id: "bank-reach",
+		label: "نرخ ورود به بانک",
+		value: "۷۲٫۶٪",
+		caption: "از کل نمایش درگاه",
+		tone: "warn",
+		icon: "bank"
+	},
+	{
+		id: "post-entry",
+		label: "موفقیت پس از ورود",
+		value: "۸۴٫۲٪",
+		caption: "۶٫۴ واحد کمتر از همتایان",
+		tone: "warn",
 		icon: "check"
 	},
 	{
-		id: "returning-share",
-		label: "سهم کارت‌های بازگشتی",
-		value: "۲۸٫۶٪",
-		change: "+۶٫۱",
-		changeType: "points",
-		baseline: "۲۲٫۵٪",
-		baselineLabel: "baseline",
-		trend: [
-			62,
-			65,
-			68,
-			72,
-			76,
-			80,
-			84,
-			86
-		],
-		accent: "amber",
-		icon: "users"
+		id: "retry",
+		label: "بازیابی با Retry",
+		value: "۱۸٫۴٪",
+		caption: "از نشست‌های ناموفق اولیه",
+		tone: "good",
+		icon: "refresh"
+	},
+	{
+		id: "no-attempt",
+		label: "No Attempt",
+		value: "۲۷٫۴٪",
+		caption: "قبل از ورود به بانک",
+		tone: "warn",
+		icon: "alert"
+	},
+	{
+		id: "verify-issue",
+		label: "مشکل Verify",
+		value: "۱٫۹٪",
+		caption: "پس از موفقیت بانکی",
+		tone: "neutral",
+		icon: "shield"
+	},
+	{
+		id: "terminal-gap",
+		label: "شکاف ترمینال‌ها",
+		value: "۹٫۱٪",
+		caption: "اختلاف بهترین و بدترین",
+		tone: "violet",
+		icon: "terminal"
 	}
 ];
-var SALES_PULSE_GROWTH_FACTORS = [
+var FUNNEL_DROPOFFS = [
 	{
-		label: "اثر تعداد خرید",
-		value: 19,
-		positive: true
+		id: "gateway-to-bank",
+		from: "نمایش درگاه",
+		to: "ورود به بانک",
+		lostCount: 461341,
+		lostRate: 27.4,
+		severity: "high"
 	},
 	{
-		label: "اثر متوسط سبد",
-		value: 8,
-		positive: true
+		id: "bank-to-success",
+		from: "ورود به بانک",
+		to: "موفقیت در بانک",
+		lostCount: 177643,
+		lostRate: 14.5,
+		severity: "medium"
 	},
 	{
-		label: "اثر نرخ موفقیت",
-		value: 1.8,
-		positive: true
-	},
-	{
-		label: "اثر کارت بازگشتی",
-		value: -1.8,
-		positive: false
+		id: "success-to-paid",
+		from: "موفقیت در بانک",
+		to: "پرداخت موفق",
+		lostCount: 19603,
+		lostRate: 1.9,
+		severity: "low"
 	}
 ];
-var SALES_PULSE_INSIGHT = {
-	headline: "فروش موفق ۲۷٪ بالاتر از baseline مورد انتظار بود.",
-	bullets: [
-		"بیشترین سهم رشد از افزایش تعداد خرید (+۱۹٪) و متوسط سبد (+۸٪) آمده است.",
-		"پیک فروش بین ۱۸:۰۰ تا ۲۱:۰۰ مشاهده شد؛ سهم این بازه ۳۴٪ از کل رشد است.",
-		"سهم کارت‌های بازگشتی ۶٫۱ واحد درصدی بالاتر رفت، اما اثر خالص تجزیه رشد منفی بود."
-	],
-	action: "پیشنهاد: کمپین بازگشت مشتری برای ساعات غیرپیک ۱۲:۰۰–۱۵:۰۰ را آزمایش کنید."
+var AMOUNT_BUCKETS = [
+	{
+		id: "low",
+		label: "زیر ۲۰۰ هزار",
+		bankSuccess: 88.4,
+		peerMedian: 91.2
+	},
+	{
+		id: "mid",
+		label: "۲۰۰ تا ۸۰۰ هزار",
+		bankSuccess: 84.1,
+		peerMedian: 90.5
+	},
+	{
+		id: "high",
+		label: "۸۰۰ هزار تا ۲ میلیون",
+		bankSuccess: 79.6,
+		peerMedian: 88.8
+	},
+	{
+		id: "xl",
+		label: "بالای ۲ میلیون",
+		bankSuccess: 74.2,
+		peerMedian: 86.1
+	}
+];
+var TERMINAL_ROWS = [
+	{
+		id: "t1",
+		name: "ترمینال اصلی",
+		successRate: 86.8,
+		noAttempt: 22.1,
+		sample: "۷۴۲k"
+	},
+	{
+		id: "t2",
+		name: "ترمینال موبایل",
+		successRate: 81.4,
+		noAttempt: 29.6,
+		sample: "۴۱۸k"
+	},
+	{
+		id: "t3",
+		name: "ترمینال VIP",
+		successRate: 90.5,
+		noAttempt: 18.4,
+		sample: "۱۲۶k"
+	},
+	{
+		id: "t4",
+		name: "ترمینال آزمایشی",
+		successRate: 77.7,
+		noAttempt: 34.2,
+		sample: "۳۸k"
+	}
+];
+var PSP_ANOMALIES = [
+	{
+		id: "psp-05",
+		label: "PSP-05",
+		deviation: -8.4,
+		note: "افت موفقیت پس از ورود، پس از تعدیل مبلغ",
+		tone: "warn"
+	},
+	{
+		id: "issuer-mellat",
+		label: "صادرکننده ملت",
+		deviation: -3.1,
+		note: "انحراف خفیف نسبت به الگوی همین پذیرنده",
+		tone: "neutral"
+	},
+	{
+		id: "psp-02",
+		label: "PSP-02",
+		deviation: 2.6,
+		note: "بهتر از انتظار پس از کنترل ترکیب مبلغ",
+		tone: "good"
+	}
+];
+var RETRY_STATS = {
+	recoveredSessions: 42180,
+	recoveredShare: 18.4,
+	medianAttempts: 2,
+	note: "Retry بیشترین اثر را در بازه مبلغ متوسط دارد."
 };
-var SALES_PULSE_CUMULATIVE_TREND = [
-	{
-		date: "۲۵ بهمن",
-		actual: 4.2,
-		baseline: 3.8
-	},
-	{
-		date: "۲۸ بهمن",
-		actual: 9.1,
-		baseline: 8
-	},
-	{
-		date: "۲ اسفند",
-		actual: 14.8,
-		baseline: 12.5
-	},
-	{
-		date: "۵ اسفند",
-		actual: 21.3,
-		baseline: 17.2
-	},
-	{
-		date: "۸ اسفند",
-		actual: 27.6,
-		baseline: 22.1
-	},
-	{
-		date: "۱۱ اسفند",
-		actual: 33.4,
-		baseline: 27
-	},
-	{
-		date: "۱۴ اسفند",
-		actual: 38.9,
-		baseline: 31.8
-	},
-	{
-		date: "۱۷ اسفند",
-		actual: 42.8,
-		baseline: 33.7
-	}
-];
-var SALES_PULSE_HOURLY_IMPACT = [
-	{
-		hour: 0,
-		label: "۰",
-		value: -2.1
-	},
-	{
-		hour: 3,
-		label: "۳",
-		value: -1.4
-	},
-	{
-		hour: 6,
-		label: "۶",
-		value: .8
-	},
-	{
-		hour: 9,
-		label: "۹",
-		value: 3.2
-	},
-	{
-		hour: 12,
-		label: "۱۲",
-		value: 5.6
-	},
-	{
-		hour: 15,
-		label: "۱۵",
-		value: 7.1
-	},
-	{
-		hour: 18,
-		label: "۱۸",
-		value: 11.4
-	},
-	{
-		hour: 21,
-		label: "۲۱",
-		value: 8.9
-	}
-];
-var HEATMAP_DAYS = [
-	"شنبه",
-	"یکشنبه",
-	"دوشنبه",
-	"سه‌شنبه",
-	"چهارشنبه",
-	"پنجشنبه",
-	"جمعه"
-];
-var HEATMAP_BLOCKS = [
-	"۰–۳",
-	"۳–۶",
-	"۶–۹",
-	"۹–۱۲",
-	"۱۲–۱۵",
-	"۱۵–۱۸",
-	"۱۸–۲۱",
-	"۲۱–۲۴"
-];
-var SALES_PULSE_HEATMAP = [
-	[
-		-.8,
-		-1.2,
-		.4,
-		1.8,
-		2.4,
-		3.1,
-		5.6,
-		2.2
-	],
-	[
-		-.5,
-		-.9,
-		.6,
-		2.1,
-		2.8,
-		3.4,
-		6.1,
-		2.8
-	],
-	[
-		-.3,
-		-.6,
-		.9,
-		2.4,
-		3,
-		3.8,
-		6.4,
-		3
-	],
-	[
-		.1,
-		-.4,
-		1.1,
-		2.6,
-		3.2,
-		4,
-		6.8,
-		3.2
-	],
-	[
-		.3,
-		-.2,
-		1.3,
-		2.9,
-		3.5,
-		4.3,
-		7.1,
-		3.5
-	],
-	[
-		.5,
-		0,
-		1.5,
-		3.1,
-		3.8,
-		4.6,
-		7.4,
-		3.8
-	],
-	[
-		-.2,
-		-.7,
-		.7,
-		2,
-		2.6,
-		3.3,
-		5.9,
-		2.5
-	]
-];
-var SALES_PULSE_QUICK_COMPARISON = [
-	{
-		label: "تعداد خرید موفق",
-		value: "+۲۶٪"
-	},
-	{
-		label: "مبلغ فروش موفق",
-		value: "+۲۷٪"
-	},
-	{
-		label: "متوسط مبلغ هر خرید",
-		value: "+۸٪"
-	},
-	{
-		label: "نرخ موفقیت پرداخت",
-		value: "+۳٫۲"
-	},
-	{
-		label: "سهم کارت‌های بازگشتی",
-		value: "+۶٫۱"
-	}
-];
-//#endregion
-//#region components/sales-pulse/impact-heatmap.tsx
-function cellColor(value) {
-	if (value >= 6) return "bg-emerald-600 text-white";
-	if (value >= 4) return "bg-emerald-500/80 text-white";
-	if (value >= 2) return "bg-emerald-400/70 text-emerald-950";
-	if (value >= .5) return "bg-emerald-300/60 text-emerald-950";
-	if (value >= 0) return "bg-emerald-100 text-emerald-900";
-	if (value >= -.5) return "bg-violet-100 text-violet-900";
-	return "bg-violet-300/70 text-violet-950";
-}
-function ImpactHeatmap({ values }) {
-	const cells = HEATMAP_DAYS.flatMap((day, dayIndex) => HEATMAP_BLOCKS.map((block, blockIndex) => ({
-		day,
-		block,
-		value: values[dayIndex]?.[blockIndex] ?? 0
-	})));
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "w-full overflow-x-auto",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
-				className: "sr-only",
-				children: "ماتریس اثر خالص رشد بر اساس روز هفته و بازه ساعتی"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "min-w-[420px]",
-				role: "grid",
-				"aria-label": "ماتریس اثر رشد بر اساس روز و ساعت",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid grid-cols-[4.5rem_repeat(8,minmax(2.5rem,1fr))] gap-1 text-[10px]",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { "aria-hidden": "true" }),
-						HEATMAP_BLOCKS.map((block) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "pb-1 text-center font-medium text-muted-foreground",
-							role: "columnheader",
-							children: block
-						}, block)),
-						HEATMAP_DAYS.map((day, dayIndex) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "contents",
-							role: "row",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "flex items-center font-medium text-muted-foreground",
-								role: "rowheader",
-								children: day
-							}), HEATMAP_BLOCKS.map((block, blockIndex) => {
-								const value = values[dayIndex]?.[blockIndex] ?? 0;
-								const sign = value > 0 ? "+" : "";
-								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									role: "gridcell",
-									title: `${day} · ${block}: ${sign}${formatPersianNumber(value, { maximumFractionDigits: 1 })}٪`,
-									className: cn("flex aspect-square items-center justify-center rounded-md text-[9px] font-medium tabular-nums motion-reduce:transition-none", cellColor(value)),
-									children: Math.abs(value) >= 1 ? `${sign}${formatPersianNumber(value, { maximumFractionDigits: 1 })}` : ""
-								}, `${day}-${block}`);
-							})]
-						}, day))
-					]
-				})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-3 flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "کمتر" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex gap-0.5",
-						"aria-hidden": "true",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-3 rounded-sm bg-violet-300/70" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-3 rounded-sm bg-violet-100" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-3 rounded-sm bg-emerald-100" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-3 rounded-sm bg-emerald-400/70" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-3 rounded-sm bg-emerald-600" })
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "بیشتر" })
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "sr-only",
-				children: cells.filter((cell) => Math.abs(cell.value) >= 2).map((cell) => `${cell.day} ${cell.block}: ${cell.value}٪`).join("؛ ")
-			})
-		]
-	});
-}
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var Quote = createLucideIcon("quote", [["path", {
-	d: "M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z",
-	key: "rib7q0"
-}], ["path", {
-	d: "M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z",
-	key: "1ymkrd"
-}]]);
-//#endregion
-//#region components/sales-pulse/insight-panel.tsx
-function InsightPanel({ headline, bullets, action, variant = "panel" }) {
-	if (variant === "card") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
-		className: "rounded-xl border border-violet-200/80 bg-violet-50/80 p-4 dark:border-violet-500/20 dark:bg-violet-500/10",
-		"aria-labelledby": "sales-pulse-insight-heading",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex size-9 shrink-0 items-center justify-center rounded-full bg-violet-500/15 text-violet-600",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lightbulb, {
-					className: "size-4",
-					"aria-hidden": "true"
-				})
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex min-w-0 flex-col gap-3",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						id: "sales-pulse-insight-heading",
-						className: "font-heading text-sm font-semibold",
-						children: "بینش"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-sm leading-relaxed",
-						children: headline
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-						className: "list-inside list-disc space-y-1 text-sm text-muted-foreground",
-						children: bullets.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: item }, item))
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-						className: "rounded-lg bg-background/70 px-3 py-2 text-sm ring-1 ring-foreground/8",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-medium text-violet-700",
-							children: "پیشنهاد عملی: "
-						}), action]
-					})
-				]
-			})]
-		})
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-		className: "flex h-full flex-col gap-4 rounded-xl bg-muted/35 p-5 ring-1 ring-foreground/8",
-		"aria-labelledby": "sales-pulse-insight-heading",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center gap-2 text-muted-foreground",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Quote, {
-					className: "size-5",
-					"aria-hidden": "true"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					id: "sales-pulse-insight-heading",
-					className: "font-heading text-base font-semibold text-foreground",
-					children: "بینش"
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-sm font-medium leading-relaxed",
-				children: headline
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-				className: "space-y-2 text-sm text-muted-foreground",
-				children: bullets.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-					className: "flex gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						"aria-hidden": "true",
-						className: "mt-2 size-1.5 shrink-0 rounded-full bg-primary"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item })]
-				}, item))
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-auto flex gap-2 rounded-lg border border-dashed border-primary/30 bg-background/60 p-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
-					className: "size-4 shrink-0 text-primary",
-					"aria-hidden": "true"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "text-sm",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-medium",
-						children: "پیشنهاد عملی: "
-					}), action]
-				})]
-			})
-		]
-	});
-}
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var ShoppingBasket = createLucideIcon("shopping-basket", [
-	["path", {
-		d: "m15 11-1 9",
-		key: "5wnq3a"
-	}],
-	["path", {
-		d: "m19 11-4-7",
-		key: "cnml18"
-	}],
-	["path", {
-		d: "M2 11h20",
-		key: "3eubbj"
-	}],
-	["path", {
-		d: "m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4",
-		key: "yiazzp"
-	}],
-	["path", {
-		d: "M4.5 15.5h15",
-		key: "13mye1"
-	}],
-	["path", {
-		d: "m5 11 4-7",
-		key: "116ra9"
-	}],
-	["path", {
-		d: "m9 11 1 9",
-		key: "1ojof7"
-	}]
-]);
-//#endregion
-//#region components/sales-pulse/sparkline.tsx
-var accentStroke = {
-	emerald: "stroke-emerald-500",
-	violet: "stroke-violet-500",
-	blue: "stroke-blue-500",
-	amber: "stroke-amber-500"
-};
-function Sparkline({ data, accent = "emerald", className, width = 88, height = 36 }) {
-	if (data.length < 2) return null;
-	const min = Math.min(...data);
-	const range = Math.max(...data) - min || 1;
-	const points = data.map((value, index) => {
-		return `${index / (data.length - 1) * width},${height - (value - min) / range * (height - 4) - 2}`;
-	}).join(" ");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
-		width,
-		height,
-		viewBox: `0 0 ${width} ${height}`,
-		"aria-hidden": "true",
-		className: cn("overflow-visible", className),
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polyline", {
-			fill: "none",
-			className: cn(accentStroke[accent], "motion-reduce:transition-none"),
-			strokeWidth: "2",
-			strokeLinecap: "round",
-			strokeLinejoin: "round",
-			points
-		})
-	});
-}
-//#endregion
-//#region components/sales-pulse/kpi-scorecard.tsx
-var iconMap = {
-	receipt: Receipt,
-	wallet: Wallet,
-	basket: ShoppingBasket,
-	check: CircleCheck,
-	users: Users
-};
-var accentStyles = {
-	emerald: {
-		icon: "bg-emerald-500/10 text-emerald-600",
-		change: "text-emerald-600",
-		ring: "ring-emerald-500/20"
-	},
-	violet: {
-		icon: "bg-violet-500/10 text-violet-600",
-		change: "text-violet-600",
-		ring: "ring-violet-500/20"
-	},
-	blue: {
-		icon: "bg-blue-500/10 text-blue-600",
-		change: "text-blue-600",
-		ring: "ring-blue-500/20"
-	},
-	amber: {
-		icon: "bg-amber-500/10 text-amber-600",
-		change: "text-amber-600",
-		ring: "ring-amber-500/20"
-	}
-};
-function KpiScorecard({ kpi }) {
-	const Icon = iconMap[kpi.icon];
-	const styles = accentStyles[kpi.accent];
-	const changeSuffix = kpi.changeType === "points" ? " واحد درصدی نسبت به baseline" : " نسبت به baseline";
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: cn("flex min-h-44 flex-col gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10", styles.ring),
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-start justify-between gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-2",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: cn("flex size-9 items-center justify-center rounded-full", styles.icon),
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-						className: "size-4",
-						"aria-hidden": "true"
-					})
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					className: "text-sm font-medium text-muted-foreground",
-					children: kpi.label
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkline, {
-				data: kpi.trend,
-				accent: kpi.accent
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "mt-auto flex flex-col gap-1",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "font-heading text-2xl font-semibold tracking-tight",
-					children: [kpi.value, kpi.unit ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "ms-1 text-sm font-normal text-muted-foreground",
-						children: kpi.unit
-					}) : null]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: cn("flex items-center gap-1 text-sm font-medium", styles.change),
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, {
-						className: "size-3.5",
-						"aria-hidden": "true"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [kpi.change, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-normal text-muted-foreground",
-						children: changeSuffix
-					})] })]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "text-xs text-muted-foreground",
-					children: [
-						kpi.baselineLabel,
-						": ",
-						kpi.baseline,
-						kpi.unit && kpi.id !== "sales-amount" && kpi.id !== "avg-basket" ? "" : kpi.unit ? ` ${kpi.unit}` : ""
-					]
-				})
-			]
-		})]
-	});
-}
-function KpiScorecardGrid({ children }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
-		"aria-label": "شاخص‌های کلیدی عملکرد",
-		className: "grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5",
-		children
-	});
-}
-/**
-* @license lucide-react v1.33.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var CalendarRange = createLucideIcon("calendar-range", [
-	["rect", {
-		x: "3",
-		y: "3",
-		width: "18",
-		height: "18",
-		rx: "2",
-		key: "h1oib"
-	}],
-	["path", {
-		d: "M16 2v3",
-		key: "otl347"
-	}],
-	["path", {
-		d: "M3 9h18",
-		key: "1pudct"
-	}],
-	["path", {
-		d: "M8 2v3",
-		key: "1ioesn"
-	}],
-	["path", {
-		d: "M17 13h-6",
-		key: "1qbiup"
-	}],
-	["path", {
-		d: "M13 17H7",
-		key: "1x38vv"
-	}],
-	["path", {
-		d: "M7 13h.01",
-		key: "1vezk1"
-	}],
-	["path", {
-		d: "M17 17h.01",
-		key: "1sd3ek"
-	}]
-]);
 //#endregion
 //#region node_modules/@base-ui/utils/useOnFirstRender.mjs
 function useOnFirstRender(fn) {
@@ -8320,6 +7098,36 @@ var SelectScrollUpArrow = /* @__PURE__ */ import_react.forwardRef(function Selec
 		direction: "up"
 	});
 });
+//#endregion
+//#region node_modules/@base-ui/react/select/group/SelectGroupContext.mjs
+var SelectGroupContext = /* @__PURE__ */ import_react.createContext(void 0);
+//#endregion
+//#region node_modules/@base-ui/react/select/group/SelectGroup.mjs
+/**
+* Groups related select items with the corresponding label.
+* Renders a `<div>` element.
+*
+* Documentation: [Base UI Select](https://base-ui.com/react/components/select)
+*/
+var SelectGroup$1 = /* @__PURE__ */ import_react.forwardRef(function SelectGroup(componentProps, forwardedRef) {
+	const { render, className, style, ...elementProps } = componentProps;
+	const [labelId, setLabelId] = import_react.useState();
+	const contextValue = import_react.useMemo(() => ({
+		labelId,
+		setLabelId
+	}), [labelId, setLabelId]);
+	const element = useRenderElement("div", componentProps, {
+		ref: forwardedRef,
+		props: [{
+			role: "group",
+			"aria-labelledby": labelId
+		}, elementProps]
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectGroupContext.Provider, {
+		value: contextValue,
+		children: element
+	});
+});
 /**
 * @license lucide-react v1.33.0 - ISC
 *
@@ -8333,6 +7141,13 @@ var ChevronUp = createLucideIcon("chevron-up", [["path", {
 //#endregion
 //#region components/ui/select.tsx
 var Select = SelectRoot;
+function SelectGroup({ className, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectGroup$1, {
+		"data-slot": "select-group",
+		className: cn("scroll-my-1 p-1", className),
+		...props
+	});
+}
 function SelectValue({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue$1, {
 		"data-slot": "select-value",
@@ -8401,95 +7216,3102 @@ function SelectScrollDownButton({ className, ...props }) {
 	});
 }
 //#endregion
+//#region components/payment-health/payment-health-dashboard.tsx
+var healthTheme = {
+	"--health-ink": "#1a2148",
+	"--health-subtle": "#6b7590",
+	"--health-line": "#e4e9f3",
+	"--health-wash": "#f6f8fc",
+	"--health-violet": "#174fd6",
+	"--health-violet-soft": "#eaf1ff",
+	"--health-violet-line": "#c8d8ff",
+	"--health-lavender": "#3b74ef",
+	"--health-indigo": "#0f9a84",
+	"--health-teal": "#0f9a84",
+	"--health-good": "#119a6c",
+	"--health-good-soft": "#e6f7ef",
+	"--health-warn": "#e25555",
+	"--health-warn-soft": "#f6f8fc",
+	"--health-amber": "#e8892d",
+	"--health-amber-soft": "#fff6ea",
+	"--health-yellow": "#ffd60a"
+};
+var panelClass$2 = "rail-panel rail-panel-interactive [--rail-accent:var(--health-violet)] [--rail-line:var(--health-line)]";
+var kpiIconMap = {
+	bank: Building2,
+	check: CircleCheck,
+	refresh: RefreshCw,
+	terminal: Terminal,
+	alert: TriangleAlert,
+	shield: ShieldAlert
+};
+var toneIconClass = {
+	good: "bg-[var(--health-good-soft)] text-[var(--health-good)]",
+	warn: "bg-[var(--health-wash)] text-[var(--health-warn)] ring-1 ring-[var(--health-line)]",
+	neutral: "bg-[var(--health-wash)] text-[var(--health-subtle)]",
+	violet: "bg-[var(--health-violet-soft)] text-[var(--health-violet)]"
+};
+var funnelFill = {
+	violet: "var(--health-violet)",
+	lavender: "var(--health-lavender)",
+	indigo: "var(--health-indigo)",
+	green: "var(--health-good)"
+};
+function Panel$1({ title, description, children, className, headingId }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+		className: cn(panelClass$2, "flex flex-col gap-2.5 p-2.5 sm:p-3", className),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "flex flex-col gap-0.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				id: headingId,
+				className: "text-sm font-bold text-[var(--health-ink)] sm:text-base",
+				children: title
+			}), description ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs leading-5 text-[var(--health-subtle)]",
+				children: description
+			}) : null]
+		}), children]
+	});
+}
+function HealthHeader() {
+	const [periodId, setPeriodId] = (0, import_react.useState)(PAYMENT_HEALTH_PERIODS[0].id);
+	const [merchantId, setMerchantId] = (0, import_react.useState)(PAYMENT_HEALTH_MERCHANTS[0].id);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+		className: "flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex min-w-0 items-center gap-2.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--health-yellow)] text-[var(--health-ink)] sm:size-11",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, {
+					className: "size-5",
+					"aria-hidden": "true"
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex min-w-0 flex-col gap-0.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-lg font-extrabold tracking-tight text-[var(--health-ink)] sm:text-xl",
+					children: "سلامت مسیر پرداخت"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs text-[var(--health-subtle)] sm:text-sm",
+					children: "کجا فروش بالقوه از دست می‌رود؟ · قیف NoAttempt تا verify"
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: merchantId,
+					onValueChange: (value) => value && setMerchantId(value),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full border-[var(--health-line)] bg-card [&>svg:last-child]:text-[var(--health-violet)]",
+						"aria-label": "انتخاب پذیرنده",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, {
+							className: "size-4 text-[var(--health-violet)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--health-ink)]",
+							children: "پذیرنده"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: PAYMENT_HEALTH_MERCHANTS.map((merchant) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: merchant.id,
+						children: merchant.label
+					}, merchant.id)) })]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: periodId,
+					onValueChange: (value) => value && setPeriodId(value),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full border-[var(--health-line)] bg-card [&>svg:last-child]:text-[var(--health-violet)]",
+						"aria-label": "انتخاب بازه زمانی",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarDays, {
+							className: "size-4 text-[var(--health-violet)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--health-ink)]",
+							children: "بازه"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: PAYMENT_HEALTH_PERIODS.map((period) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: period.id,
+						children: period.label
+					}, period.id)) })]
+				})
+			})]
+		})]
+	});
+}
+/**
+* Signature funnel: stacked trapezoids that taper, with side labels + rates.
+* Uses geometric narrowing (not just bar widths) so the path reads as a funnel.
+*/
+function PaymentFunnelDiagram() {
+	const stages = PAYMENT_FUNNEL;
+	const width = 320;
+	const stageH = 46;
+	const gap = 6;
+	const topPad = 8;
+	const sidePad = 8;
+	const height = topPad + stages.length * stageH + (stages.length - 1) * gap + 8;
+	function stageGeometry(index) {
+		const inset = sidePad + index / (stages.length - 1) * 52;
+		const nextInset = sidePad + (index + 1) / (stages.length - 1) * 52;
+		return {
+			y: topPad + index * (stageH + gap),
+			topLeft: inset,
+			topRight: width - inset,
+			bottomLeft: nextInset,
+			bottomRight: width - nextInset
+		};
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "flex flex-col gap-2.5",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+			className: "sr-only",
+			children: ["قیف مسیر پرداخت از نمایش درگاه تا پرداخت موفق.", stages.map((stage) => ` ${stage.label}: ${formatPersianNumber(stage.count)} نشست، ${formatPersianPercent(stage.rate)} از کل.`).join("")]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem] lg:items-center",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+				viewBox: `0 0 ${width} ${height}`,
+				className: "mx-auto h-auto w-full max-w-md",
+				role: "img",
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+					id: "funnel-shine",
+					x1: "0",
+					y1: "0",
+					x2: "1",
+					y2: "1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+						offset: "0%",
+						stopColor: "white",
+						stopOpacity: "0.22"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+						offset: "55%",
+						stopColor: "white",
+						stopOpacity: "0"
+					})]
+				}) }), stages.map((stage, index) => {
+					const g = stageGeometry(index);
+					const points = [
+						`${g.topLeft},${g.y}`,
+						`${g.topRight},${g.y}`,
+						`${g.bottomRight},${g.y + stageH}`,
+						`${g.bottomLeft},${g.y + stageH}`
+					].join(" ");
+					const midY = g.y + stageH / 2;
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", {
+							points,
+							fill: funnelFill[stage.tone],
+							className: "transition-[filter] duration-200"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", {
+							points,
+							fill: "url(#funnel-shine)"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+							x: width / 2,
+							y: midY - 6,
+							textAnchor: "middle",
+							className: "fill-white text-[11px] font-semibold",
+							children: stage.label
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+							x: width / 2,
+							y: midY + 10,
+							textAnchor: "middle",
+							className: "fill-white/95 text-[12px] font-extrabold",
+							children: formatPersianNumber(stage.count)
+						})
+					] }, stage.id);
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
+				className: "flex flex-col gap-2",
+				children: stages.map((stage, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex items-center justify-between gap-2 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "flex min-w-0 items-center gap-2 text-xs text-[var(--health-ink)]",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "size-2.5 shrink-0 rounded-full",
+							style: { background: funnelFill[stage.tone] },
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "truncate font-medium",
+							children: stage.label
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "shrink-0 text-xs font-extrabold tabular-nums text-[var(--health-ink)]",
+						children: [formatPersianPercent(stage.rate), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "sr-only",
+							children: index === 0 ? " از کل نشست‌ها" : ` نسبت به نمایش درگاه؛ افت از مرحله قبل ${formatPersianPercent(stages[index - 1].rate - stage.rate)}`
+						})]
+					})]
+				}, stage.id))
+			})]
+		})]
+	});
+}
+function FunnelHero() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$1, {
+		title: "قیف مسیر پرداخت",
+		description: "از نمایش درگاه تا پرداخت موفق؛ ریزش بین مراحل مسیر فروش بالقوه را نشان می‌دهد",
+		headingId: "payment-funnel-heading",
+		className: "lg:col-span-2",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaymentFunnelDiagram, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-2 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] p-2.5 sm:grid-cols-[auto_1fr] sm:items-center",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-2xl font-extrabold tabular-nums text-[var(--health-warn)]",
+					children: formatPersianPercent(FUNNEL_SUMMARY.postEntrySuccess)
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-0.5 text-xs sm:text-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "font-semibold text-[var(--health-ink)]",
+						children: "نرخ موفقیت پس از ورود به بانک"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "text-[var(--health-warn)]",
+						children: [
+							toPersianDigits(Math.abs(FUNNEL_SUMMARY.vsPeerPoints)),
+							" واحد درصد کمتر از همتایان مشابه (میانه ",
+							formatPersianPercent(FUNNEL_SUMMARY.peerMedian),
+							")"
+						]
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+				className: "rail-banner p-2.5 sm:p-3",
+				"aria-labelledby": "funnel-insight-heading",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative flex items-center gap-2 text-[var(--health-teal)]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
+						className: "size-3.5",
+						"aria-hidden": "true"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						id: "funnel-insight-heading",
+						className: "text-sm font-bold text-white",
+						children: "بینش کلیدی قیف"
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "relative mt-1.5 text-sm leading-6 text-white/90",
+					children: [
+						FUNNEL_SUMMARY.headline,
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium text-[var(--health-teal)]",
+							children: FUNNEL_SUMMARY.takeaway
+						})
+					]
+				})]
+			})
+		]
+	});
+}
+function DropOffPanel() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
+		className: "self-start",
+		title: "ریزش بین مراحل",
+		description: "بزرگ‌ترین گلوگاه مسیر را اول هدف بگیرید",
+		headingId: "payment-dropoff-heading",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+			className: "flex flex-col gap-1.5",
+			children: FUNNEL_DROPOFFS.map((step) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+				className: cn("rounded-lg border p-2", step.severity === "high" ? "border-[var(--health-warn)]/25 bg-card" : step.severity === "medium" ? "border-[var(--health-amber)]/30 bg-[var(--health-amber-soft)]" : "border-[var(--health-line)] bg-[var(--health-wash)]"),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-start justify-between gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "min-w-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "text-xs font-semibold text-[var(--health-ink)]",
+							children: [
+								step.from,
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "mx-1 text-[var(--health-subtle)]",
+									children: "→"
+								}),
+								step.to
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "mt-1 text-[11px] text-[var(--health-subtle)]",
+							children: [formatPersianNumber(step.lostCount), " نشست از دست‌رفته"]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: cn("text-sm font-extrabold tabular-nums", step.severity === "high" ? "text-[var(--health-warn)]" : step.severity === "medium" ? "text-[var(--health-amber)]" : "text-[var(--health-ink)]"),
+						children: [formatPersianPercent(step.lostRate), "-"]
+					})]
+				})
+			}, step.id))
+		})
+	});
+}
+function KpiCard$1({ kpi }) {
+	const Icon = kpiIconMap[kpi.icon];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+		className: cn(panelClass$2, "flex flex-col gap-2 p-2.5"),
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-start justify-between gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "text-[11px] font-semibold leading-4 text-[var(--health-ink)]",
+					children: kpi.label
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: cn("flex size-8 shrink-0 items-center justify-center rounded-lg", toneIconClass[kpi.tone]),
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+						className: "size-3.5",
+						"aria-hidden": "true"
+					})
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: cn("text-lg font-extrabold tracking-tight sm:text-xl", kpi.tone === "warn" ? "text-[var(--health-warn)]" : "text-[var(--health-ink)]"),
+				children: kpi.value
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-[11px] text-[var(--health-subtle)]",
+				children: kpi.caption
+			})
+		]
+	});
+}
+function AmountSuccessChart() {
+	const max = 100;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$1, {
+		title: "موفقیت پس از ورود به بانک",
+		description: "به‌تفکیک بازه مبلغ، در برابر میانه همتایان",
+		headingId: "amount-success-heading",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+			className: "flex flex-col gap-2.5",
+			"aria-label": "نرخ موفقیت بر اساس مبلغ",
+			children: AMOUNT_BUCKETS.map((bucket) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+				className: "flex flex-col gap-1.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between gap-2 text-xs",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-medium text-[var(--health-ink)]",
+						children: bucket.label
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "tabular-nums text-[var(--health-subtle)]",
+						children: [
+							"شما ",
+							formatPersianPercent(bucket.bankSuccess),
+							" · همتا",
+							" ",
+							formatPersianPercent(bucket.peerMedian)
+						]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative h-2.5 overflow-hidden rounded-full bg-[var(--health-wash)]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "absolute inset-y-0 start-0 rounded-full bg-[var(--health-violet-line)]",
+						style: { width: `${bucket.peerMedian / max * 100}%` },
+						"aria-hidden": "true"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "absolute inset-y-0 start-0 rounded-full bg-[var(--health-violet)]",
+						style: { width: `${bucket.bankSuccess / max * 100}%` },
+						"aria-hidden": "true"
+					})]
+				})]
+			}, bucket.id))
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-[11px] text-[var(--health-subtle)]",
+			children: "نوار بنفش تیره = شما · نوار روشن = میانه همتا"
+		})]
+	});
+}
+function RetryPanel() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$1, {
+		title: "بازیابی با Retry",
+		description: "نشست‌هایی که پس از تلاش مجدد به خرید موفق رسیدند",
+		headingId: "retry-heading",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid grid-cols-2 gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "rounded-lg bg-[var(--health-good-soft)] p-2.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-[11px] text-[var(--health-subtle)]",
+					children: "سهم بازیابی"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-1 text-2xl font-extrabold text-[var(--health-good)]",
+					children: formatPersianPercent(RETRY_STATS.recoveredShare)
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "rounded-lg bg-[var(--health-wash)] p-2.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-[11px] text-[var(--health-subtle)]",
+					children: "نشست بازیابی‌شده"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-1 text-2xl font-extrabold text-[var(--health-ink)]",
+					children: formatPersianNumber(RETRY_STATS.recoveredSessions)
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+			className: "rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2 text-xs leading-5 text-[var(--health-subtle)]",
+			children: [
+				"میانگین تلاش تا موفقیت:",
+				" ",
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-semibold text-[var(--health-ink)]",
+					children: toPersianDigits(RETRY_STATS.medianAttempts)
+				}),
+				". ",
+				RETRY_STATS.note
+			]
+		})]
+	});
+}
+function TerminalTable() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
+		title: "تفاوت ترمینال‌ها",
+		description: "فقط ترمینال‌هایی با نمونه کافی",
+		headingId: "terminal-heading",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "overflow-x-auto",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
+				className: "w-full min-w-[22rem] border-separate border-spacing-0 text-xs",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
+						className: "sr-only",
+						children: "مقایسه نرخ موفقیت و NoAttempt بین ترمینال‌های پذیرنده"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
+						className: "text-[var(--health-subtle)]",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+								scope: "col",
+								className: "p-2 text-start font-medium",
+								children: "ترمینال"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+								scope: "col",
+								className: "p-2 text-end font-medium",
+								children: "موفقیت"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+								scope: "col",
+								className: "p-2 text-end font-medium",
+								children: "NoAttempt"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+								scope: "col",
+								className: "p-2 text-end font-medium",
+								children: "نمونه"
+							})
+						]
+					}) }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: TERMINAL_ROWS.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+							scope: "row",
+							className: "border-t border-[var(--health-line)] p-2 text-start font-semibold text-[var(--health-ink)]",
+							children: row.name
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+							className: "border-t border-[var(--health-line)] p-2 text-end tabular-nums font-bold text-[var(--health-ink)]",
+							children: formatPersianPercent(row.successRate)
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+							className: "border-t border-[var(--health-line)] p-2 text-end tabular-nums text-[var(--health-warn)]",
+							children: formatPersianPercent(row.noAttempt)
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+							className: "border-t border-[var(--health-line)] p-2 text-end text-[var(--health-subtle)]",
+							children: row.sample
+						})
+					] }, row.id)) })
+				]
+			})
+		})
+	});
+}
+function PspAnomalyPanel() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
+		title: "ناهنجاری PSP یا صادرکننده",
+		description: "انحراف تعدیل‌شده نسبت به الگوی مورد انتظار",
+		headingId: "psp-anomaly-heading",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+			className: "flex flex-col gap-2",
+			children: PSP_ANOMALIES.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+				className: "flex items-start justify-between gap-2.5 rounded-lg border border-[var(--health-line)] bg-[var(--health-wash)] px-2.5 py-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "min-w-0",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs font-bold text-[var(--health-ink)]",
+						children: item.label
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mt-0.5 text-[11px] leading-5 text-[var(--health-subtle)]",
+						children: item.note
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: cn("shrink-0 text-sm font-extrabold tabular-nums", item.tone === "warn" ? "text-[var(--health-warn)]" : item.tone === "good" ? "text-[var(--health-good)]" : "text-[var(--health-ink)]"),
+					children: [
+						item.deviation > 0 ? "+" : "",
+						toPersianDigits(item.deviation.toFixed(1)),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-[10px] font-medium",
+							children: " واحد"
+						})
+					]
+				})]
+			}, item.id))
+		})
+	});
+}
+function Disclaimer$1() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+		className: "flex items-start justify-center gap-2 px-1 text-center text-[11px] leading-5 text-[var(--health-subtle)] sm:text-xs",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
+			className: "mt-0.5 size-3.5 shrink-0 text-[var(--health-violet)]",
+			"aria-hidden": "true"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "نشست ناموفق الزاماً با اصلاح مسیر به خرید موفق تبدیل نمی‌شد؛ اثر مالی را سناریویی بخوانید، نه درآمد قطعی ازدست‌رفته." })]
+	});
+}
+function PaymentHealthDashboard() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col gap-2.5 text-[var(--health-ink)]",
+		style: healthTheme,
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HealthHeader, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
+				"aria-label": "شاخص‌های سلامت مسیر",
+				className: "grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-6",
+				children: PAYMENT_HEALTH_KPIS.map((kpi) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiCard$1, { kpi }, kpi.id))
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				"aria-label": "قیف و ریزش مسیر پرداخت",
+				className: "grid grid-cols-1 gap-2.5 lg:grid-cols-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FunnelHero, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropOffPanel, {})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				"aria-label": "تحلیل‌های تکمیلی مسیر پرداخت",
+				className: "grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AmountSuccessChart, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetryPanel, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TerminalTable, {}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PspAnomalyPanel, {})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Disclaimer$1, {})
+		]
+	});
+}
+//#endregion
+//#region components/pages/payment-health-page.tsx
+function PaymentHealthPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaymentHealthDashboard, {});
+}
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Activity = createLucideIcon("activity", [["path", {
+	d: "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2",
+	key: "169zse"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Ban = createLucideIcon("ban", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "M4.929 4.929 19.07 19.071",
+	key: "196cmz"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Coins = createLucideIcon("coins", [
+	["path", {
+		d: "M13.744 17.736a6 6 0 1 1-7.48-7.48",
+		key: "bq4yh3"
+	}],
+	["path", {
+		d: "M15 6h1v4",
+		key: "11y1tn"
+	}],
+	["path", {
+		d: "m6.134 14.768.866-.5 2 3.464",
+		key: "17snzx"
+	}],
+	["circle", {
+		cx: "16",
+		cy: "8",
+		r: "6",
+		key: "14bfc9"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Hash = createLucideIcon("hash", [
+	["line", {
+		x1: "4",
+		x2: "20",
+		y1: "9",
+		y2: "9",
+		key: "4lhtct"
+	}],
+	["line", {
+		x1: "4",
+		x2: "20",
+		y1: "15",
+		y2: "15",
+		key: "vyu0kd"
+	}],
+	["line", {
+		x1: "10",
+		x2: "8",
+		y1: "3",
+		y2: "21",
+		key: "1ggp8o"
+	}],
+	["line", {
+		x1: "16",
+		x2: "14",
+		y1: "3",
+		y2: "21",
+		key: "weycgp"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Layers = createLucideIcon("layers", [
+	["path", {
+		d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
+		key: "zw3jo"
+	}],
+	["path", {
+		d: "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12",
+		key: "1wduqc"
+	}],
+	["path", {
+		d: "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17",
+		key: "kqbvx6"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Lock = createLucideIcon("lock", [["rect", {
+	width: "18",
+	height: "11",
+	x: "3",
+	y: "11",
+	rx: "2",
+	ry: "2",
+	key: "1w4ew1"
+}], ["path", {
+	d: "M7 11V7a5 5 0 0 1 10 0v4",
+	key: "fwvmzm"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Medal = createLucideIcon("medal", [
+	["path", {
+		d: "M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15",
+		key: "143lza"
+	}],
+	["path", {
+		d: "M11 12 5.12 2.2",
+		key: "qhuxz6"
+	}],
+	["path", {
+		d: "m13 12 5.88-9.8",
+		key: "hbye0f"
+	}],
+	["path", {
+		d: "M8 7h8",
+		key: "i86dvs"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "17",
+		r: "5",
+		key: "qbz8iq"
+	}],
+	["path", {
+		d: "M12 18v-2h-.5",
+		key: "fawc4q"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Percent = createLucideIcon("percent", [
+	["line", {
+		x1: "19",
+		x2: "5",
+		y1: "5",
+		y2: "19",
+		key: "1x9vlm"
+	}],
+	["circle", {
+		cx: "6.5",
+		cy: "6.5",
+		r: "2.5",
+		key: "4mh3h7"
+	}],
+	["circle", {
+		cx: "17.5",
+		cy: "17.5",
+		r: "2.5",
+		key: "1mdrzq"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Ruler = createLucideIcon("ruler", [
+	["path", {
+		d: "M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z",
+		key: "icamh8"
+	}],
+	["path", {
+		d: "m14.5 12.5 2-2",
+		key: "inckbg"
+	}],
+	["path", {
+		d: "m11.5 9.5 2-2",
+		key: "fmmyf7"
+	}],
+	["path", {
+		d: "m8.5 6.5 2-2",
+		key: "vc6u1g"
+	}],
+	["path", {
+		d: "m17.5 15.5 2-2",
+		key: "wo5hmg"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Trophy = createLucideIcon("trophy", [
+	["path", {
+		d: "M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2",
+		key: "pwuv1l"
+	}],
+	["path", {
+		d: "M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2",
+		key: "1y54w1"
+	}],
+	["path", {
+		d: "M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3",
+		key: "e30mpu"
+	}],
+	["path", {
+		d: "M4 22h16",
+		key: "57wxv0"
+	}],
+	["path", {
+		d: "M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z",
+		key: "1mhfuq"
+	}],
+	["path", {
+		d: "M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3",
+		key: "i0yafy"
+	}]
+]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Zap = createLucideIcon("zap", [["path", {
+	d: "M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z",
+	key: "1v7up4"
+}]]);
+//#endregion
+//#region lib/peer-position-mock-data.ts
+var PEER_PERIODS = [
+	{
+		id: "khordad-1403",
+		label: "۱ تا ۳۱ خرداد ۱۴۰۳"
+	},
+	{
+		id: "ordibehesht-1403",
+		label: "۱ تا ۳۱ اردیبهشت ۱۴۰۳"
+	},
+	{
+		id: "farvardin-1403",
+		label: "۱ تا ۳۱ فروردین ۱۴۰۳"
+	}
+];
+var PEER_CATEGORIES = [
+	{
+		id: "restaurant",
+		label: "رستوران و فست‌فود"
+	},
+	{
+		id: "retail",
+		label: "خرده‌فروشی"
+	},
+	{
+		id: "digital",
+		label: "خدمات دیجیتال"
+	}
+];
+var PEER_GROUP_STATS = {
+	peerCount: 23,
+	comparedTo: 23,
+	groupingMethod: "هوشمند"
+};
+var PEER_KEY_INSIGHT = {
+	growthPercentile: 78,
+	returnPercentile: 31,
+	peerCount: 23,
+	headline: "شما در رشد فروش بین ۲۳ پذیرنده مشابه در صدک ۷۸ هستید؛",
+	highlight: "اما نرخ بازگشت ۳۰روزه شما در صدک ۳۱ است.",
+	takeaway: "مسئله اصلی جذب مشتری نیست؛ نگهداشت مشتری است."
+};
+var PEER_CRITERIA = [
+	{
+		id: "category",
+		label: "رستوران، برگر و فست‌فود",
+		icon: "store"
+	},
+	{
+		id: "size",
+		label: "اندازه کسب‌وکار (تعداد پرداخت)",
+		icon: "ruler"
+	},
+	{
+		id: "avg-ticket",
+		label: "میانگین تراکنش ۸۰۰٬۰۰۰ تومان",
+		icon: "coins"
+	},
+	{
+		id: "volume",
+		label: "تعداد پرداخت‌ها (۱۰۰k تا ۱۰۵k)",
+		icon: "hash"
+	},
+	{
+		id: "return-share",
+		label: "سهم مشتریان بازگشتی ۳۱٪ تا ۵۰٪",
+		icon: "repeat"
+	},
+	{
+		id: "hours",
+		label: "اوج فعالیت عصر و شب",
+		icon: "clock"
+	},
+	{
+		id: "verify",
+		label: "نوع Verified",
+		icon: "shield"
+	},
+	{
+		id: "psp",
+		label: "ترکیب PSP (در تحلیل conversion)",
+		icon: "layers"
+	}
+];
+var PERCENTILE_BARS = [
+	{
+		id: "growth",
+		label: "رشد فروش ماهانه",
+		percentile: 78,
+		median: 50,
+		q1: 25,
+		q3: 75,
+		tone: "good"
+	},
+	{
+		id: "success",
+		label: "نرخ موفقیت تعدیل‌شده",
+		percentile: 62,
+		median: 50,
+		q1: 25,
+		q3: 75,
+		tone: "neutral"
+	},
+	{
+		id: "return-rate",
+		label: "نرخ بازگشت ۳۰ روزه",
+		percentile: 31,
+		median: 50,
+		q1: 25,
+		q3: 75,
+		tone: "warn"
+	},
+	{
+		id: "return-sales",
+		label: "سهم فروش از بازگشتی‌ها",
+		percentile: 36,
+		median: 50,
+		q1: 25,
+		q3: 75,
+		tone: "warn"
+	}
+];
+var PEER_KPIS = [
+	{
+		id: "sales-amount",
+		label: "مبلغ فروش موفق",
+		you: "۱۲٫۴ میلیارد تومان",
+		median: "۷٫۱ میلیارد تومان",
+		percentile: 78,
+		tone: "good",
+		icon: "wallet"
+	},
+	{
+		id: "growth",
+		label: "رشد فروش ماهانه",
+		you: "+۲۷٪",
+		median: "+۱۴٪",
+		percentile: 78,
+		tone: "good",
+		icon: "trend"
+	},
+	{
+		id: "success",
+		label: "نرخ موفقیت تعدیل‌شده",
+		you: "۹۳٫۲٪",
+		median: "۹۰٫۱٪",
+		percentile: 62,
+		tone: "good",
+		icon: "shield"
+	},
+	{
+		id: "avg-basket",
+		label: "متوسط مبلغ خرید",
+		you: "۳۷۵٬۰۰۰ تومان",
+		median: "۳۲۸٬۰۰۰ تومان",
+		percentile: 57,
+		tone: "good",
+		icon: "cart"
+	},
+	{
+		id: "return-rate",
+		label: "نرخ بازگشت ۳۰ روزه",
+		you: "۱۴٪",
+		median: "۲۱٪",
+		percentile: 31,
+		tone: "warn",
+		icon: "users"
+	},
+	{
+		id: "return-sales",
+		label: "سهم فروش از بازگشتی‌ها",
+		you: "۲۳٪",
+		median: "۳۱٪",
+		percentile: 36,
+		tone: "warn",
+		icon: "zap"
+	},
+	{
+		id: "no-attempt",
+		label: "No Attempt",
+		you: "۴٫۸٪",
+		median: "۶٫۲٪",
+		percentile: 72,
+		tone: "good",
+		icon: "ban"
+	},
+	{
+		id: "retry",
+		label: "Retry",
+		you: "۴۶٪",
+		median: "۳۹٪",
+		percentile: 64,
+		tone: "good",
+		icon: "refresh"
+	},
+	{
+		id: "fee-pressure",
+		label: "شاخص نسبی فشار کارمزد",
+		you: "۰٫۷۲",
+		median: "۱٫۰۰",
+		percentile: 81,
+		tone: "good",
+		icon: "percent"
+	},
+	{
+		id: "stability",
+		label: "پایداری فروش",
+		you: "۱۸٪",
+		median: "۲۶٪",
+		percentile: 76,
+		tone: "good",
+		icon: "pulse"
+	}
+];
+/** Normalized 0–10 scores for radar (higher = better). */
+var RADAR_AXES = [
+	{
+		id: "growth",
+		label: "رشد فروش",
+		you: 7.8,
+		median: 5
+	},
+	{
+		id: "sales",
+		label: "مبلغ فروش",
+		you: 7.8,
+		median: 5
+	},
+	{
+		id: "success",
+		label: "موفقیت تعدیل‌شده",
+		you: 6.2,
+		median: 5
+	},
+	{
+		id: "basket",
+		label: "متوسط خرید",
+		you: 5.7,
+		median: 5
+	},
+	{
+		id: "return-rate",
+		label: "نرخ بازگشت ۳۰روزه",
+		you: 3.1,
+		median: 5
+	},
+	{
+		id: "return-sales",
+		label: "سهم فروش بازگشتی",
+		you: 3.6,
+		median: 5
+	},
+	{
+		id: "fee",
+		label: "فشار کارمزد",
+		you: 8.1,
+		median: 5
+	},
+	{
+		id: "stability",
+		label: "پایداری فروش",
+		you: 7.6,
+		median: 5
+	}
+];
+var COHORT_ACTIVITY = {
+	peakHours: "۱۸ تا ۲۲",
+	yourPercentile: 78,
+	similarCount: 18,
+	/** Density curve samples 0–100 for SVG path. */
+	curve: [
+		4,
+		6,
+		9,
+		14,
+		22,
+		34,
+		48,
+		62,
+		74,
+		84,
+		90,
+		94,
+		96,
+		94,
+		88,
+		78,
+		64,
+		48,
+		34,
+		22,
+		14,
+		9,
+		6,
+		4
+	]
+};
+var LEADERBOARD = [
+	{
+		id: "a",
+		name: "پذیرنده الف",
+		score: 92,
+		medal: "gold"
+	},
+	{
+		id: "b",
+		name: "پذیرنده ب",
+		score: 88,
+		medal: "silver"
+	},
+	{
+		id: "c",
+		name: "پذیرنده ج",
+		score: 86,
+		medal: "bronze"
+	},
+	{
+		id: "you",
+		name: "شما",
+		score: 74,
+		isYou: true
+	}
+];
+//#endregion
+//#region components/peer-position/peer-position-dashboard.tsx
+var peerTheme = {
+	"--peer-ink": "#1a2148",
+	"--peer-subtle": "#6b7590",
+	"--peer-line": "#e4e9f3",
+	"--peer-wash": "#f6f8fc",
+	"--peer-navy": "#171f4a",
+	"--peer-violet": "#174fd6",
+	"--peer-violet-soft": "#eaf1ff",
+	"--peer-violet-line": "#c8d8ff",
+	"--peer-teal": "#0f9a84",
+	"--peer-teal-soft": "#e7f8f4",
+	"--peer-good": "#119a6c",
+	"--peer-good-soft": "#e6f7ef",
+	"--peer-warn": "#e25555",
+	"--peer-warn-soft": "#f6f8fc",
+	"--peer-amber": "#e8892d",
+	"--peer-yellow": "#ffd60a"
+};
+var panelClass$1 = "rail-panel rail-panel-interactive [--rail-accent:var(--peer-violet)] [--rail-line:var(--peer-line)]";
+var metricIconMap = {
+	wallet: Wallet,
+	trend: TrendingUp,
+	shield: ShieldCheck,
+	cart: ShoppingCart,
+	users: Users,
+	zap: Zap,
+	ban: Ban,
+	refresh: RefreshCw,
+	percent: Percent,
+	pulse: Activity
+};
+var criterionIconMap = {
+	store: Store,
+	ruler: Ruler,
+	coins: Coins,
+	hash: Hash,
+	clock: Clock,
+	repeat: RefreshCw,
+	shield: ShieldCheck,
+	layers: Layers
+};
+var iconToneClass = {
+	good: "bg-[var(--peer-good-soft)] text-[var(--peer-good)]",
+	warn: "bg-[var(--peer-wash)] text-[var(--peer-warn)] ring-1 ring-[var(--peer-line)]",
+	neutral: "bg-[var(--peer-violet-soft)] text-[var(--peer-violet)]"
+};
+var percentileTextClass = {
+	good: "text-[var(--peer-good)]",
+	warn: "text-[var(--peer-warn)]",
+	neutral: "text-[var(--peer-violet)]"
+};
+function Panel({ title, description, children, className, headingId }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+		className: cn(panelClass$1, "flex flex-col gap-2.5 p-2.5 sm:p-3", className),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "flex flex-col gap-0.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				id: headingId,
+				className: "text-sm font-bold text-[var(--peer-ink)] sm:text-base",
+				children: title
+			}), description ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs leading-5 text-[var(--peer-subtle)]",
+				children: description
+			}) : null]
+		}), children]
+	});
+}
+function PeerHeader() {
+	const [periodId, setPeriodId] = (0, import_react.useState)(PEER_PERIODS[0].id);
+	const [categoryId, setCategoryId] = (0, import_react.useState)(PEER_CATEGORIES[0].id);
+	function handlePeriodChange(value) {
+		if (value) setPeriodId(value);
+	}
+	function handleCategoryChange(value) {
+		if (value) setCategoryId(value);
+	}
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+		className: "flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex min-w-0 items-center gap-2.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--peer-yellow)] text-[var(--peer-ink)] sm:size-11",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, {
+					className: "size-5",
+					"aria-hidden": "true"
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex min-w-0 flex-col gap-0.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-lg font-extrabold tracking-tight text-[var(--peer-ink)] sm:text-xl",
+					children: "جایگاه شما در میان کسب‌وکارهای مشابه"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs text-[var(--peer-subtle)] sm:text-sm",
+					children: "مقایسه با همتایان هم‌پروفایل · حداقل ۱۰ پذیرنده در گروه"
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: periodId,
+					onValueChange: handlePeriodChange,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full border-[var(--peer-line)] bg-card [&>svg:last-child]:text-[var(--peer-violet)]",
+						"aria-label": "انتخاب بازه زمانی",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarDays, {
+							className: "size-4 text-[var(--peer-violet)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--peer-ink)]",
+							children: "بازه"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: PEER_PERIODS.map((period) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: period.id,
+						children: period.label
+					}, period.id)) })]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: categoryId,
+					onValueChange: handleCategoryChange,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full border-[var(--peer-line)] bg-card [&>svg:last-child]:text-[var(--peer-violet)]",
+						"aria-label": "انتخاب دسته کسب‌وکار",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, {
+							className: "size-4 text-[var(--peer-violet)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--peer-ink)]",
+							children: "دسته"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: PEER_CATEGORIES.map((category) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: category.id,
+						children: category.label
+					}, category.id)) })]
+				})
+			})]
+		})]
+	});
+}
+function PeerStatsBar() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		"aria-label": "خلاصه گروه همتا",
+		className: cn(panelClass$1, "grid grid-cols-1 divide-y divide-[var(--peer-line)] sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-[1.1fr_1.1fr_0.9fr_auto] lg:divide-x lg:divide-x-reverse"),
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-0.5 px-2.5 py-2 sm:px-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-[11px] text-[var(--peer-subtle)]",
+					children: "تعداد همتایان در گروه شما"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "text-sm font-bold text-[var(--peer-ink)]",
+					children: [formatPersianNumber(PEER_GROUP_STATS.peerCount), " پذیرنده"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-0.5 px-2.5 py-2 sm:px-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-[11px] text-[var(--peer-subtle)]",
+					children: "شما در مقایسه با"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "text-sm font-bold text-[var(--peer-ink)]",
+					children: [formatPersianNumber(PEER_GROUP_STATS.comparedTo), " پذیرنده مشابه"]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-0.5 px-2.5 py-2 sm:px-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-[11px] text-[var(--peer-subtle)]",
+					children: "روش گروه‌بندی"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-2 text-sm font-bold text-[var(--peer-ink)]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "size-2 rounded-full bg-[var(--peer-violet)]",
+						"aria-hidden": "true"
+					}), PEER_GROUP_STATS.groupingMethod]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex items-center px-2.5 py-2 sm:px-3",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "outline",
+					className: "h-9 w-full cursor-pointer gap-2 border-[var(--peer-violet-line)] text-[var(--peer-violet)] hover:bg-[var(--peer-violet-soft)]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { "aria-hidden": "true" }),
+						"مشاهده و ویرایش گروه",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
+							className: "opacity-60",
+							"aria-hidden": "true"
+						})
+					]
+				})
+			})
+		]
+	});
+}
+function KeyInsightBanner() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
+		"aria-labelledby": "peer-key-insight-heading",
+		className: "rail-banner p-2.5 sm:p-3",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "relative flex flex-col gap-1.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2 text-[var(--peer-teal)]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
+					className: "size-3.5",
+					"aria-hidden": "true"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					id: "peer-key-insight-heading",
+					className: "text-xs font-semibold sm:text-sm",
+					children: "بینش کلیدی"
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "text-sm leading-6 text-white/90",
+				children: [
+					PEER_KEY_INSIGHT.headline,
+					" ",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "font-bold text-white",
+						children: ["صدک ", toPersianDigits(PEER_KEY_INSIGHT.growthPercentile)]
+					}),
+					" — ",
+					PEER_KEY_INSIGHT.highlight,
+					" ",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-medium text-[var(--peer-teal)]",
+						children: PEER_KEY_INSIGHT.takeaway
+					})
+				]
+			})]
+		})
+	});
+}
+function PercentileTrack({ bar }) {
+	const markerColor = bar.tone === "warn" ? "bg-[var(--peer-amber)]" : "bg-[var(--peer-violet)]";
+	const valueColor = percentileTextClass[bar.tone];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "flex min-w-0 flex-col gap-2",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+			className: "flex items-baseline justify-between gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "text-xs text-[var(--peer-subtle)]",
+				children: bar.label
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+				className: cn("text-lg font-extrabold tabular-nums", valueColor),
+				children: [toPersianDigits(bar.percentile), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "sr-only",
+					children: [
+						" ",
+						"از ۱۰۰؛",
+						" ",
+						bar.tone === "warn" ? "پایین‌تر از میانه گروه" : "بالاتر یا نزدیک میانه گروه"
+					]
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "relative h-3 rounded-full bg-[var(--peer-wash)]",
+			role: "img",
+			"aria-label": `${bar.label}: صدک ${toPersianDigits(bar.percentile)}، میانه گروه صدک ${toPersianDigits(bar.median)}`,
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "absolute inset-y-0 rounded-full bg-[var(--peer-violet-soft)]",
+					style: {
+						right: `${bar.q1}%`,
+						width: `${bar.q3 - bar.q1}%`
+					},
+					"aria-hidden": "true"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "absolute inset-y-0 w-px border-s border-dashed border-[var(--peer-subtle)]",
+					style: { right: `${bar.median}%` },
+					"aria-hidden": "true"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: cn("absolute top-1/2 size-3 -translate-y-1/2 rounded-full ring-2 ring-white transition-transform duration-300 motion-reduce:transition-none", markerColor),
+					style: { right: `calc(${bar.percentile}% - 6px)` },
+					"aria-hidden": "true"
+				})
+			]
+		})]
+	});
+}
+function PercentileSection() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+		title: "جایگاه شما در هر شاخص",
+		description: "موقعیت شما نسبت به توزیع همتایان (صدک)",
+		headingId: "peer-percentile-heading",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+			className: "flex flex-wrap items-center justify-center gap-3 text-xs text-[var(--peer-subtle)]",
+			"aria-label": "راهنمای نمودار صدک",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "size-2.5 rounded-full bg-[var(--peer-violet)]",
+						"aria-hidden": "true"
+					}), "صدک شما"]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "h-3 w-px border-s border-dashed border-[var(--peer-subtle)]",
+						"aria-hidden": "true"
+					}), "میانه گروه"]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex items-center gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "h-2.5 w-6 rounded-sm bg-[var(--peer-violet-soft)]",
+						"aria-hidden": "true"
+					}), "بازه میانه ۲۵ تا ۷۵"]
+				})
+			]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4",
+			children: PERCENTILE_BARS.map((bar) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PercentileTrack, { bar }, bar.id))
+		})]
+	});
+}
+function KpiCard({ kpi }) {
+	const Icon = metricIconMap[kpi.icon];
+	const youTone = kpi.tone === "warn" ? "text-[var(--peer-warn)]" : "text-[var(--peer-ink)]";
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+		className: cn(panelClass$1, "flex flex-col gap-2 p-2.5"),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-start gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: cn("flex size-9 shrink-0 items-center justify-center rounded-lg", iconToneClass[kpi.tone === "neutral" ? "neutral" : kpi.tone]),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+					className: "size-4",
+					"aria-hidden": "true"
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				className: "text-xs font-semibold leading-5 text-[var(--peer-ink)]",
+				children: kpi.label
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("dl", {
+			className: "mt-auto flex flex-col gap-2 text-xs",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-baseline justify-between gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+						className: "text-[var(--peer-subtle)]",
+						children: "شما"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+						className: cn("text-sm font-extrabold", youTone),
+						children: kpi.you
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-baseline justify-between gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+						className: "text-[var(--peer-subtle)]",
+						children: "میانه گروه"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+						className: "font-medium text-[var(--peer-ink)]",
+						children: kpi.median
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-baseline justify-between gap-2 border-t border-[var(--peer-line)] pt-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+						className: "text-[var(--peer-subtle)]",
+						children: "صدک شما"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("dd", {
+						className: cn("font-bold", percentileTextClass[kpi.tone]),
+						children: [
+							toPersianDigits(kpi.percentile),
+							" از ۱۰۰",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "sr-only",
+								children: kpi.tone === "warn" ? " — پایین‌تر از میانه" : " — بالاتر از میانه"
+							})
+						]
+					})]
+				})
+			]
+		})]
+	});
+}
+function KpiGrid() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		"aria-labelledby": "peer-kpi-heading",
+		className: "flex flex-col gap-2.5",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "flex flex-col gap-0.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				id: "peer-kpi-heading",
+				className: "text-sm font-bold text-[var(--peer-ink)] sm:text-base",
+				children: "مقایسه شاخص‌های کلیدی"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-xs text-[var(--peer-subtle)]",
+				children: "مقادیر شما و جایگاه صدکی نسبت به گروه همتا"
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-5",
+			children: PEER_KPIS.map((kpi) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiCard, { kpi }, kpi.id))
+		})]
+	});
+}
+function radarPoint(value, index, total, radius) {
+	const angle = -Math.PI / 2 + index / total * Math.PI * 2;
+	const r = value / 10 * radius;
+	return {
+		x: 140 + Math.cos(angle) * r,
+		y: 140 + Math.sin(angle) * r
+	};
+}
+function polygonPath(values, radius) {
+	return values.map((value, index) => {
+		const point = radarPoint(value, index, values.length, radius);
+		return `${index === 0 ? "M" : "L"}${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+	}).join(" ").concat(" Z");
+}
+function RadarChart() {
+	const radius = 96;
+	const youValues = RADAR_AXES.map((axis) => axis.you);
+	const medianValues = RADAR_AXES.map((axis) => axis.median);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+		title: "نمای کلی عملکرد",
+		description: "مقایسه نرمال‌شده شاخص‌ها (۰ بدتر — ۱۰ بهتر)",
+		headingId: "peer-radar-heading",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+			className: "flex flex-wrap items-center gap-2.5 text-xs text-[var(--peer-subtle)]",
+			"aria-label": "راهنمای نمودار رادار",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "h-0.5 w-5 bg-[var(--peer-violet)]",
+					"aria-hidden": "true"
+				}), "شما"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "h-0 w-5 border-t border-dashed border-[var(--peer-teal)]",
+					"aria-hidden": "true"
+				}), "میانه گروه"]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+			className: "mx-auto w-full max-w-md",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+				className: "sr-only",
+				children: ["نمودار رادار مقایسه شما با میانه گروه در هشت شاخص نرمال‌شده.", RADAR_AXES.map((axis) => ` ${axis.label}: شما ${toPersianDigits(axis.you)}، میانه ${toPersianDigits(axis.median)}.`).join("")]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+				viewBox: "0 0 280 280",
+				className: "mx-auto h-auto w-full",
+				role: "img",
+				"aria-hidden": "true",
+				children: [
+					[
+						.25,
+						.5,
+						.75,
+						1
+					].map((scale) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", {
+						fill: "none",
+						stroke: "var(--peer-line)",
+						strokeWidth: "1",
+						points: RADAR_AXES.map((_, index) => {
+							const point = radarPoint(10 * scale, index, RADAR_AXES.length, radius);
+							return `${point.x},${point.y}`;
+						}).join(" ")
+					}, scale)),
+					RADAR_AXES.map((axis, index) => {
+						const tip = radarPoint(10, index, RADAR_AXES.length, radius);
+						const label = radarPoint(10, index, RADAR_AXES.length, radius + 22);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+							x1: 140,
+							y1: 140,
+							x2: tip.x,
+							y2: tip.y,
+							stroke: "var(--peer-line)",
+							strokeWidth: "1"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+							x: label.x,
+							y: label.y,
+							textAnchor: "middle",
+							dominantBaseline: "middle",
+							className: "fill-[var(--peer-subtle)] text-[9px]",
+							children: axis.label
+						})] }, axis.id);
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: polygonPath(medianValues, radius),
+						fill: "color-mix(in oklch, var(--peer-teal) 12%, transparent)",
+						stroke: "var(--peer-teal)",
+						strokeWidth: "1.75",
+						strokeDasharray: "4 3"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: polygonPath(youValues, radius),
+						fill: "color-mix(in oklch, var(--peer-violet) 16%, transparent)",
+						stroke: "var(--peer-violet)",
+						strokeWidth: "2"
+					}),
+					youValues.map((value, index) => {
+						const point = radarPoint(value, index, youValues.length, radius);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+							cx: point.x,
+							cy: point.y,
+							r: "3.5",
+							fill: "var(--peer-violet)"
+						}, `you-${RADAR_AXES[index].id}`);
+					})
+				]
+			})]
+		})]
+	});
+}
+function CohortCurve() {
+	const width = 320;
+	const height = 140;
+	const paddingX = 12;
+	const paddingY = 16;
+	const values = COHORT_ACTIVITY.curve;
+	const max = Math.max(...values);
+	const points = values.map((value, index) => {
+		return {
+			x: paddingX + index / (values.length - 1) * (width - paddingX * 2),
+			y: height - paddingY - value / max * (height - paddingY * 2)
+		};
+	});
+	const path = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+	const marker = points[Math.round(COHORT_ACTIVITY.yourPercentile / 100 * (values.length - 1))] ?? points[points.length - 1];
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "flex flex-col gap-2.5",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+				className: "sr-only",
+				children: [
+					"توزیع پذیرندگان در cohort فعالیتی؛ جایگاه شما صدک",
+					" ",
+					toPersianDigits(COHORT_ACTIVITY.yourPercentile),
+					"."
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex items-start justify-between gap-2.5",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xs text-[var(--peer-subtle)]",
+						children: "جایگاه شما"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-[11px] text-[var(--peer-subtle)]",
+						children: "درصد پذیرندگان"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "mt-1 text-3xl font-extrabold text-[var(--peer-violet)]",
+						children: [toPersianDigits(COHORT_ACTIVITY.yourPercentile), "٪"]
+					})
+				] })
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+				viewBox: `0 0 ${width} ${height}`,
+				className: "h-auto w-full",
+				role: "img",
+				"aria-hidden": "true",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: path,
+						fill: "none",
+						stroke: "var(--peer-violet)",
+						strokeWidth: "2.5",
+						strokeLinecap: "round"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+						x1: marker.x,
+						y1: marker.y,
+						x2: marker.x,
+						y2: height - paddingY,
+						stroke: "var(--peer-violet)",
+						strokeWidth: "1.5",
+						strokeDasharray: "3 3"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+						cx: marker.x,
+						cy: marker.y,
+						r: "5",
+						fill: "var(--peer-violet)"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+						x: paddingX,
+						y: height - 2,
+						className: "fill-[var(--peer-subtle)] text-[10px]",
+						children: "۰٪"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+						x: width / 2,
+						y: height - 2,
+						textAnchor: "middle",
+						className: "fill-[var(--peer-subtle)] text-[10px]",
+						children: "۵۰٪"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+						x: width - paddingX,
+						y: height - 2,
+						textAnchor: "end",
+						className: "fill-[var(--peer-subtle)] text-[10px]",
+						children: "۱۰۰٪"
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "rounded-lg bg-[var(--peer-wash)] px-2.5 py-2 text-center text-xs text-[var(--peer-subtle)]",
+				children: [
+					"تعداد پذیرندگان با الگوی زمانی مشابه:",
+					" ",
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-semibold text-[var(--peer-ink)]",
+						children: toPersianDigits(COHORT_ACTIVITY.similarCount)
+					})
+				]
+			})
+		]
+	});
+}
+function Leaderboard() {
+	const medalClass = {
+		gold: "text-amber-500",
+		silver: "text-slate-400",
+		bronze: "text-orange-700"
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col gap-2.5",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+			className: "text-sm font-bold text-[var(--peer-ink)]",
+			children: "پذیرندگان برتر گروه شما"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "text-xs text-[var(--peer-subtle)]",
+			children: "بر اساس ترکیب چند شاخص کلیدی"
+		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
+			className: "flex flex-col gap-2",
+			children: LEADERBOARD.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+				className: cn("flex min-h-11 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm", row.isYou ? "border-[var(--peer-violet-line)] bg-[var(--peer-violet-soft)]" : "border-[var(--peer-line)] bg-card"),
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-2",
+					children: [
+						row.medal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Medal, {
+							className: cn("size-4", medalClass[row.medal]),
+							"aria-hidden": "true"
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "size-4",
+							"aria-hidden": "true"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium text-[var(--peer-ink)]",
+							children: row.name
+						}),
+						row.medal === "gold" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-[10px] text-[var(--peer-subtle)]",
+							children: "صدک کلی"
+						}) : null
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-extrabold tabular-nums text-[var(--peer-ink)]",
+					children: toPersianDigits(row.score)
+				})]
+			}, row.id))
+		})]
+	});
+}
+function CohortLeaderboardSection() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
+		className: "self-start",
+		title: "مقایسه در Cohort فعالیتی شما",
+		description: `ساعت اوج خرید شما: ${COHORT_ACTIVITY.peakHours}`,
+		headingId: "peer-cohort-heading",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "grid gap-2.5 md:grid-cols-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CohortCurve, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaderboard, {})]
+		})
+	});
+}
+function PeerGroupAside() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+		"aria-labelledby": "peer-group-heading",
+		className: cn(panelClass$1, "flex h-fit flex-col gap-2.5 p-2.5 sm:p-3 lg:sticky lg:top-4"),
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+				className: "flex flex-col gap-1",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+					id: "peer-group-heading",
+					className: "text-sm font-bold text-[var(--peer-ink)] sm:text-base",
+					children: "گروه همتا (Peer Group)"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs leading-5 text-[var(--peer-subtle)]",
+					children: "پذیرندگان با ویژگی‌های مشابه شما"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+				className: "grid grid-cols-1 gap-0 divide-y divide-[var(--peer-line)] sm:grid-cols-2 sm:gap-2 sm:divide-y-0 lg:grid-cols-1 lg:gap-0 lg:divide-y",
+				children: PEER_CRITERIA.map((item) => {
+					const Icon = criterionIconMap[item.icon];
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+						className: "flex items-center gap-2 py-2 text-xs text-[var(--peer-ink)] sm:rounded-lg sm:border sm:border-[var(--peer-line)] sm:px-2 sm:py-2 lg:rounded-none lg:border-0 lg:px-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "flex size-7 shrink-0 items-center justify-center rounded-md bg-[var(--peer-teal-soft)] text-[var(--peer-teal)]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+								className: "size-3.5",
+								"aria-hidden": "true"
+							})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "leading-5",
+							children: item.label
+						})]
+					}, item.id);
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				className: "flex items-start gap-2 rounded-lg bg-[var(--peer-violet-soft)] px-2.5 py-2 text-[11px] leading-5 text-[var(--peer-ink)]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lock, {
+					className: "mt-0.5 size-3.5 shrink-0 text-[var(--peer-violet)]",
+					"aria-hidden": "true"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "داده‌ها ترکیبی و بدون افشای هویت هستند." })]
+			})
+		]
+	});
+}
+function Disclaimer() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+		className: "flex items-start justify-center gap-2 px-2 text-center text-xs leading-5 text-[var(--peer-subtle)]",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
+			className: "mt-0.5 size-3.5 shrink-0",
+			"aria-hidden": "true"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "اعداد و صدک‌ها بر اساس داده‌های مشاهده‌شده شما و همتایان در بازه انتخابی محاسبه شده‌اند و تضمینی برای آینده نیستند." })]
+	});
+}
+function PeerPositionDashboard() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col gap-2.5",
+		style: peerTheme,
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeerHeader, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeerStatsBar, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid grid-cols-1 gap-2.5 lg:grid-cols-[minmax(0,1fr)_15rem]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex min-w-0 flex-col gap-2.5",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KeyInsightBanner, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PercentileSection, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiGrid, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+							"aria-label": "نمودارهای مقایسه‌ای",
+							className: "grid grid-cols-1 gap-2.5 md:grid-cols-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadarChart, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CohortLeaderboardSection, {})]
+						})
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeerGroupAside, {})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Disclaimer, {})
+		]
+	});
+}
+//#endregion
+//#region components/pages/peer-position-page.tsx
+function PeerPositionPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeerPositionDashboard, {});
+}
+//#endregion
+//#region components/sales-pulse/cumulative-trend-chart.tsx
+function CumulativeTrendChart({ data }) {
+	const width = 520;
+	const height = 200;
+	const padding = {
+		top: 16,
+		right: 12,
+		bottom: 32,
+		left: 40
+	};
+	const chartWidth = width - padding.left - padding.right;
+	const chartHeight = height - padding.top - padding.bottom;
+	const values = data.flatMap((point) => [point.actual, point.baseline]);
+	const maxValue = Math.max(...values) * 1.08;
+	const minValue = 0;
+	const xStep = chartWidth / (data.length - 1);
+	const toX = (index) => padding.left + index * xStep;
+	const toY = (value) => padding.top + chartHeight - (value - minValue) / (maxValue - minValue) * chartHeight;
+	const actualPath = data.map((point, index) => `${index === 0 ? "M" : "L"} ${toX(index)} ${toY(point.actual)}`).join(" ");
+	const baselinePath = data.map((point, index) => `${index === 0 ? "M" : "L"} ${toX(index)} ${toY(point.baseline)}`).join(" ");
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "w-full",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
+				className: "sr-only",
+				children: "روند تجمعی فروش موفق در بازه مناسبت در مقایسه با baseline"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+				viewBox: `0 0 ${width} ${height}`,
+				className: "h-auto w-full max-h-52",
+				role: "img",
+				"aria-label": "نمودار خطی روند تجمعی فروش موفق",
+				children: [
+					[
+						0,
+						.25,
+						.5,
+						.75,
+						1
+					].map((tick) => {
+						const y = padding.top + chartHeight * (1 - tick);
+						const value = minValue + (maxValue - minValue) * tick;
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+							x1: padding.left,
+							x2: width - padding.right,
+							y1: y,
+							y2: y,
+							className: "stroke-border",
+							strokeDasharray: "4 4"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+							x: padding.left - 6,
+							y: y + 4,
+							textAnchor: "end",
+							className: "fill-muted-foreground text-[9px]",
+							children: formatPersianNumber(value, { maximumFractionDigits: 0 })
+						})] }, tick);
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: baselinePath,
+						fill: "none",
+						className: "stroke-muted-foreground/60",
+						strokeWidth: "2",
+						strokeDasharray: "6 4"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: actualPath,
+						fill: "none",
+						className: "stroke-[var(--pulse-good)]",
+						strokeWidth: "2.5",
+						strokeLinecap: "round",
+						strokeLinejoin: "round"
+					}),
+					data.map((point, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+						cx: toX(index),
+						cy: toY(point.actual),
+						r: "3.5",
+						className: "fill-[var(--pulse-good)]"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+						x: toX(index),
+						y: height - 8,
+						textAnchor: "middle",
+						className: "fill-muted-foreground text-[9px]",
+						children: point.date
+					})] }, point.date))
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-2 flex flex-wrap justify-center gap-3 text-xs text-muted-foreground",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "inline-block h-0.5 w-5 rounded bg-[var(--pulse-good)]",
+						"aria-hidden": "true"
+					}), "عملکرد واقعی"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "inline-block h-0.5 w-5 rounded border-t-2 border-dashed border-muted-foreground/60",
+						"aria-hidden": "true"
+					}), "baseline"]
+				})]
+			})
+		]
+	});
+}
+//#endregion
+//#region components/sales-pulse/growth-charts.tsx
+function formatFactorValue(value) {
+	return `${value > 0 ? "+" : ""}${formatPersianNumber(value, { maximumFractionDigits: 1 })}٪`;
+}
+function GrowthWaterfall({ factors, total }) {
+	const maxBarHeight = 128;
+	const maxAbs = Math.max(...factors.map((f) => Math.abs(f.value)), total);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "flex h-full flex-col",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+			className: "sr-only",
+			children: [
+				"نمودار آبشاری تجزیه رشد فروش:",
+				" ",
+				factors.map((f) => `${f.label} ${formatFactorValue(f.value)}`).join("، "),
+				" ",
+				"مجموع ",
+				formatPersianNumber(total),
+				"٪"
+			]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-1 items-end justify-center gap-2.5 px-2 pt-3 sm:gap-3",
+			"aria-hidden": "true",
+			children: [factors.map((factor) => {
+				const barHeight = Math.abs(factor.value) / maxAbs * maxBarHeight;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex max-w-16 flex-1 flex-col items-center gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: cn("text-xs font-semibold tabular-nums", factor.positive ? "text-[var(--pulse-good)]" : "text-[var(--pulse-warn)]"),
+							children: formatFactorValue(factor.value)
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex w-full max-w-10 items-end justify-center",
+							style: { height: maxBarHeight },
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: cn("w-full rounded-t-md motion-reduce:transition-none", factor.positive ? "bg-[var(--pulse-good)]" : "bg-[var(--pulse-warn)]"),
+								style: { height: Math.max(barHeight, 8) }
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-center text-[11px] leading-tight text-muted-foreground",
+							children: factor.label
+						})
+					]
+				}, factor.label);
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex max-w-16 flex-1 flex-col items-center gap-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "text-xs font-bold text-[var(--pulse-good)]",
+						children: [
+							"+",
+							formatPersianNumber(total),
+							"٪"
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex w-full max-w-10 items-end justify-center",
+						style: { height: maxBarHeight },
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "w-full rounded-t-md bg-[var(--pulse-good)]",
+							style: { height: total / maxAbs * maxBarHeight }
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-center text-[11px] font-medium leading-tight",
+						children: "رشد خالص فروش"
+					})
+				]
+			})]
+		})]
+	});
+}
+function GrowthDonut({ total }) {
+	const radius = 54;
+	const circumference = 2 * Math.PI * radius;
+	const dashOffset = circumference * (1 - Math.min(total / 40, 1));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "relative mx-auto flex size-36 items-center justify-center",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+			viewBox: "0 0 128 128",
+			className: "size-full -rotate-90 motion-reduce:rotate-0",
+			"aria-hidden": "true",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+				cx: "64",
+				cy: "64",
+				r: radius,
+				fill: "none",
+				className: "stroke-muted",
+				strokeWidth: "12"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+				cx: "64",
+				cy: "64",
+				r: radius,
+				fill: "none",
+				className: "stroke-[var(--pulse-good)]",
+				strokeWidth: "12",
+				strokeLinecap: "round",
+				strokeDasharray: circumference,
+				strokeDashoffset: dashOffset
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "absolute inset-0 flex flex-col items-center justify-center",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+				className: "text-2xl font-bold text-[var(--pulse-good)]",
+				children: [
+					"+",
+					formatPersianNumber(total),
+					"٪"
+				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "text-xs text-muted-foreground",
+				children: "رشد کل"
+			})]
+		})]
+	});
+}
+function GrowthBreakdownBlocks({ factors, total }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-wrap items-center justify-center gap-2 text-sm",
+		"aria-hidden": "true",
+		children: [
+			factors.map((factor, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [index > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-muted-foreground",
+					children: factor.positive ? "+" : "−"
+				}) : null, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: cn("rounded-lg px-2.5 py-1.5 font-medium", factor.positive ? "bg-[var(--pulse-good)]/10 text-[var(--pulse-good)]" : "bg-[var(--pulse-wash)] text-[var(--pulse-warn)] ring-1 ring-[var(--pulse-line)]"),
+					children: [
+						factor.label,
+						" ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-bold",
+							children: formatFactorValue(factor.value)
+						})
+					]
+				})]
+			}, factor.label)),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "text-muted-foreground",
+				children: "="
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+				className: "rounded-md bg-[var(--pulse-good)] px-2.5 py-1.5 font-bold text-white",
+				children: [formatPersianNumber(total), "٪ رشد کل"]
+			})
+		]
+	});
+}
+//#endregion
+//#region components/sales-pulse/hourly-impact-chart.tsx
+function HourlyImpactChart({ data }) {
+	const width = 360;
+	const height = 136;
+	const padding = {
+		top: 10,
+		right: 8,
+		bottom: 24,
+		left: 8
+	};
+	const chartWidth = width - padding.left - padding.right;
+	const chartHeight = height - padding.top - padding.bottom;
+	const midY = padding.top + chartHeight / 2;
+	const maxAbs = Math.max(...data.map((item) => Math.abs(item.value)), 1);
+	const barWidth = chartWidth / data.length - 6;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "w-full",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
+			className: "sr-only",
+			children: "توزیع اثر خالص رشد فروش بر اساس ساعت روز"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+			viewBox: `0 0 ${width} ${height}`,
+			className: "h-auto w-full max-h-36",
+			role: "img",
+			"aria-label": "نمودار میله‌ای اثر رشد بر اساس ساعت",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
+				x1: padding.left,
+				x2: width - padding.right,
+				y1: midY,
+				y2: midY,
+				className: "stroke-border"
+			}), data.map((item, index) => {
+				const barHeight = Math.abs(item.value) / maxAbs * (chartHeight / 2 - 4);
+				const x = padding.left + index * (chartWidth / data.length) + 3;
+				const y = item.value >= 0 ? midY - barHeight : midY;
+				const positive = item.value >= 0;
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+						x,
+						y,
+						width: barWidth,
+						height: Math.max(barHeight, 2),
+						rx: 3,
+						className: cn(positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]")
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+						x: x + barWidth / 2,
+						y: height - 8,
+						textAnchor: "middle",
+						className: "fill-muted-foreground text-[9px]",
+						children: item.label
+					}),
+					Math.abs(item.value) >= 3 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("text", {
+						x: x + barWidth / 2,
+						y: positive ? y - 4 : y + barHeight + 12,
+						textAnchor: "middle",
+						className: cn("text-[8px] font-medium", positive ? "fill-[var(--pulse-good)]" : "fill-[var(--pulse-blue)]"),
+						children: [
+							item.value > 0 ? "+" : "",
+							formatPersianNumber(item.value, { maximumFractionDigits: 1 }),
+							"٪"
+						]
+					}) : null
+				] }, item.hour);
+			})]
+		})]
+	});
+}
+//#endregion
+//#region lib/sales-pulse-mock-data.ts
+var SALES_PULSE_PERIODS = [
+	{
+		id: "nowruz-1403",
+		label: "نوروز ۱۴۰۳",
+		range: "۱۵ اسفند ۱۴۰۳ – ۴ فروردین ۱۴۰۴"
+	},
+	{
+		id: "yalda-1403",
+		label: "یلدا ۱۴۰۳",
+		range: "۲۹ آذر – ۱ دی ۱۴۰۳"
+	},
+	{
+		id: "black-friday",
+		label: "جمعه سیاه",
+		range: "۲۴ – ۳۰ آبان ۱۴۰۳"
+	}
+];
+var SALES_PULSE_MERCHANTS = [
+	{
+		id: "merchant-a",
+		label: "پذیرنده الف"
+	},
+	{
+		id: "merchant-b",
+		label: "پذیرنده ب"
+	},
+	{
+		id: "merchant-c",
+		label: "پذیرنده ج"
+	}
+];
+var SALES_PULSE_KPIS = [
+	{
+		id: "successful-count",
+		label: "تعداد خرید موفق",
+		value: "۱۲۳٬۴۵۰",
+		change: "+۲۶٪",
+		changeType: "percent",
+		baseline: "۹۸٬۰۰۰",
+		baselineLabel: "baseline",
+		trend: [
+			72,
+			78,
+			75,
+			82,
+			88,
+			91,
+			95,
+			100
+		],
+		accent: "emerald",
+		icon: "receipt"
+	},
+	{
+		id: "sales-amount",
+		label: "مبلغ فروش موفق",
+		value: "۴۲٫۸",
+		unit: "میلیارد تومان",
+		change: "+۲۷٪",
+		changeType: "percent",
+		baseline: "۳۳٫۷",
+		baselineLabel: "baseline",
+		trend: [
+			68,
+			74,
+			79,
+			83,
+			87,
+			92,
+			96,
+			100
+		],
+		accent: "violet",
+		icon: "wallet"
+	},
+	{
+		id: "avg-basket",
+		label: "متوسط مبلغ هر خرید",
+		value: "۳۴۷",
+		unit: "هزار تومان",
+		change: "+۸٪",
+		changeType: "percent",
+		baseline: "۳۲۱",
+		baselineLabel: "baseline",
+		trend: [
+			88,
+			89,
+			90,
+			91,
+			93,
+			95,
+			97,
+			100
+		],
+		accent: "blue",
+		icon: "basket"
+	},
+	{
+		id: "success-rate",
+		label: "نرخ موفقیت پرداخت",
+		value: "۸۴٫۷٪",
+		change: "+۳٫۲",
+		changeType: "points",
+		baseline: "۸۱٫۵٪",
+		baselineLabel: "baseline",
+		trend: [
+			78,
+			80,
+			81,
+			82,
+			83,
+			84,
+			84.5,
+			84.7
+		],
+		accent: "emerald",
+		icon: "check"
+	},
+	{
+		id: "returning-share",
+		label: "سهم کارت‌های بازگشتی",
+		value: "۲۸٫۶٪",
+		change: "+۶٫۱",
+		changeType: "points",
+		baseline: "۲۲٫۵٪",
+		baselineLabel: "baseline",
+		trend: [
+			62,
+			65,
+			68,
+			72,
+			76,
+			80,
+			84,
+			86
+		],
+		accent: "amber",
+		icon: "users"
+	}
+];
+var SALES_PULSE_GROWTH_FACTORS = [
+	{
+		label: "اثر تعداد خرید",
+		value: 19,
+		positive: true
+	},
+	{
+		label: "اثر متوسط سبد",
+		value: 8,
+		positive: true
+	},
+	{
+		label: "اثر نرخ موفقیت",
+		value: 1.8,
+		positive: true
+	},
+	{
+		label: "اثر کارت بازگشتی",
+		value: -1.8,
+		positive: false
+	}
+];
+var SALES_PULSE_INSIGHT = {
+	headline: "فروش موفق ۲۷٪ بالاتر از baseline مورد انتظار بود.",
+	bullets: [
+		"بیشترین سهم رشد از افزایش تعداد خرید (+۱۹٪) و متوسط سبد (+۸٪) آمده است.",
+		"پیک فروش بین ۱۸:۰۰ تا ۲۱:۰۰ مشاهده شد؛ سهم این بازه ۳۴٪ از کل رشد است.",
+		"سهم کارت‌های بازگشتی ۶٫۱ واحد درصدی بالاتر رفت، اما اثر خالص تجزیه رشد منفی بود."
+	],
+	action: "پیشنهاد: کمپین بازگشت مشتری برای ساعات غیرپیک ۱۲:۰۰–۱۵:۰۰ را آزمایش کنید."
+};
+var SALES_PULSE_CUMULATIVE_TREND = [
+	{
+		date: "۲۵ بهمن",
+		actual: 4.2,
+		baseline: 3.8
+	},
+	{
+		date: "۲۸ بهمن",
+		actual: 9.1,
+		baseline: 8
+	},
+	{
+		date: "۲ اسفند",
+		actual: 14.8,
+		baseline: 12.5
+	},
+	{
+		date: "۵ اسفند",
+		actual: 21.3,
+		baseline: 17.2
+	},
+	{
+		date: "۸ اسفند",
+		actual: 27.6,
+		baseline: 22.1
+	},
+	{
+		date: "۱۱ اسفند",
+		actual: 33.4,
+		baseline: 27
+	},
+	{
+		date: "۱۴ اسفند",
+		actual: 38.9,
+		baseline: 31.8
+	},
+	{
+		date: "۱۷ اسفند",
+		actual: 42.8,
+		baseline: 33.7
+	}
+];
+var SALES_PULSE_HOURLY_IMPACT = [
+	{
+		hour: 0,
+		label: "۰",
+		value: -2.1
+	},
+	{
+		hour: 3,
+		label: "۳",
+		value: -1.4
+	},
+	{
+		hour: 6,
+		label: "۶",
+		value: .8
+	},
+	{
+		hour: 9,
+		label: "۹",
+		value: 3.2
+	},
+	{
+		hour: 12,
+		label: "۱۲",
+		value: 5.6
+	},
+	{
+		hour: 15,
+		label: "۱۵",
+		value: 7.1
+	},
+	{
+		hour: 18,
+		label: "۱۸",
+		value: 11.4
+	},
+	{
+		hour: 21,
+		label: "۲۱",
+		value: 8.9
+	}
+];
+var HEATMAP_DAYS = [
+	"شنبه",
+	"یکشنبه",
+	"دوشنبه",
+	"سه‌شنبه",
+	"چهارشنبه",
+	"پنجشنبه",
+	"جمعه"
+];
+var HEATMAP_BLOCKS = [
+	"۰–۳",
+	"۳–۶",
+	"۶–۹",
+	"۹–۱۲",
+	"۱۲–۱۵",
+	"۱۵–۱۸",
+	"۱۸–۲۱",
+	"۲۱–۲۴"
+];
+var SALES_PULSE_HEATMAP = [
+	[
+		-.8,
+		-1.2,
+		.4,
+		1.8,
+		2.4,
+		3.1,
+		5.6,
+		2.2
+	],
+	[
+		-.5,
+		-.9,
+		.6,
+		2.1,
+		2.8,
+		3.4,
+		6.1,
+		2.8
+	],
+	[
+		-.3,
+		-.6,
+		.9,
+		2.4,
+		3,
+		3.8,
+		6.4,
+		3
+	],
+	[
+		.1,
+		-.4,
+		1.1,
+		2.6,
+		3.2,
+		4,
+		6.8,
+		3.2
+	],
+	[
+		.3,
+		-.2,
+		1.3,
+		2.9,
+		3.5,
+		4.3,
+		7.1,
+		3.5
+	],
+	[
+		.5,
+		0,
+		1.5,
+		3.1,
+		3.8,
+		4.6,
+		7.4,
+		3.8
+	],
+	[
+		-.2,
+		-.7,
+		.7,
+		2,
+		2.6,
+		3.3,
+		5.9,
+		2.5
+	]
+];
+var SALES_PULSE_QUICK_COMPARISON = [
+	{
+		label: "تعداد خرید موفق",
+		value: "+۲۶٪"
+	},
+	{
+		label: "مبلغ فروش موفق",
+		value: "+۲۷٪"
+	},
+	{
+		label: "متوسط مبلغ هر خرید",
+		value: "+۸٪"
+	},
+	{
+		label: "نرخ موفقیت پرداخت",
+		value: "+۳٫۲"
+	},
+	{
+		label: "سهم کارت‌های بازگشتی",
+		value: "+۶٫۱"
+	}
+];
+//#endregion
+//#region components/sales-pulse/impact-heatmap.tsx
+function cellColor(value) {
+	if (value >= 6) return "bg-[var(--pulse-good)] text-white";
+	if (value >= 4) return "bg-[color-mix(in_oklch,var(--pulse-good)_82%,white)] text-white";
+	if (value >= 2) return "bg-[color-mix(in_oklch,var(--pulse-good)_48%,white)] text-[var(--pulse-ink)]";
+	if (value >= .5) return "bg-[color-mix(in_oklch,var(--pulse-good)_28%,white)] text-[var(--pulse-ink)]";
+	if (value >= 0) return "bg-[var(--pulse-wash)] text-[var(--pulse-ink)]";
+	if (value >= -.5) return "bg-[color-mix(in_oklch,var(--pulse-blue)_14%,white)] text-[var(--pulse-ink)]";
+	return "bg-[color-mix(in_oklch,var(--pulse-blue)_32%,white)] text-[var(--pulse-ink)]";
+}
+function ImpactHeatmap({ values }) {
+	const cells = HEATMAP_DAYS.flatMap((day, dayIndex) => HEATMAP_BLOCKS.map((block, blockIndex) => ({
+		day,
+		block,
+		value: values[dayIndex]?.[blockIndex] ?? 0
+	})));
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "w-full overflow-x-auto",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
+				className: "sr-only",
+				children: "ماتریس اثر خالص رشد بر اساس روز هفته و بازه ساعتی"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-[360px]",
+				role: "grid",
+				"aria-label": "ماتریس اثر رشد بر اساس روز و ساعت",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-[3.75rem_repeat(8,minmax(2rem,1fr))] gap-0.5 text-[9px]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { "aria-hidden": "true" }),
+						HEATMAP_BLOCKS.map((block) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "pb-0.5 text-center font-medium text-muted-foreground",
+							role: "columnheader",
+							children: block
+						}, block)),
+						HEATMAP_DAYS.map((day, dayIndex) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "contents",
+							role: "row",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex items-center font-medium text-muted-foreground",
+								role: "rowheader",
+								children: day
+							}), HEATMAP_BLOCKS.map((block, blockIndex) => {
+								const value = values[dayIndex]?.[blockIndex] ?? 0;
+								const sign = value > 0 ? "+" : "";
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									role: "gridcell",
+									title: `${day} · ${block}: ${sign}${formatPersianNumber(value, { maximumFractionDigits: 1 })}٪`,
+									className: cn("flex h-6 items-center justify-center rounded-sm text-[8px] font-medium tabular-nums motion-reduce:transition-none sm:h-7 sm:text-[9px]", cellColor(value)),
+									children: Math.abs(value) >= 1 ? `${sign}${formatPersianNumber(value, { maximumFractionDigits: 1 })}` : ""
+								}, `${day}-${block}`);
+							})]
+						}, day))
+					]
+				})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-1.5 flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "کمتر" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex gap-0.5",
+						"aria-hidden": "true",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-blue)_32%,white)]" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-blue)_14%,white)]" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2.5 rounded-sm bg-[var(--pulse-wash)]" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2.5 rounded-sm bg-[color-mix(in_oklch,var(--pulse-good)_48%,white)]" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "size-2.5 rounded-sm bg-[var(--pulse-good)]" })
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "بیشتر" })
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "sr-only",
+				children: cells.filter((cell) => Math.abs(cell.value) >= 2).map((cell) => `${cell.day} ${cell.block}: ${cell.value}٪`).join("؛ ")
+			})
+		]
+	});
+}
+//#endregion
+//#region components/sales-pulse/insight-panel.tsx
+function InsightPanel({ headline, bullets, action, variant = "panel" }) {
+	if (variant === "card") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
+		className: "rounded-lg border border-[var(--pulse-violet-line)] bg-[var(--pulse-violet-soft)] p-2.5",
+		"aria-labelledby": "sales-pulse-insight-heading",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex size-8 shrink-0 items-center justify-center rounded-lg bg-[var(--pulse-violet)]/15 text-[var(--pulse-violet)]",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lightbulb, {
+					className: "size-3.5",
+					"aria-hidden": "true"
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex min-w-0 flex-col gap-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+						id: "sales-pulse-insight-heading",
+						className: "text-sm font-semibold text-[var(--pulse-ink)]",
+						children: "بینش"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm leading-6 text-[var(--pulse-ink)]",
+						children: headline
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+						className: "flex list-inside list-disc flex-col gap-1 text-xs text-[var(--pulse-subtle)]",
+						children: bullets.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: item }, item))
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "rounded-lg bg-card/80 px-2.5 py-2 text-xs ring-1 ring-[var(--pulse-line)] sm:text-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "font-medium text-[var(--pulse-violet)]",
+							children: "پیشنهاد: "
+						}), action]
+					})
+				]
+			})]
+		})
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+		className: "rail-banner flex h-full flex-col gap-2.5 p-2.5 sm:p-3",
+		"aria-labelledby": "sales-pulse-insight-heading",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative flex items-center gap-2 text-[var(--pulse-teal)]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Lightbulb, {
+					className: "size-3.5",
+					"aria-hidden": "true"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					id: "sales-pulse-insight-heading",
+					className: "text-sm font-bold text-white",
+					children: "بینش کلیدی"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "relative text-sm leading-6 text-white/90",
+				children: headline
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+				className: "relative flex flex-col gap-1.5 text-xs text-white/80 sm:text-sm",
+				children: bullets.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex gap-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						"aria-hidden": "true",
+						className: "mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--pulse-teal)]"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item })]
+				}, item))
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "relative mt-auto flex gap-2 rounded-lg border border-white/15 bg-white/10 p-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
+					className: "size-3.5 shrink-0 text-[var(--pulse-teal)]",
+					"aria-hidden": "true"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-xs leading-5 text-white/90 sm:text-sm sm:leading-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-semibold text-[var(--pulse-teal)]",
+						children: "پیشنهاد: "
+					}), action]
+				})]
+			})
+		]
+	});
+}
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var ShoppingBasket = createLucideIcon("shopping-basket", [
+	["path", {
+		d: "m15 11-1 9",
+		key: "5wnq3a"
+	}],
+	["path", {
+		d: "m19 11-4-7",
+		key: "cnml18"
+	}],
+	["path", {
+		d: "M2 11h20",
+		key: "3eubbj"
+	}],
+	["path", {
+		d: "m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4",
+		key: "yiazzp"
+	}],
+	["path", {
+		d: "M4.5 15.5h15",
+		key: "13mye1"
+	}],
+	["path", {
+		d: "m5 11 4-7",
+		key: "116ra9"
+	}],
+	["path", {
+		d: "m9 11 1 9",
+		key: "1ojof7"
+	}]
+]);
+//#endregion
+//#region components/sales-pulse/sparkline.tsx
+var accentStroke = {
+	emerald: "stroke-[var(--pulse-good)]",
+	violet: "stroke-[var(--pulse-violet)]",
+	blue: "stroke-[var(--pulse-blue)]",
+	amber: "stroke-[var(--pulse-amber)]"
+};
+function Sparkline({ data, accent = "emerald", className, width = 88, height = 36 }) {
+	if (data.length < 2) return null;
+	const min = Math.min(...data);
+	const range = Math.max(...data) - min || 1;
+	const points = data.map((value, index) => {
+		return `${index / (data.length - 1) * width},${height - (value - min) / range * (height - 4) - 2}`;
+	}).join(" ");
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
+		width,
+		height,
+		viewBox: `0 0 ${width} ${height}`,
+		"aria-hidden": "true",
+		className: cn("overflow-visible", className),
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polyline", {
+			fill: "none",
+			className: cn(accentStroke[accent], "motion-reduce:transition-none"),
+			strokeWidth: "2",
+			strokeLinecap: "round",
+			strokeLinejoin: "round",
+			points
+		})
+	});
+}
+//#endregion
+//#region components/sales-pulse/kpi-scorecard.tsx
+var iconMap = {
+	receipt: Receipt,
+	wallet: Wallet,
+	basket: ShoppingBasket,
+	check: CircleCheck,
+	users: Users
+};
+var accentStyles = {
+	emerald: {
+		icon: "bg-[var(--pulse-good)]/10 text-[var(--pulse-good)]",
+		change: "text-[var(--pulse-good)]"
+	},
+	violet: {
+		icon: "bg-[var(--pulse-violet-soft)] text-[var(--pulse-violet)]",
+		change: "text-[var(--pulse-violet)]"
+	},
+	blue: {
+		icon: "bg-[var(--pulse-blue-soft)] text-[var(--pulse-blue)]",
+		change: "text-[var(--pulse-blue)]"
+	},
+	amber: {
+		icon: "bg-[var(--pulse-amber-soft)] text-[var(--pulse-amber)]",
+		change: "text-[var(--pulse-amber)]"
+	}
+};
+function KpiScorecard({ kpi }) {
+	const Icon = iconMap[kpi.icon];
+	const styles = accentStyles[kpi.accent];
+	const changeSuffix = kpi.changeType === "points" ? " واحد درصدی نسبت به baseline" : " نسبت به baseline";
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+		className: cn("rail-panel rail-panel-interactive flex flex-col gap-2 p-2.5 [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]"),
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-start justify-between gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex min-w-0 flex-col gap-1.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: cn("flex size-8 items-center justify-center rounded-lg", styles.icon),
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+						className: "size-3.5",
+						"aria-hidden": "true"
+					})
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+					className: "text-[11px] font-semibold text-[var(--pulse-subtle)]",
+					children: kpi.label
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkline, {
+				data: kpi.trend,
+				accent: kpi.accent
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "mt-auto flex flex-col gap-0.5",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl",
+					children: [kpi.value, kpi.unit ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "ms-1 text-xs font-normal text-[var(--pulse-subtle)] sm:text-sm",
+						children: kpi.unit
+					}) : null]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: cn("flex items-center gap-1 text-xs font-medium sm:text-sm", styles.change),
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, {
+						className: "size-3.5 shrink-0",
+						"aria-hidden": "true"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [kpi.change, /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-normal text-[var(--pulse-subtle)]",
+						children: changeSuffix
+					})] })]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-[11px] text-[var(--pulse-subtle)]",
+					children: [
+						kpi.baselineLabel,
+						": ",
+						kpi.baseline,
+						kpi.unit && kpi.id !== "sales-amount" && kpi.id !== "avg-basket" ? "" : kpi.unit ? ` ${kpi.unit}` : ""
+					]
+				})
+			]
+		})]
+	});
+}
+function KpiScorecardGrid({ children }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
+		"aria-label": "شاخص‌های کلیدی عملکرد",
+		className: "grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-5",
+		children
+	});
+}
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var CalendarRange = createLucideIcon("calendar-range", [
+	["rect", {
+		x: "3",
+		y: "3",
+		width: "18",
+		height: "18",
+		rx: "2",
+		key: "h1oib"
+	}],
+	["path", {
+		d: "M16 2v3",
+		key: "otl347"
+	}],
+	["path", {
+		d: "M3 9h18",
+		key: "1pudct"
+	}],
+	["path", {
+		d: "M8 2v3",
+		key: "1ioesn"
+	}],
+	["path", {
+		d: "M17 13h-6",
+		key: "1qbiup"
+	}],
+	["path", {
+		d: "M13 17H7",
+		key: "1x38vv"
+	}],
+	["path", {
+		d: "M7 13h.01",
+		key: "1vezk1"
+	}],
+	["path", {
+		d: "M17 17h.01",
+		key: "1sd3ek"
+	}]
+]);
+//#endregion
 //#region components/sales-pulse/period-toolbar.tsx
-function PeriodToolbar({ periodId, merchantId, onPeriodChange, onMerchantChange }) {
+function PeriodToolbar({ periodId, merchantId, onPeriodChange, onMerchantChange, variant = "panel" }) {
+	const isInline = variant === "inline";
 	const period = SALES_PULSE_PERIODS.find((item) => item.id === periodId);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between",
+		className: cn(isInline ? "flex w-full flex-col gap-2 lg:w-auto" : "rail-panel flex flex-col gap-2 p-2.5 [--rail-line:var(--pulse-line)] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2.5 sm:p-3"),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex flex-wrap gap-2",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-				value: merchantId,
-				onValueChange: onMerchantChange,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
-					className: "h-9 w-full min-w-40 sm:w-44",
-					"aria-label": "انتخاب پذیرنده",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, {
-						className: "size-4 text-muted-foreground",
-						"aria-hidden": "true"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "پذیرنده" })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: SALES_PULSE_MERCHANTS.map((merchant) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-					value: merchant.id,
-					children: merchant.label
-				}, merchant.id)) })]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-				value: periodId,
-				onValueChange: onPeriodChange,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
-					className: "h-9 w-full min-w-52 sm:w-56",
-					"aria-label": "انتخاب بازه تحلیل",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarRange, {
-						className: "size-4 text-muted-foreground",
-						"aria-hidden": "true"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "بازه تحلیل" })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: SALES_PULSE_PERIODS.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-					value: item.id,
-					children: item.label
-				}, item.id)) })]
+			className: cn("grid w-full grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5", isInline ? "lg:w-auto lg:min-w-[18rem]" : "sm:w-auto"),
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: merchantId,
+					onValueChange: onMerchantChange,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]",
+						"aria-label": "انتخاب پذیرنده",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, {
+							className: "size-4 shrink-0 text-[var(--pulse-blue)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]",
+							children: "پذیرنده"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, {
+						className: "min-w-56 rounded-lg p-1.5",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectGroup, { children: SALES_PULSE_MERCHANTS.map((merchant, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: merchant.id,
+							label: merchant.label,
+							className: "py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "flex min-w-0 flex-col gap-0.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm font-semibold text-[var(--pulse-ink)]",
+									children: merchant.label
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[11px] text-[var(--pulse-subtle)]",
+									children: index === 0 ? "پذیرنده اصلی داشبورد" : "قابل مقایسه با همین baseline"
+								})]
+							})
+						}, merchant.id)) })
+					})]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "min-w-0 sm:min-w-36",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+					value: periodId,
+					onValueChange: onPeriodChange,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
+						className: "h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]",
+						"aria-label": "انتخاب بازه تحلیل",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarRange, {
+							className: "size-4 shrink-0 text-[var(--pulse-blue)]",
+							"aria-hidden": "true"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]",
+							children: "بازه"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, {
+						className: "min-w-64 rounded-lg p-1.5",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectGroup, { children: SALES_PULSE_PERIODS.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+							value: item.id,
+							label: item.label,
+							className: "py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "flex min-w-0 flex-col gap-0.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-sm font-semibold text-[var(--pulse-ink)]",
+									children: item.label
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[11px] text-[var(--pulse-subtle)]",
+									children: item.range
+								})]
+							})
+						}, item.id)) })
+					})]
+				})
 			})]
-		}), period ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-			className: "text-sm text-muted-foreground",
-			children: ["بازه تحلیل: ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "font-medium text-foreground",
-				children: period.range
-			})]
+		}), period && !isInline ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+			className: "rounded-md bg-[var(--pulse-wash)] px-2.5 py-1.5 text-xs text-[var(--pulse-subtle)] sm:text-sm",
+			children: [
+				"بازه:",
+				" ",
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "font-semibold text-[var(--pulse-ink)]",
+					children: period.range
+				})
+			]
 		}) : null]
 	});
 }
-function BaselineNote() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
-		className: "rounded-xl border border-amber-200/80 bg-amber-50/70 p-4 dark:border-amber-500/20 dark:bg-amber-500/10",
-		"aria-labelledby": "baseline-note-heading",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
-				className: "size-4 shrink-0 text-amber-600",
-				"aria-hidden": "true"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-1 text-sm",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					id: "baseline-note-heading",
-					className: "font-medium text-amber-900 dark:text-amber-100",
-					children: "نکته مهم درباره baseline"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "leading-relaxed text-amber-900/85 dark:text-amber-100/85",
-					children: "baseline از میانگین همان روزهای هفته در بازه ۶ هفته قبل محاسبه می‌شود، با کنترل مبلغ، ساعت و ترکیب خریدار تا حد ممکن. این مقایسه انحراف عملکرد است؛ نه اثبات قطعی اثر فصلی."
-				})]
-			})]
-		})
-	});
-}
 function DataLimitNote() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
-		className: "rounded-xl bg-muted/50 p-4 ring-1 ring-foreground/8",
-		"aria-labelledby": "data-limit-note-heading",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
-				className: "size-4 shrink-0 text-muted-foreground",
-				"aria-hidden": "true"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-1 text-sm text-muted-foreground",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					id: "data-limit-note-heading",
-					className: "font-medium text-foreground",
-					children: "توضیح"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "leading-relaxed",
-					children: "به‌دلیل محدودیت پنجره داده ۶ ماهه، cohortهای قدیمی‌تر و برخی بازه‌های مناسبت ممکن است ناقص باشند. واحد مبلغ‌ها ریال است؛ در نمایش بالا برای خوانایی به تومان تبدیل شده‌اند."
-				})]
-			})]
-		})
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+		className: "flex items-start justify-center gap-2 px-1 text-center text-[11px] leading-5 text-[var(--pulse-subtle)] sm:text-xs",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
+			className: "mt-0.5 size-3.5 shrink-0 text-[var(--pulse-violet)]",
+			"aria-hidden": "true"
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "پنجره داده ۶ ماهه ممکن است cohortهای قدیمی را ناقص کند. مبالغ به تومان نمایش داده شده‌اند." })]
 	});
 }
 //#endregion
@@ -8497,70 +10319,122 @@ function DataLimitNote() {
 function QuickComparisonList({ items }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		"aria-labelledby": "quick-comparison-heading",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-			id: "quick-comparison-heading",
-			className: "mb-3 font-heading text-sm font-medium",
-			children: "مقایسه سریع"
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-			className: "space-y-2",
-			children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-				className: "flex items-center justify-between gap-3 rounded-lg bg-muted/40 px-3 py-2 text-sm",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-muted-foreground",
-					children: item.label
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: cn("font-semibold tabular-nums", item.value.startsWith("+") ? "text-emerald-600" : "text-foreground"),
-					children: [item.value, !item.value.includes("٪") ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-						className: "text-xs font-normal text-muted-foreground",
-						children: [" ", "واحد درصدی"]
-					}) : null]
-				})]
-			}, item.label))
-		})]
+		className: "flex h-full flex-col",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				id: "quick-comparison-heading",
+				className: "mb-0.5 text-sm font-bold text-[var(--pulse-ink)] sm:text-base",
+				children: "مقایسه سریع"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "mb-2 text-xs text-[var(--pulse-subtle)]",
+				children: "انحراف‌های کلیدی نسبت به baseline"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+				className: "flex flex-1 flex-col gap-1.5",
+				children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
+					className: "flex min-h-9 items-center justify-between gap-2 rounded-lg border border-[var(--pulse-line)] bg-[var(--pulse-wash)] px-2.5 py-1.5 text-xs transition-colors duration-200 hover:bg-[var(--pulse-violet-soft)] motion-reduce:transition-none sm:text-sm",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-[var(--pulse-subtle)]",
+						children: item.label
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: cn("font-extrabold tabular-nums", item.value.startsWith("+") ? "text-[var(--pulse-good)]" : "text-[var(--pulse-ink)]"),
+						children: [item.value, !item.value.includes("٪") ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+							className: "text-[10px] font-normal text-[var(--pulse-subtle)] sm:text-xs",
+							children: [" ", "واحد درصدی"]
+						}) : null]
+					})]
+				}, item.label))
+			})
+		]
 	});
 }
 //#endregion
 //#region components/sales-pulse/sales-pulse-dashboard.tsx
+var pulseTheme = {
+	"--pulse-ink": "#1a2148",
+	"--pulse-subtle": "#6b7590",
+	"--pulse-line": "#e4e9f3",
+	"--pulse-wash": "#f6f8fc",
+	"--pulse-blue": "#174fd6",
+	"--pulse-blue-soft": "#eaf1ff",
+	"--pulse-blue-line": "#c8d8ff",
+	"--pulse-violet": "#174fd6",
+	"--pulse-violet-soft": "#eaf1ff",
+	"--pulse-violet-line": "#c8d8ff",
+	"--pulse-teal": "#0f9a84",
+	"--pulse-good": "#119a6c",
+	"--pulse-warn": "#d44949",
+	"--pulse-amber": "#e8892d",
+	"--pulse-amber-soft": "#fff6ea",
+	"--pulse-amber-line": "#ffe0b5",
+	"--pulse-yellow": "#ffd60a"
+};
+var panelClass = "rail-panel rail-panel-interactive [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]";
+function SalesPulseHeader({ controls }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+		className: "flex min-w-0 flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex min-w-0 items-center gap-2.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--pulse-yellow)] text-[var(--pulse-ink)] sm:size-11",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Activity, {
+					className: "size-5",
+					"aria-hidden": "true"
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex min-w-0 flex-col gap-0.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl",
+					children: "نبض فروش و مناسبت‌ها"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs text-[var(--pulse-subtle)] sm:text-sm",
+					children: "انحراف مناسبت نسبت به baseline · کنترل مبلغ، ساعت و ترکیب خریدار"
+				})]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "w-full shrink-0 lg:w-auto",
+			children: controls
+		})]
+	});
+}
 function SalesPulseDashboard() {
 	const [periodId, setPeriodId] = (0, import_react.useState)("nowruz-1403");
 	const [merchantId, setMerchantId] = (0, import_react.useState)("merchant-a");
+	function handlePeriodChange(value) {
+		if (value) setPeriodId(value);
+	}
+	function handleMerchantChange(value) {
+		if (value) setMerchantId(value);
+	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-6",
+		className: "flex flex-col gap-2.5 text-[var(--pulse-ink)]",
+		style: pulseTheme,
 		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PageHeading, {
-				title: "نبض فروش و مناسبت‌ها",
-				subtitle: "انحراف عملکرد در بازه مناسبت نسبت به baseline مورد انتظار"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "max-w-3xl text-sm text-muted-foreground",
-				children: "مقایسه با همان روزهای هفته، با کنترل مبلغ، ساعت و ترکیب خریدار تا حد ممکن. واحد مبلغ‌ها ریال است."
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 gap-4 xl:grid-cols-[1fr_18rem]",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeriodToolbar, {
-					periodId,
-					merchantId,
-					onPeriodChange: setPeriodId,
-					onMerchantChange: setMerchantId
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BaselineNote, {})]
-			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SalesPulseHeader, { controls: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PeriodToolbar, {
+				variant: "inline",
+				periodId,
+				merchantId,
+				onPeriodChange: handlePeriodChange,
+				onMerchantChange: handleMerchantChange
+			}) }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiScorecardGrid, { children: SALES_PULSE_KPIS.map((kpi) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiScorecard, { kpi }, kpi.id)) }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				"aria-labelledby": "growth-breakdown-heading",
-				className: "grid grid-cols-1 gap-4 xl:grid-cols-2",
+				className: "grid grid-cols-1 gap-2.5 lg:grid-cols-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-					className: "flex flex-col gap-4 rounded-xl bg-card p-4 ring-1 ring-foreground/10 md:p-5",
+					className: cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3"),
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 							id: "growth-breakdown-heading",
-							className: "font-heading text-base font-medium",
+							className: "text-sm font-bold text-[var(--pulse-ink)] sm:text-base",
 							children: "تجزیه رشد مناسبت"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-1 text-sm text-muted-foreground",
-							children: "رشد فروش به اثر تعداد خرید، متوسط سبد، نرخ موفقیت و سهم کارت‌های بازگشتی شکسته می‌شود."
+							className: "mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]",
+							children: "اثر تعداد خرید، سبد، موفقیت پرداخت و سهم کارت‌های بازگشتی"
 						})] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-1 gap-6 lg:grid-cols-[9rem_1fr]",
+							className: "grid grid-cols-1 gap-3 sm:grid-cols-[7.5rem_1fr] lg:grid-cols-[8rem_1fr]",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GrowthDonut, { total: 27 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GrowthWaterfall, {
 								factors: SALES_PULSE_GROWTH_FACTORS,
 								total: 27
@@ -8579,48 +10453,48 @@ function SalesPulseDashboard() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				"aria-label": "نمودارهای تکمیلی",
-				className: "grid grid-cols-1 gap-4 lg:grid-cols-3",
+				className: "grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-						className: "rounded-xl bg-card p-4 ring-1 ring-foreground/10 lg:col-span-2",
+						className: cn(panelClass, "p-2.5 sm:p-3 md:col-span-2 xl:col-span-2"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-							className: "mb-4",
+							className: "mb-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "font-heading text-base font-medium",
+								className: "text-sm font-bold text-[var(--pulse-ink)] sm:text-base",
 								children: "روند تجمعی فروش موفق"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 text-sm text-muted-foreground",
-								children: "مقایسه عملکرد واقعی با baseline در طول بازه مناسبت"
+								className: "mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]",
+								children: "واقعی در برابر baseline در طول بازه مناسبت"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CumulativeTrendChart, { data: SALES_PULSE_CUMULATIVE_TREND })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("article", {
-						className: "rounded-xl bg-card p-4 ring-1 ring-foreground/10",
+						className: cn(panelClass, "p-2.5 sm:p-3"),
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QuickComparisonList, { items: SALES_PULSE_QUICK_COMPARISON })
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-						className: "rounded-xl bg-card p-4 ring-1 ring-foreground/10",
+						className: cn(panelClass, "self-start p-2.5 sm:p-3"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-							className: "mb-4",
+							className: "mb-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "font-heading text-base font-medium",
+								className: "text-sm font-bold text-[var(--pulse-ink)] sm:text-base",
 								children: "توزیع اثر رشد بر اساس ساعت"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 text-sm text-muted-foreground",
-								children: "سهم خالص هر بازه ساعتی از رشد کل فروش"
+								className: "mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]",
+								children: "سهم خالص هر بازه ساعتی از رشد کل"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HourlyImpactChart, { data: SALES_PULSE_HOURLY_IMPACT })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-						className: "rounded-xl bg-card p-4 ring-1 ring-foreground/10 lg:col-span-2",
+						className: cn(panelClass, "self-start overflow-x-auto p-2.5 sm:p-3 md:col-span-2"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-							className: "mb-4",
+							className: "mb-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "font-heading text-base font-medium",
+								className: "text-sm font-bold text-[var(--pulse-ink)] sm:text-base",
 								children: "ماتریس اثر خالص رشد"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 text-sm text-muted-foreground",
-								children: "شدت اثر رشد بر اساس روز هفته و بازه ساعتی"
+								className: "mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]",
+								children: "شدت اثر بر اساس روز هفته و بازه ساعتی"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ImpactHeatmap, { values: SALES_PULSE_HEATMAP })]
 					})
@@ -8638,7 +10512,6 @@ function SalesPulsePage() {
 //#endregion
 //#region lib/dashboard.ts
 var PAGE_TITLES = {
-	dashboard: "پیشخوان",
 	"business-graph": "گراف هوشمند کسب و کار",
 	"sales-pulse": "نبض فروش و مناسبت‌ها",
 	"buyer-loyalty": "رفتار و وفاداری خریداران",
@@ -8654,14 +10527,14 @@ function Card({ className, size = "default", ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		"data-slot": "card",
 		"data-size": size,
-		className: cn("group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl", className),
+		className: cn("group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(2.5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(2)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg", className),
 		...props
 	});
 }
 function CardHeader({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		"data-slot": "card-header",
-		className: cn("group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)", className),
+		className: cn("group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-lg px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)", className),
 		...props
 	});
 }
@@ -9953,7 +11826,7 @@ function DropdownMenuItem({ className, inset, variant = "default", ...props }) {
 function Empty({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		"data-slot": "empty",
-		className: cn("flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border-dashed p-6 text-center text-balance", className),
+		className: cn("flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-3 rounded-lg border-dashed p-4 text-center text-balance", className),
 		...props
 	});
 }
@@ -9964,7 +11837,7 @@ function EmptyHeader({ className, ...props }) {
 		...props
 	});
 }
-var emptyMediaVariants = cva("mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0", {
+var emptyMediaVariants = cva("mb-1.5 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0", {
 	variants: { variant: {
 		default: "bg-transparent",
 		icon: "flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4"
@@ -10093,7 +11966,7 @@ function FilterChip({ children, active = false }) {
 }
 function TableFooterBar({ count }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+		className: "flex flex-col gap-2 border-t px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex items-center gap-2 text-sm text-muted-foreground",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تعداد سطر در صفحه:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
@@ -10124,7 +11997,7 @@ function TableFooterBar({ count }) {
 }
 function TransactionsPage() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-6",
+		className: "flex flex-col gap-3",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PageHeading, {
 			title: "تراکنش‌ها",
 			action: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
@@ -10132,11 +12005,11 @@ function TransactionsPage() {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { "data-icon": "inline-start" }), "ایجاد خروجی"]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-			className: "min-h-[420px]",
+			className: "min-h-[220px]",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-				className: "flex flex-col gap-6 pt-6",
+				className: "flex flex-col gap-2.5 pt-2.5",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between",
+					className: "flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex flex-wrap gap-2",
 						children: [
@@ -10150,7 +12023,7 @@ function TransactionsPage() {
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SearchInput, {})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Empty, {
-					className: "min-h-[300px] border-none",
+					className: "min-h-36 border-none",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(EmptyHeader, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EmptyMedia, {
 							variant: "icon",
@@ -10166,7 +12039,7 @@ function TransactionsPage() {
 }
 function DiscountsPage() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-6",
+		className: "flex flex-col gap-3",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PageHeading, {
 			title: "کدهای تخفیف",
 			subtitle: "ایجاد و مدیریت کدهای تخفیف برای لینک‌های پرداخت",
@@ -10230,18 +12103,18 @@ function LinksPage() {
 		setTimeout(() => setCopied(false), 1500);
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-6",
+		className: "flex flex-col gap-3",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PageHeading, {
 			title: "لینک‌های پرداخت",
 			subtitle: "ایجاد و مدیریت لینک‌های پرداخت"
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-			className: "border-b pb-4",
+			className: "border-b pb-2.5",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+				className: "flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex min-w-0 items-center gap-3 rounded-full border bg-muted/30 px-3 py-2",
+					className: "flex min-w-0 items-center gap-2 rounded-full border bg-muted/30 px-2.5 py-1.5",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "flex size-8 shrink-0 items-center justify-center rounded-lg border bg-background",
+						className: "flex size-7 shrink-0 items-center justify-center rounded-lg border bg-background",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Receipt, { className: "text-muted-foreground" })
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "min-w-0 text-sm",
@@ -10275,9 +12148,9 @@ function LinksPage() {
 				})]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-			className: "flex flex-col gap-4 pt-4",
+			className: "flex flex-col gap-2.5 pt-2.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between",
+				className: "flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-wrap gap-2",
 					children: [
@@ -10300,9 +12173,9 @@ function LinksPage() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, { className: "w-10" })
 				] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, { children: linkRows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, { children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-3",
+						className: "flex items-center gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40",
+							className: "flex size-8 shrink-0 items-center justify-center rounded-lg border bg-muted/40",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Receipt, { className: "text-muted-foreground" })
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "font-medium",
@@ -10349,7 +12222,6 @@ function RowActions() {
 	})] });
 }
 var pages = {
-	dashboard: DashboardPage,
 	"business-graph": BusinessGraphPage,
 	"sales-pulse": SalesPulsePage,
 	"buyer-loyalty": BuyerLoyaltyPage,
@@ -10360,22 +12232,26 @@ var pages = {
 	links: LinksPage
 };
 function Home() {
-	const [page, setPage] = (0, import_react.useState)("dashboard");
+	const [page, setPage] = (0, import_react.useState)("sales-pulse");
+	const mainRef = (0, import_react.useRef)(null);
 	const ActivePage = pages[page];
 	const handleNavigate = (nextPage) => {
 		setPage(nextPage);
 		requestAnimationFrame(() => {
-			document.getElementById("dashboard-main")?.focus();
+			window.scrollTo(0, 0);
+			mainRef.current?.scrollTo(0, 0);
+			mainRef.current?.focus({ preventScroll: true });
 		});
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarProvider, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppSidebar, {
 		activePage: page,
 		onNavigate: handleNavigate
 	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarInset, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DashboardHeader, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+		ref: mainRef,
 		id: "dashboard-main",
 		tabIndex: -1,
 		"aria-label": PAGE_TITLES[page],
-		className: "flex flex-1 flex-col gap-4 p-4 outline-none md:p-6",
+		className: "dashboard-shell flex flex-1 flex-col gap-3 px-3 pb-3 pt-4 outline-none md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivePage, {})
 	})] })] });
 }

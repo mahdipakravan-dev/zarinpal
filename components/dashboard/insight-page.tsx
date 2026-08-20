@@ -19,14 +19,14 @@ export function InsightPage({
   return (
     <div
       data-slot="insight-page"
-      className={cn("flex flex-col gap-6", className)}
+      className={cn("flex flex-col gap-2.5", className)}
       {...props}
     >
       <PageHeading title={title} subtitle={story} />
       {note ? (
-        <p className="max-w-3xl text-sm text-muted-foreground">{note}</p>
+        <p className="max-w-3xl text-xs leading-5 text-muted-foreground sm:text-sm">{note}</p>
       ) : null}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">{children}</div>
+      <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">{children}</div>
     </div>
   );
 }
