@@ -3,13 +3,9 @@ import { Noto_Sans_Arabic } from "next/font/google";
 
 import { Providers } from "@/components/providers";
 import { cn } from "@/lib/utils";
+import { iranYekan } from "@/lib/fonts";
 
 import "./globals.css";
-
-const notoSansArabic = Noto_Sans_Arabic({
-  subsets: ["arabic"],
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
   title: "ZarinPal Dashboard",
@@ -50,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={cn("font-sans", notoSansArabic.variable)}>
+    <html lang="fa" dir="rtl" className={cn("font-sans", iranYekan.variable)}>
       <body className="antialiased">
         <Providers>{children}</Providers>
       </body>
