@@ -78,12 +78,7 @@ function SalesPulseHeader({ controls }: { controls: ReactNode }) {
 }
 
 export function SalesPulseDashboard() {
-  const [periodId, setPeriodId] = useState("nowruz-1403");
   const [merchantId, setMerchantId] = useState("merchant-a");
-
-  function handlePeriodChange(value: string | null) {
-    if (value) setPeriodId(value);
-  }
 
   function handleMerchantChange(value: string | null) {
     if (value) setMerchantId(value);
@@ -95,9 +90,7 @@ export function SalesPulseDashboard() {
         controls={
           <PeriodToolbar
             variant="inline"
-            periodId={periodId}
             merchantId={merchantId}
-            onPeriodChange={handlePeriodChange}
             onMerchantChange={handleMerchantChange}
           />
         }

@@ -4,7 +4,6 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import {
   AlertTriangleIcon,
   Building2Icon,
-  CalendarDaysIcon,
   CheckCircle2Icon,
   InfoIcon,
   RefreshCwIcon,
@@ -16,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { PeriodRangePicker } from "@/components/dashboard/period-range-picker";
 import {
   AMOUNT_BUCKETS,
   FUNNEL_DROPOFFS,
@@ -23,7 +23,6 @@ import {
   PAYMENT_FUNNEL,
   PAYMENT_HEALTH_KPIS,
   PAYMENT_HEALTH_MERCHANTS,
-  PAYMENT_HEALTH_PERIODS,
   PSP_ANOMALIES,
   RETRY_STATS,
   TERMINAL_ROWS,
@@ -118,7 +117,6 @@ function Panel({
 }
 
 function HealthHeader() {
-  const [periodId, setPeriodId] = useState<string>(PAYMENT_HEALTH_PERIODS[0].id);
   const [merchantId, setMerchantId] = useState<string>(
     PAYMENT_HEALTH_MERCHANTS[0].id
   );
@@ -141,6 +139,9 @@ function HealthHeader() {
 
       <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
         <div className="min-w-0 sm:min-w-36">
+          <PeriodRangePicker />
+        </div>
+        <div className="min-w-0 sm:min-w-36">
           <Select
             value={merchantId}
             onValueChange={(value) => value && setMerchantId(value)}
@@ -158,32 +159,6 @@ function HealthHeader() {
               {PAYMENT_HEALTH_MERCHANTS.map((merchant) => (
                 <SelectItem key={merchant.id} value={merchant.id}>
                   {merchant.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="min-w-0 sm:min-w-36">
-          <Select
-            value={periodId}
-            onValueChange={(value) => value && setPeriodId(value)}
-          >
-            <SelectTrigger
-              className="h-10 w-full border-[var(--health-line)] bg-card [&>svg:last-child]:text-[var(--health-violet)]"
-              aria-label="انتخاب بازه زمانی"
-            >
-              <CalendarDaysIcon
-                className="size-4 text-[var(--health-violet)]"
-                aria-hidden="true"
-              />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--health-ink)]">
-                بازه
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              {PAYMENT_HEALTH_PERIODS.map((period) => (
-                <SelectItem key={period.id} value={period.id}>
-                  {period.label}
                 </SelectItem>
               ))}
             </SelectContent>

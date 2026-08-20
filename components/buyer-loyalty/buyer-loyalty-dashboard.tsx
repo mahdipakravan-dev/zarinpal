@@ -1,9 +1,5 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import {
-  CalendarDaysIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   CreditCardIcon,
   InfoIcon,
   RepeatIcon,
@@ -15,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { PeriodRangePicker } from "@/components/dashboard/period-range-picker";
 import {
   BEHAVIOR_SEGMENTS,
   BUYER_LOYALTY_METRICS,
@@ -36,14 +33,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 const loyaltyTheme = {
   "--loyalty-ink": "#17191d",
@@ -170,260 +159,6 @@ const behaviorArcs = BEHAVIOR_SEGMENTS.reduce<
   return [...items, { ...segment, offset }];
 }, []);
 
-type DateRange = {
-  start: Date;
-  end?: Date;
-};
-
-const calendarWeekdays = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
-const calendarMonthFormatter = new Intl.DateTimeFormat(
-  "fa-IR-u-ca-gregory",
-  { month: "long", year: "numeric" }
-);
-const calendarDayFormatter = new Intl.NumberFormat("fa-IR");
-const compactDateFormatter = new Intl.DateTimeFormat(
-  "fa-IR-u-ca-gregory",
-  { day: "numeric", month: "short" }
-);
-const fullDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
-function startOfDay(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
-function createDefaultDateRange(): DateRange {
-  const end = startOfDay(new Date());
-  const start = new Date(end);
-  start.setMonth(start.getMonth() - 6);
-
-  return { start, end };
-}
-
-function isSameDate(first: Date, second?: Date): boolean {
-  return Boolean(
-    second &&
-      first.getFullYear() === second.getFullYear() &&
-      first.getMonth() === second.getMonth() &&
-      first.getDate() === second.getDate()
-  );
-}
-
-function monthCells(month: Date): Array<Date | null> {
-  const year = month.getFullYear();
-  const monthIndex = month.getMonth();
-  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-  const leadingBlanks = (new Date(year, monthIndex, 1).getDay() + 1) % 7;
-  const cells: Array<Date | null> = Array.from(
-    { length: leadingBlanks },
-    () => null
-  );
-
-  for (let day = 1; day <= daysInMonth; day += 1) {
-    cells.push(new Date(year, monthIndex, day));
-  }
-
-  return cells;
-}
-
-function shiftMonth(month: Date, offset: number): Date {
-  return new Date(month.getFullYear(), month.getMonth() + offset, 1);
-}
-
-function DateRangePicker() {
-  const [open, setOpen] = useState(false);
-  const [appliedRange, setAppliedRange] = useState<DateRange>(() =>
-    createDefaultDateRange()
-  );
-  const [draftRange, setDraftRange] = useState<DateRange>(() =>
-    createDefaultDateRange()
-  );
-  const [visibleMonth, setVisibleMonth] = useState(
-    () => new Date(createDefaultDateRange().end ?? new Date())
-  );
-  const cells = monthCells(visibleMonth);
-  const appliedLabel = appliedRange.end
-    ? `${compactDateFormatter.format(appliedRange.start)} – ${compactDateFormatter.format(appliedRange.end)}`
-    : compactDateFormatter.format(appliedRange.start);
-  const selectionLabel = draftRange.end
-    ? `از ${fullDateFormatter.format(draftRange.start)} تا ${fullDateFormatter.format(draftRange.end)}`
-    : `تاریخ شروع: ${fullDateFormatter.format(draftRange.start)}؛ تاریخ پایان را انتخاب کنید`;
-
-  const handleOpenChange = (nextOpen: boolean) => {
-    setOpen(nextOpen);
-
-    if (nextOpen) {
-      setDraftRange(appliedRange);
-      setVisibleMonth(new Date(appliedRange.end ?? appliedRange.start));
-    }
-  };
-
-  const handleDateSelection = (date: Date) => {
-    if (draftRange.end) {
-      setDraftRange({ start: date });
-      return;
-    }
-
-    if (date < draftRange.start) {
-      setDraftRange({ start: date, end: draftRange.start });
-      return;
-    }
-
-    setDraftRange({ start: draftRange.start, end: date });
-  };
-
-  const handleCancel = () => {
-    setDraftRange(appliedRange);
-    setOpen(false);
-  };
-
-  const handleApply = () => {
-    if (!draftRange.end) return;
-    setAppliedRange(draftRange);
-    setOpen(false);
-  };
-
-  return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger
-        render={
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 w-full min-w-0 justify-between"
-            aria-label={`انتخاب بازه زمانی؛ بازه فعلی ${appliedLabel}`}
-          />
-        }
-      >
-        <span className="flex min-w-0 items-center gap-1.5">
-          <CalendarDaysIcon data-icon="inline-start" aria-hidden="true" />
-          <span className="truncate text-xs font-extrabold">{appliedLabel}</span>
-        </span>
-        <ChevronDownIcon data-icon="inline-end" aria-hidden="true" />
-      </PopoverTrigger>
-
-      <PopoverContent
-        align="end"
-        className="w-[min(21rem,calc(100vw-1.5rem))] gap-3 p-3"
-        style={
-          {
-            ...loyaltyTheme,
-            "--primary": "var(--loyalty-yellow)",
-            "--primary-foreground": "var(--loyalty-ink)",
-          } as CSSProperties
-        }
-      >
-        <PopoverTitle className="sr-only">انتخاب بازه زمانی</PopoverTitle>
-        <PopoverDescription className="sr-only">
-          ابتدا تاریخ شروع و سپس تاریخ پایان را از تقویم انتخاب کنید.
-        </PopoverDescription>
-
-        <div className="flex items-center justify-between gap-3">
-          <p className="font-bold text-[var(--loyalty-ink)]">
-            {calendarMonthFormatter.format(visibleMonth)}
-          </p>
-          <div className="flex items-center gap-1" dir="ltr">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setVisibleMonth((month) => shiftMonth(month, -1))}
-            >
-              <ChevronLeftIcon aria-hidden="true" />
-              <span className="sr-only">ماه قبل</span>
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setVisibleMonth((month) => shiftMonth(month, 1))}
-            >
-              <ChevronRightIcon aria-hidden="true" />
-              <span className="sr-only">ماه بعد</span>
-            </Button>
-          </div>
-        </div>
-
-        <div
-          className="grid grid-cols-7 gap-y-1 text-center"
-          role="group"
-          aria-label={calendarMonthFormatter.format(visibleMonth)}
-        >
-          {calendarWeekdays.map((weekday) => (
-            <span
-              key={weekday}
-              className="flex h-8 items-center justify-center text-xs font-semibold text-[var(--loyalty-subtle)]"
-              aria-hidden="true"
-            >
-              {weekday}
-            </span>
-          ))}
-          {cells.map((date, index) => {
-            if (!date) {
-              return (
-                <span
-                  key={`blank-${index}`}
-                  className="size-9"
-                  aria-hidden="true"
-                />
-              );
-            }
-
-            const isStart = isSameDate(date, draftRange.start);
-            const isEnd = isSameDate(date, draftRange.end);
-
-            return (
-              <button
-                key={date.toISOString()}
-                type="button"
-                className={cn(
-                  "mx-auto flex size-9 cursor-pointer items-center justify-center rounded-full border border-transparent text-sm font-medium text-[var(--loyalty-ink)] outline-none transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-[var(--loyalty-yellow-soft)] focus-visible:ring-2 focus-visible:ring-[var(--loyalty-yellow-strong)] focus-visible:ring-offset-2 active:scale-95 motion-reduce:transition-none",
-                  isStart &&
-                    "border-[var(--loyalty-yellow)] bg-[var(--loyalty-yellow)] font-extrabold",
-                  isEnd &&
-                    !isStart &&
-                    "border-[var(--loyalty-yellow-strong)] bg-card font-extrabold"
-                )}
-                onClick={() => handleDateSelection(date)}
-                aria-label={fullDateFormatter.format(date)}
-                aria-pressed={isStart || isEnd}
-              >
-                {calendarDayFormatter.format(date.getDate())}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="flex flex-col gap-2 border-t border-[var(--loyalty-line)] pt-3">
-          <p
-            className="min-h-5 text-xs leading-5 text-[var(--loyalty-subtle)]"
-            role="status"
-            aria-live="polite"
-          >
-            {selectionLabel}
-          </p>
-          <div className="flex items-center justify-end gap-2">
-            <Button type="button" variant="ghost" size="sm" onClick={handleCancel}>
-              انصراف
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              disabled={!draftRange.end}
-              onClick={handleApply}
-            >
-              اعمال بازه
-            </Button>
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 function formatChartPercent(value: number): string {
   return formatPersianPercent(value);
 }
@@ -483,20 +218,23 @@ function BuyerLoyaltyHeader() {
 
       <div className="grid w-full shrink-0 grid-cols-2 gap-2 md:w-auto md:min-w-[21rem]">
         <div className="min-w-0 md:min-w-40">
+          <PeriodRangePicker />
+        </div>
+        <div className="min-w-0 md:min-w-40">
           <Select
             value={merchantId}
             onValueChange={(value) => value && setMerchantId(value)}
           >
             <SelectTrigger
-              className="h-9 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
+              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
               aria-label="انتخاب پذیرنده برای تحلیل وفاداری"
             >
               <StoreIcon
-                className="text-[var(--loyalty-violet)]"
+                className="size-4 text-[var(--loyalty-violet)]"
                 aria-hidden="true"
               />
               <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
-                فروشگاه اصلی
+                پذیرنده
               </span>
             </SelectTrigger>
             <SelectContent>
@@ -506,9 +244,6 @@ function BuyerLoyaltyHeader() {
               </SelectGroup>
             </SelectContent>
           </Select>
-        </div>
-        <div className="min-w-0 md:min-w-40">
-          <DateRangePicker />
         </div>
       </div>
     </header>

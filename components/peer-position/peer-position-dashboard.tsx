@@ -4,7 +4,6 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import {
   ActivityIcon,
   BanIcon,
-  CalendarDaysIcon,
   ChevronDownIcon,
   ClockIcon,
   CoinsIcon,
@@ -28,6 +27,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { PeriodRangePicker } from "@/components/dashboard/period-range-picker";
 import {
   COHORT_ACTIVITY,
   LEADERBOARD,
@@ -36,7 +36,6 @@ import {
   PEER_GROUP_STATS,
   PEER_KEY_INSIGHT,
   PEER_KPIS,
-  PEER_PERIODS,
   PERCENTILE_BARS,
   RADAR_AXES,
   type PeerCriterion,
@@ -145,12 +144,7 @@ function Panel({
 }
 
 function PeerHeader() {
-  const [periodId, setPeriodId] = useState<string>(PEER_PERIODS[0].id);
   const [categoryId, setCategoryId] = useState<string>(PEER_CATEGORIES[0].id);
-
-  function handlePeriodChange(value: string | null) {
-    if (value) setPeriodId(value);
-  }
 
   function handleCategoryChange(value: string | null) {
     if (value) setCategoryId(value);
@@ -174,27 +168,7 @@ function PeerHeader() {
 
       <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
         <div className="min-w-0 sm:min-w-36">
-          <Select value={periodId} onValueChange={handlePeriodChange}>
-            <SelectTrigger
-              className="h-10 w-full border-[var(--peer-line)] bg-card [&>svg:last-child]:text-[var(--peer-violet)]"
-              aria-label="انتخاب بازه زمانی"
-            >
-              <CalendarDaysIcon
-                className="size-4 text-[var(--peer-violet)]"
-                aria-hidden="true"
-              />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--peer-ink)]">
-                بازه
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              {PEER_PERIODS.map((period) => (
-                <SelectItem key={period.id} value={period.id}>
-                  {period.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <PeriodRangePicker />
         </div>
 
         <div className="min-w-0 sm:min-w-36">

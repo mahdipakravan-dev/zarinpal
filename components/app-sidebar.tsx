@@ -21,7 +21,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -79,21 +78,16 @@ type AppSidebarProps = {
 };
 
 function NavGroup({
-  label,
   items,
   activePage,
   onNavigate,
 }: {
-  label: string;
   items: NavItem[];
   activePage: DashboardPage;
   onNavigate: (page: DashboardPage) => void;
 }) {
   return (
     <SidebarGroup className="px-2 py-1">
-      <SidebarGroupLabel className="h-8 px-3 text-xs font-semibold text-sidebar-foreground/55">
-        {label}
-      </SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu className="gap-1">
           {items.map(({ id, label: itemLabel, icon: Icon, page }) => {
@@ -225,7 +219,6 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
       <SidebarContent className="pt-2">
         <nav aria-label="بخش‌های داشبورد">
           <NavGroup
-            label="رشد کسب‌وکار"
             items={growthItems}
             activePage={activePage}
             onNavigate={onNavigate}
