@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type ComponentType, useState } from "react";
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -15,8 +15,14 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { AppSidebar, type DashboardPage } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { PageHeading } from "@/components/dashboard/page-heading";
 import { DashboardHeader } from "@/components/dashboard-header";
+import { BuyerLoyaltyPage } from "@/components/pages/buyer-loyalty-page";
+import { PaymentHealthPage } from "@/components/pages/payment-health-page";
+import { PeerPositionPage } from "@/components/pages/peer-position-page";
+import { SalesPulsePage } from "@/components/pages/sales-pulse-page";
+import { type DashboardPage, PAGE_TITLES } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -56,28 +62,6 @@ const linkRows = [
   ["منتورشیپ فوری", "۶۷۳۹۹", "۵,۰۰۰,۰۰۰", "۰۷ بهمن ۱۴۰۳، ۱۹:۱۷"],
   ["منتورشیپ آموزشی", "۶۷۳۹۲", "۱۰,۰۰۰,۰۰۰", "۰۷ بهمن ۱۴۰۳، ۱۹:۱۳"],
 ] as const;
-
-function PageHeading({
-  title,
-  subtitle,
-  action,
-}: {
-  title: string;
-  subtitle?: string;
-  action?: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold tracking-tight">{title}</h1>
-        {subtitle ? (
-          <p className="text-sm text-muted-foreground">{subtitle}</p>
-        ) : null}
-      </div>
-      {action}
-    </div>
-  );
-}
 
 function SearchInput() {
   return (
@@ -382,23 +366,40 @@ function RowActions() {
   );
 }
 
+const pages: Record<DashboardPage, ComponentType> = {
+  transactions: TransactionsPage,
+  discounts: DiscountsPage,
+  links: LinksPage,
+  "sales-pulse": SalesPulsePage,
+  "buyer-loyalty": BuyerLoyaltyPage,
+  "peer-position": PeerPositionPage,
+  "payment-health": PaymentHealthPage,
+};
+
 export default function Home() {
   const [page, setPage] = useState<DashboardPage>("transactions");
+  const ActivePage = pages[page];
+
+  const handleNavigate = (nextPage: DashboardPage) => {
+    setPage(nextPage);
+    requestAnimationFrame(() => {
+      document.getElementById("dashboard-main")?.focus();
+    });
+  };
 
   return (
     <SidebarProvider>
-      <AppSidebar activePage={page} onNavigate={setPage} />
+      <AppSidebar activePage={page} onNavigate={handleNavigate} />
       <SidebarInset>
         <DashboardHeader />
-        <div className="flex flex-1 flex-col gap-4 p-4 md:p-6">
-          {page === "transactions" ? (
-            <TransactionsPage />
-          ) : page === "discounts" ? (
-            <DiscountsPage />
-          ) : (
-            <LinksPage />
-          )}
-        </div>
+        <main
+          id="dashboard-main"
+          tabIndex={-1}
+          aria-label={PAGE_TITLES[page]}
+          className="flex flex-1 flex-col gap-4 p-4 outline-none md:p-6"
+        >
+          <ActivePage />
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );

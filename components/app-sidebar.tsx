@@ -1,22 +1,29 @@
 "use client";
 
+import type { ComponentType } from "react";
 import {
   ArrowLeftRightIcon,
+  ChartNoAxesColumnIcon,
   ChevronLeftIcon,
+  HeartPulseIcon,
   LayoutDashboardIcon,
   Link2Icon,
   ReceiptIcon,
+  RepeatIcon,
   SettingsIcon,
   TagIcon,
   WalletIcon,
+  WaypointsIcon,
 } from "lucide-react";
 
+import { type DashboardPage } from "@/lib/dashboard";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -24,25 +31,99 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-export type DashboardPage = "transactions" | "discounts" | "links";
+export type { DashboardPage };
 
-const navItems: {
+type NavItem = {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
   page?: DashboardPage;
-}[] = [
+};
+
+const operationItems: NavItem[] = [
   { id: "dashboard", label: "پیشخوان", icon: LayoutDashboardIcon },
-  { id: "transactions", label: "تراکنش‌ها", icon: ArrowLeftRightIcon, page: "transactions" },
+  {
+    id: "transactions",
+    label: "تراکنش‌ها",
+    icon: ArrowLeftRightIcon,
+    page: "transactions",
+  },
   { id: "settlements", label: "تسویه‌حساب", icon: ReceiptIcon },
   { id: "discounts", label: "کدهای تخفیف", icon: TagIcon, page: "discounts" },
   { id: "links", label: "لینک‌های پرداخت", icon: Link2Icon, page: "links" },
+];
+
+const growthItems: NavItem[] = [
+  {
+    id: "sales-pulse",
+    label: "نبض فروش و مناسبت‌ها",
+    icon: HeartPulseIcon,
+    page: "sales-pulse",
+  },
+  {
+    id: "buyer-loyalty",
+    label: "رفتار و وفاداری خریداران",
+    icon: RepeatIcon,
+    page: "buyer-loyalty",
+  },
+  {
+    id: "peer-position",
+    label: "جایگاه در میان کسب‌وکارهای مشابه",
+    icon: ChartNoAxesColumnIcon,
+    page: "peer-position",
+  },
+  {
+    id: "payment-health",
+    label: "سلامت مسیر پرداخت",
+    icon: WaypointsIcon,
+    page: "payment-health",
+  },
 ];
 
 type AppSidebarProps = {
   activePage: DashboardPage;
   onNavigate: (page: DashboardPage) => void;
 };
+
+function NavGroup({
+  label,
+  items,
+  activePage,
+  onNavigate,
+}: {
+  label: string;
+  items: NavItem[];
+  activePage: DashboardPage;
+  onNavigate: (page: DashboardPage) => void;
+}) {
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map(({ id, label: itemLabel, icon: Icon, page }) => {
+            const isActive = page ? activePage === page : false;
+
+            return (
+              <SidebarMenuItem key={id}>
+                <SidebarMenuButton
+                  isActive={isActive}
+                  tooltip={itemLabel}
+                  aria-current={isActive ? "page" : undefined}
+                  className="h-auto min-h-11 items-start py-2 whitespace-normal [&>span:last-child]:overflow-visible [&>span:last-child]:text-wrap [&>span:last-child]:whitespace-normal"
+                  onClick={() => page && onNavigate(page)}
+                >
+                  <Icon className="mt-0.5" />
+                  <span>{itemLabel}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
 
 export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
   return (
@@ -63,23 +144,20 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map(({ id, label, icon: Icon, page }) => (
-                <SidebarMenuItem key={id}>
-                  <SidebarMenuButton
-                    isActive={page ? activePage === page : false}
-                    onClick={() => page && onNavigate(page)}
-                  >
-                    <Icon />
-                    <span>{label}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <nav aria-label="بخش‌های داشبورد">
+          <NavGroup
+            label="رشد کسب‌وکار"
+            items={growthItems}
+            activePage={activePage}
+            onNavigate={onNavigate}
+          />
+          <NavGroup
+            label="عملیات"
+            items={operationItems}
+            activePage={activePage}
+            onNavigate={onNavigate}
+          />
+        </nav>
       </SidebarContent>
 
       <SidebarFooter>
