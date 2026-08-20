@@ -19,7 +19,7 @@ export function DashboardHeader({ compact = false }: { compact?: boolean }) {
       <div
         className={cn(
           "flex items-center justify-between gap-3 px-3",
-          compact ? "h-11" : "h-12 md:px-4"
+          compact ? "h-12" : "h-12 md:px-4"
         )}
       >
         <div className="flex items-center gap-2" dir="ltr">

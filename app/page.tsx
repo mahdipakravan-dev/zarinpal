@@ -405,7 +405,7 @@ export default function Home() {
           aria-label={PAGE_TITLES[page]}
           data-page={page}
           className={cn(
-            "dashboard-shell flex flex-1 flex-col outline-none",
+            "dashboard-shell flex min-h-0 flex-1 flex-col outline-none",
             page === "business-graph"
               ? "gap-3 px-3 pb-3 pt-4 md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6"
               : "gap-2 px-2.5 pb-2.5 pt-3 md:px-3 md:pb-3 md:pt-3.5 xl:px-4 xl:pb-4 xl:pt-4"

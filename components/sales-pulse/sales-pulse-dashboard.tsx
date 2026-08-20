@@ -144,6 +144,8 @@ export function SalesPulseDashboard() {
           headline={SALES_PULSE_INSIGHT.headline}
           bullets={SALES_PULSE_INSIGHT.bullets}
           action={SALES_PULSE_INSIGHT.action}
+          stats={SALES_PULSE_INSIGHT.stats}
+          trend={SALES_PULSE_CUMULATIVE_TREND}
         />
       </section>
 

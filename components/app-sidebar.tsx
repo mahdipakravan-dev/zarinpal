@@ -91,7 +91,7 @@ function NavGroup({
 }) {
   return (
     <SidebarGroup className="px-2 py-1">
-      <SidebarGroupLabel className="h-7 px-3 text-[10px] font-semibold text-sidebar-foreground/55">
+      <SidebarGroupLabel className="h-8 px-3 text-xs font-semibold text-sidebar-foreground/55">
         {label}
       </SidebarGroupLabel>
       <SidebarGroupContent>
@@ -106,13 +106,14 @@ function NavGroup({
                   tooltip={{ children: itemLabel, side: "left" }}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:bg-muted motion-reduce:transition-none",
-                    "data-active:bg-muted data-active:text-sidebar-foreground",
+                    "h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/72 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none",
+                    "data-active:bg-muted data-active:font-semibold data-active:text-sidebar-foreground",
+                    "[&_svg]:size-5!",
                     "group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"
                   )}
                   onClick={() => page && onNavigate(page)}
                 >
-                  <Icon />
+                  <Icon aria-hidden="true" />
                   <span>{itemLabel}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -133,11 +134,11 @@ function SidebarCollapseControl() {
       aria-label={state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار"}
       title={state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار"}
       onClick={toggleSidebar}
-      className="absolute top-1/2 -left-3 z-10 hidden size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_8px_20px_rgba(15,23,42,0.10)] transition-colors duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-border motion-reduce:transition-none md:flex"
+      className="absolute top-1/2 -left-3 z-10 hidden size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_8px_20px_rgba(15,23,42,0.10)] transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-muted hover:shadow-[0_10px_24px_rgba(15,23,42,0.14)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-border active:scale-95 motion-reduce:transition-none md:flex"
     >
       <ChevronLeftIcon
         className={cn(
-          "size-4 transition-transform duration-200 motion-reduce:transition-none",
+          "size-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
           state === "collapsed" && "rotate-180"
         )}
         aria-hidden="true"
@@ -158,23 +159,23 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
     >
       <SidebarCollapseControl />
 
-      <SidebarHeader className="h-11 shrink-0 justify-center gap-0 p-0 px-3 group-data-[collapsible=icon]:px-2">
+      <SidebarHeader className="h-12 shrink-0 justify-center gap-0 p-0 px-3 group-data-[collapsible=icon]:px-2">
         <button
           type="button"
           aria-expanded={accountOpen}
           aria-controls="sidebar-account-menu"
           onClick={() => setAccountOpen((open) => !open)}
-          className="flex h-11 w-full cursor-pointer items-center gap-2.5 rounded-none px-0 text-start transition-colors duration-200 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center"
+          className="flex h-12 w-full cursor-pointer items-center gap-2.5 rounded-none px-0 text-start transition-colors duration-200 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center"
         >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-none text-sidebar-foreground">
-            <WalletIcon />
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-none text-sidebar-foreground">
+            <WalletIcon className="size-5" aria-hidden="true" />
           </div>
           <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-            <p className="truncate text-sm font-bold leading-none text-sidebar-foreground">
+            <p className="truncate text-sm font-bold leading-none text-sidebar-foreground sm:text-[15px]">
               مهدی پاکروان
             </p>
             <p
-              className="mt-1 truncate text-[11px] leading-none text-muted-foreground"
+              className="mt-1.5 truncate text-xs leading-none text-muted-foreground"
               dir="ltr"
             >
               zarinp.al/mahdipakravan
@@ -182,7 +183,7 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
           </div>
           <ChevronDownIcon
             className={cn(
-              "size-4 shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
+              "size-4.5 shrink-0 text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
               accountOpen && "rotate-180"
             )}
             aria-hidden="true"
@@ -195,26 +196,26 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
       <div
         id="sidebar-account-menu"
         className={cn(
-          "grid px-3 transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
+          "grid px-3 transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-data-[collapsible=icon]:hidden",
           accountOpen
-            ? "grid-rows-[1fr] opacity-100"
-            : "grid-rows-[0fr] opacity-0"
+            ? "grid-rows-[1fr] translate-y-0 opacity-100"
+            : "grid-rows-[0fr] -translate-y-1 opacity-0"
         )}
       >
         <div className="min-h-0 overflow-hidden">
-          <div className="flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1 py-1.5">
+          <div className="flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1.5">
             <button
               type="button"
-              className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
+              className="flex h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-start text-sm font-medium text-sidebar-foreground/78 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 active:scale-[0.99] motion-reduce:transition-none"
             >
-              <WalletIcon className="size-3.5" aria-hidden="true" />
+              <WalletIcon className="size-4.5" aria-hidden="true" />
               <span>جزئیات پذیرنده</span>
             </button>
             <button
               type="button"
-              className="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none"
+              className="flex h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-start text-sm font-medium text-sidebar-foreground/78 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 active:scale-[0.99] motion-reduce:transition-none"
             >
-              <SettingsIcon className="size-3.5" aria-hidden="true" />
+              <SettingsIcon className="size-4.5" aria-hidden="true" />
               <span>تنظیمات حساب</span>
             </button>
           </div>
@@ -238,18 +239,18 @@ export function AppSidebar({ activePage, onNavigate }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={{ children: "تنظیمات زرین‌لینک", side: "left" }}
-              className="h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"
+              className="h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/72 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none [&_svg]:size-5! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"
             >
-              <SettingsIcon />
+              <SettingsIcon aria-hidden="true" />
               <span>تنظیمات زرین‌لینک</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={{ children: "خروج", side: "left" }}
-              className="h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/58 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"
+              className="h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/58 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none [&_svg]:size-5! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"
             >
-              <LogOutIcon />
+              <LogOutIcon aria-hidden="true" />
               <span>خروج</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

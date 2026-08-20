@@ -130,6 +130,11 @@ export const SALES_PULSE_INSIGHT = {
     "سهم کارت‌های بازگشتی ۶٫۱ واحد درصدی بالاتر رفت، اما اثر خالص تجزیه رشد منفی بود.",
   ],
   action: "پیشنهاد: کمپین بازگشت مشتری برای ساعات غیرپیک ۱۲:۰۰–۱۵:۰۰ را آزمایش کنید.",
+  stats: [
+    { label: "رشد خالص", value: "+۲۷٪", tone: "good" as const },
+    { label: "اوج ۱۸–۲۱", value: "۳۴٪", tone: "neutral" as const },
+    { label: "کارت بازگشتی", value: "+۶٫۱", tone: "amber" as const },
+  ],
 };
 
 export const SALES_PULSE_CUMULATIVE_TREND: TrendPoint[] = [

@@ -1,6 +1,9 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import {
   CalendarDaysIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   CreditCardIcon,
   InfoIcon,
   RepeatIcon,
@@ -29,9 +32,18 @@ import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const loyaltyTheme = {
   "--loyalty-ink": "#17191d",
@@ -66,6 +78,8 @@ const loyaltyTheme = {
   "--loyalty-teal-alpha": "color-mix(in oklch, #0f9a84 18%, transparent)",
   "--loyalty-muted-line": "#96a3ba",
   "--loyalty-yellow": "#ffd60a",
+  "--loyalty-yellow-soft": "#fff6bf",
+  "--loyalty-yellow-strong": "#d4ad00",
 } as CSSProperties;
 
 const panelClass =
@@ -148,12 +162,6 @@ const metricIconMap: Record<LoyaltyMetricIcon, LucideIcon> = {
   users: UsersIcon,
 };
 
-const primaryMetricIds = new Set([
-  "verified-purchases",
-  "observed-cards",
-  "returning-rate",
-]);
-
 const behaviorArcs = BEHAVIOR_SEGMENTS.reduce<
   Array<BehaviorSegment & { offset: number }>
 >((items, segment) => {
@@ -161,6 +169,260 @@ const behaviorArcs = BEHAVIOR_SEGMENTS.reduce<
 
   return [...items, { ...segment, offset }];
 }, []);
+
+type DateRange = {
+  start: Date;
+  end?: Date;
+};
+
+const calendarWeekdays = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
+const calendarMonthFormatter = new Intl.DateTimeFormat(
+  "fa-IR-u-ca-gregory",
+  { month: "long", year: "numeric" }
+);
+const calendarDayFormatter = new Intl.NumberFormat("fa-IR");
+const compactDateFormatter = new Intl.DateTimeFormat(
+  "fa-IR-u-ca-gregory",
+  { day: "numeric", month: "short" }
+);
+const fullDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function createDefaultDateRange(): DateRange {
+  const end = startOfDay(new Date());
+  const start = new Date(end);
+  start.setMonth(start.getMonth() - 6);
+
+  return { start, end };
+}
+
+function isSameDate(first: Date, second?: Date): boolean {
+  return Boolean(
+    second &&
+      first.getFullYear() === second.getFullYear() &&
+      first.getMonth() === second.getMonth() &&
+      first.getDate() === second.getDate()
+  );
+}
+
+function monthCells(month: Date): Array<Date | null> {
+  const year = month.getFullYear();
+  const monthIndex = month.getMonth();
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+  const leadingBlanks = (new Date(year, monthIndex, 1).getDay() + 1) % 7;
+  const cells: Array<Date | null> = Array.from(
+    { length: leadingBlanks },
+    () => null
+  );
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    cells.push(new Date(year, monthIndex, day));
+  }
+
+  return cells;
+}
+
+function shiftMonth(month: Date, offset: number): Date {
+  return new Date(month.getFullYear(), month.getMonth() + offset, 1);
+}
+
+function DateRangePicker() {
+  const [open, setOpen] = useState(false);
+  const [appliedRange, setAppliedRange] = useState<DateRange>(() =>
+    createDefaultDateRange()
+  );
+  const [draftRange, setDraftRange] = useState<DateRange>(() =>
+    createDefaultDateRange()
+  );
+  const [visibleMonth, setVisibleMonth] = useState(
+    () => new Date(createDefaultDateRange().end ?? new Date())
+  );
+  const cells = monthCells(visibleMonth);
+  const appliedLabel = appliedRange.end
+    ? `${compactDateFormatter.format(appliedRange.start)} – ${compactDateFormatter.format(appliedRange.end)}`
+    : compactDateFormatter.format(appliedRange.start);
+  const selectionLabel = draftRange.end
+    ? `از ${fullDateFormatter.format(draftRange.start)} تا ${fullDateFormatter.format(draftRange.end)}`
+    : `تاریخ شروع: ${fullDateFormatter.format(draftRange.start)}؛ تاریخ پایان را انتخاب کنید`;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+
+    if (nextOpen) {
+      setDraftRange(appliedRange);
+      setVisibleMonth(new Date(appliedRange.end ?? appliedRange.start));
+    }
+  };
+
+  const handleDateSelection = (date: Date) => {
+    if (draftRange.end) {
+      setDraftRange({ start: date });
+      return;
+    }
+
+    if (date < draftRange.start) {
+      setDraftRange({ start: date, end: draftRange.start });
+      return;
+    }
+
+    setDraftRange({ start: draftRange.start, end: date });
+  };
+
+  const handleCancel = () => {
+    setDraftRange(appliedRange);
+    setOpen(false);
+  };
+
+  const handleApply = () => {
+    if (!draftRange.end) return;
+    setAppliedRange(draftRange);
+    setOpen(false);
+  };
+
+  return (
+    <Popover open={open} onOpenChange={handleOpenChange}>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 w-full min-w-0 justify-between"
+            aria-label={`انتخاب بازه زمانی؛ بازه فعلی ${appliedLabel}`}
+          />
+        }
+      >
+        <span className="flex min-w-0 items-center gap-1.5">
+          <CalendarDaysIcon data-icon="inline-start" aria-hidden="true" />
+          <span className="truncate text-xs font-extrabold">{appliedLabel}</span>
+        </span>
+        <ChevronDownIcon data-icon="inline-end" aria-hidden="true" />
+      </PopoverTrigger>
+
+      <PopoverContent
+        align="end"
+        className="w-[min(21rem,calc(100vw-1.5rem))] gap-3 p-3"
+        style={
+          {
+            ...loyaltyTheme,
+            "--primary": "var(--loyalty-yellow)",
+            "--primary-foreground": "var(--loyalty-ink)",
+          } as CSSProperties
+        }
+      >
+        <PopoverTitle className="sr-only">انتخاب بازه زمانی</PopoverTitle>
+        <PopoverDescription className="sr-only">
+          ابتدا تاریخ شروع و سپس تاریخ پایان را از تقویم انتخاب کنید.
+        </PopoverDescription>
+
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-bold text-[var(--loyalty-ink)]">
+            {calendarMonthFormatter.format(visibleMonth)}
+          </p>
+          <div className="flex items-center gap-1" dir="ltr">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setVisibleMonth((month) => shiftMonth(month, -1))}
+            >
+              <ChevronLeftIcon aria-hidden="true" />
+              <span className="sr-only">ماه قبل</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setVisibleMonth((month) => shiftMonth(month, 1))}
+            >
+              <ChevronRightIcon aria-hidden="true" />
+              <span className="sr-only">ماه بعد</span>
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className="grid grid-cols-7 gap-y-1 text-center"
+          role="group"
+          aria-label={calendarMonthFormatter.format(visibleMonth)}
+        >
+          {calendarWeekdays.map((weekday) => (
+            <span
+              key={weekday}
+              className="flex h-8 items-center justify-center text-xs font-semibold text-[var(--loyalty-subtle)]"
+              aria-hidden="true"
+            >
+              {weekday}
+            </span>
+          ))}
+          {cells.map((date, index) => {
+            if (!date) {
+              return (
+                <span
+                  key={`blank-${index}`}
+                  className="size-9"
+                  aria-hidden="true"
+                />
+              );
+            }
+
+            const isStart = isSameDate(date, draftRange.start);
+            const isEnd = isSameDate(date, draftRange.end);
+
+            return (
+              <button
+                key={date.toISOString()}
+                type="button"
+                className={cn(
+                  "mx-auto flex size-9 cursor-pointer items-center justify-center rounded-full border border-transparent text-sm font-medium text-[var(--loyalty-ink)] outline-none transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-[var(--loyalty-yellow-soft)] focus-visible:ring-2 focus-visible:ring-[var(--loyalty-yellow-strong)] focus-visible:ring-offset-2 active:scale-95 motion-reduce:transition-none",
+                  isStart &&
+                    "border-[var(--loyalty-yellow)] bg-[var(--loyalty-yellow)] font-extrabold",
+                  isEnd &&
+                    !isStart &&
+                    "border-[var(--loyalty-yellow-strong)] bg-card font-extrabold"
+                )}
+                onClick={() => handleDateSelection(date)}
+                aria-label={fullDateFormatter.format(date)}
+                aria-pressed={isStart || isEnd}
+              >
+                {calendarDayFormatter.format(date.getDate())}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-[var(--loyalty-line)] pt-3">
+          <p
+            className="min-h-5 text-xs leading-5 text-[var(--loyalty-subtle)]"
+            role="status"
+            aria-live="polite"
+          >
+            {selectionLabel}
+          </p>
+          <div className="flex items-center justify-end gap-2">
+            <Button type="button" variant="ghost" size="sm" onClick={handleCancel}>
+              انصراف
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              disabled={!draftRange.end}
+              onClick={handleApply}
+            >
+              اعمال بازه
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 function formatChartPercent(value: number): string {
   return formatPersianPercent(value);
@@ -181,7 +443,7 @@ function Panel({
     <article
       className={cn(
         panelClass,
-        "flex flex-col gap-2 p-2.5 sm:gap-2.5 sm:p-3",
+        "flex h-full min-h-0 flex-col gap-2 p-2.5 sm:gap-2.5 sm:p-3",
         className
       )}
     >
@@ -201,11 +463,10 @@ function Panel({
 }
 
 function BuyerLoyaltyHeader() {
-  const [merchantId, setMerchantId] = useState("merchant");
-  const [periodId, setPeriodId] = useState("period");
+  const [merchantId, setMerchantId] = useState("main-store");
 
   return (
-    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+    <header className="flex shrink-0 flex-col gap-3 border-b border-[var(--loyalty-line)] pb-3 md:flex-row md:items-center md:justify-between">
       <div className="flex min-w-0 items-center gap-2.5">
         <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)] sm:size-11">
           <UsersIcon className="size-5" aria-hidden="true" />
@@ -220,50 +481,34 @@ function BuyerLoyaltyHeader() {
         </div>
       </div>
 
-      <div className="grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]">
-        <div className="min-w-0 sm:min-w-36">
+      <div className="grid w-full shrink-0 grid-cols-2 gap-2 md:w-auto md:min-w-[21rem]">
+        <div className="min-w-0 md:min-w-40">
           <Select
             value={merchantId}
             onValueChange={(value) => value && setMerchantId(value)}
           >
             <SelectTrigger
-              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
+              className="h-9 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
               aria-label="انتخاب پذیرنده برای تحلیل وفاداری"
             >
               <StoreIcon
-                className="size-4 text-[var(--loyalty-violet)]"
+                className="text-[var(--loyalty-violet)]"
                 aria-hidden="true"
               />
               <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
-                پذیرنده
+                فروشگاه اصلی
               </span>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="merchant">پذیرنده</SelectItem>
+              <SelectGroup>
+                <SelectItem value="main-store">فروشگاه اصلی</SelectItem>
+                <SelectItem value="all-stores">همه پذیرنده‌ها</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        <div className="min-w-0 sm:min-w-36">
-          <Select
-            value={periodId}
-            onValueChange={(value) => value && setPeriodId(value)}
-          >
-            <SelectTrigger
-              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
-              aria-label="انتخاب بازه زمانی تحلیل وفاداری"
-            >
-              <CalendarDaysIcon
-                className="size-4 text-[var(--loyalty-violet)]"
-                aria-hidden="true"
-              />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
-                بازه
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="period">بازه</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="min-w-0 md:min-w-40">
+          <DateRangePicker />
         </div>
       </div>
     </header>
@@ -275,33 +520,47 @@ function MetricCard({ metric }: { metric: (typeof BUYER_LOYALTY_METRICS)[number]
   const styles = toneStyles[metric.tone];
 
   return (
-    <article className={cn(panelClass, "flex items-start justify-between gap-2 p-2.5")}>
+    <article className={cn(panelClass, "flex h-full min-h-28 flex-col justify-between gap-2.5 p-3")}>
+      <div className="flex min-w-0 items-start justify-between gap-2">
+        <h2 className="text-xs font-semibold leading-4 text-[var(--loyalty-ink)]">
+          {metric.label}
+        </h2>
+        <div
+          className={cn(
+            "flex size-8 shrink-0 items-center justify-center rounded-md border",
+            styles.border,
+            styles.soft,
+            styles.text
+          )}
+        >
+          <Icon className="size-4" aria-hidden="true" />
+        </div>
+      </div>
       <div className="flex min-w-0 flex-col gap-1">
-        <h2 className="text-[11px] font-semibold leading-4 text-[var(--loyalty-ink)]">{metric.label}</h2>
-        <p className={cn("text-lg font-extrabold leading-none tracking-tight sm:text-xl", styles.text)}>
+        <p className={cn("text-xl font-extrabold leading-none tracking-tight sm:text-2xl", styles.text)}>
           {metric.value}
         </p>
-        <p className="text-[11px] text-[var(--loyalty-subtle)]">{metric.caption}</p>
-      </div>
-      <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-md border", styles.border, styles.text)}>
-        <Icon className="size-3.5" aria-hidden="true" />
+        <p className="text-[10px] text-[var(--loyalty-subtle)]">
+          {metric.caption}
+        </p>
       </div>
     </article>
   );
 }
 
 function MetricStrip() {
-  const metrics = BUYER_LOYALTY_METRICS.filter((metric) =>
-    primaryMetricIds.has(metric.id)
-  );
-
   return (
     <section
       aria-label="شاخص‌های خلاصه وفاداری"
-      className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5"
+      className="grid shrink-0 grid-cols-2 gap-2 lg:grid-cols-5"
     >
-      {metrics.map((metric) => (
-        <MetricCard key={metric.id} metric={metric} />
+      {BUYER_LOYALTY_METRICS.map((metric, index) => (
+        <div
+          key={metric.id}
+          className={cn(index === BUYER_LOYALTY_METRICS.length - 1 && "col-span-2 lg:col-span-1")}
+        >
+          <MetricCard metric={metric} />
+        </div>
       ))}
     </section>
   );
@@ -314,11 +573,11 @@ function BehaviorDonutCard({ className }: { className?: string }) {
       title="تقسیم‌بندی کارت‌ها بر اساس رفتار"
       description="سهم کارت‌های مشاهده‌شده در هر وضعیت رفتاری"
     >
-      <figure className="grid flex-1 items-center gap-2.5">
+      <figure className="flex min-h-0 flex-1 flex-col justify-center gap-3">
         <figcaption className="sr-only">
           توزیع کارت‌های یکتا بر اساس رفتار خرید و بازگشت.
         </figcaption>
-        <div className="relative mx-auto flex size-36 items-center justify-center">
+        <div className="relative mx-auto flex size-44 items-center justify-center sm:size-52">
           <svg
             viewBox="0 0 120 120"
             className="size-full -rotate-90 motion-reduce:rotate-0"
@@ -347,28 +606,36 @@ function BehaviorDonutCard({ className }: { className?: string }) {
               />
             ))}
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
-            <span className="text-lg font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+            <span className="text-xl font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-2xl">
               ۳۹۶,۳۶۵
             </span>
-            <span className="mt-1 text-[11px] text-[var(--loyalty-subtle)]">
+            <span className="mt-1.5 text-xs text-[var(--loyalty-subtle)]">
               کارت یکتا
             </span>
           </div>
         </div>
-        <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
+        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1">
           {BEHAVIOR_SEGMENTS.map((segment) => (
-            <li key={segment.label} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-xs">
-              <span className={cn("size-3 rounded-sm", toneStyles[segment.tone].bg)} aria-hidden="true" />
-              <span className="min-w-0 truncate text-[var(--loyalty-ink)]">{segment.label}</span>
-              <span className="tabular-nums text-[var(--loyalty-subtle)]">
+            <li
+              key={segment.label}
+              className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-[var(--loyalty-line)] bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs"
+            >
+              <span
+                className={cn("size-3 rounded-sm", toneStyles[segment.tone].bg)}
+                aria-hidden="true"
+              />
+              <span className="min-w-0 truncate text-[var(--loyalty-ink)]">
+                {segment.label}
+              </span>
+              <span className="tabular-nums font-semibold text-[var(--loyalty-subtle)]">
                 {formatChartPercent(segment.share)}
               </span>
             </li>
           ))}
         </ul>
       </figure>
-      <p className="border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
+      <p className="shrink-0 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
         در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده
         است.
       </p>
@@ -378,8 +645,8 @@ function BehaviorDonutCard({ className }: { className?: string }) {
 
 function buildChartPoints(values: number[], labels: string[], max: number) {
   const width = 460;
-  const height = 120;
-  const top = 16;
+  const height = 240;
+  const top = 22;
   const left = 40;
   const xStep = width / Math.max(labels.length - 1, 1);
 
@@ -406,8 +673,8 @@ function TrendChart({
     ...item,
     points: buildChartPoints(item.values, labels, max),
   }));
-  const plotBottom = 136;
-  const viewHeight = 158;
+  const plotBottom = 262;
+  const viewHeight = 290;
 
   return (
     <figure className="flex min-h-0 flex-1 flex-col justify-center gap-2">
@@ -432,13 +699,13 @@ function TrendChart({
       </div>
       <svg
         viewBox={`0 0 520 ${viewHeight}`}
-        className="h-auto w-full"
+        className="h-auto min-h-[15rem] w-full flex-1"
         role="img"
         aria-label={title}
       >
         <g aria-hidden="true">
           {[0, 10, 20, 30, 40].map((tick) => {
-            const y = plotBottom - (tick / max) * 120;
+            const y = plotBottom - (tick / max) * 240;
 
             return (
               <g key={tick}>
@@ -543,7 +810,7 @@ function TrendChart({
 function SecondPurchaseCard({ className }: { className?: string }) {
   return (
     <Panel
-      className={cn("h-full", className)}
+      className={className}
       title="نرخ خرید دوم یا بعدی در بازه‌های زمانی"
       description="از بین کارت‌های اولین‌بار مشاهده‌شده"
     >
@@ -553,6 +820,9 @@ function SecondPurchaseCard({ className }: { className?: string }) {
         series={SECOND_PURCHASE_SERIES}
         title="نمودار نرخ خرید دوم یا بعدی در روزهای ۷، ۳۰، ۶۰ و ۹۰"
       />
+      <p className="shrink-0 border-s-2 border-[var(--loyalty-amber)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
+        نرخ بازگشت ۹۰ روزه، ۱۰ واحد درصد پایین‌تر از میانه همتایان است.
+      </p>
     </Panel>
   );
 }
@@ -569,12 +839,12 @@ function cohortCellStyle(value: number): CSSProperties {
 function RetentionCohortCard({ className }: { className?: string }) {
   return (
     <Panel
-      className={cn("h-full", className)}
+      className={className}
       title="Retention Cohort بر اساس ماه اولین مشاهده"
       description="درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند"
     >
       <div className="flex min-h-0 flex-1 flex-col justify-center overflow-x-auto">
-        <table className="w-full min-w-[24rem] border-separate border-spacing-0 text-center text-xs">
+        <table className="w-full min-w-[24rem] border-separate border-spacing-0 text-center text-sm">
           <caption className="sr-only">
             جدول cohort نگهداشت کارت‌ها بر اساس ماه اولین مشاهده و بازگشت در روزهای
             ۷، ۳۰، ۶۰ و ۹۰.
@@ -583,7 +853,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
             <tr>
               <th
                 scope="col"
-                className="px-1.5 py-1 text-start font-medium text-[var(--loyalty-subtle)]"
+                className="px-2 py-2.5 text-start text-xs font-medium text-[var(--loyalty-subtle)]"
               >
                 ماه اول مشاهده
               </th>
@@ -591,7 +861,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
                 <th
                   key={header}
                   scope="col"
-                  className="px-1.5 py-1 font-medium text-[var(--loyalty-subtle)]"
+                  className="px-2 py-2.5 text-xs font-medium text-[var(--loyalty-subtle)]"
                 >
                   {header}
                 </th>
@@ -603,14 +873,14 @@ function RetentionCohortCard({ className }: { className?: string }) {
               <tr key={row.month}>
                 <th
                   scope="row"
-                  className="border-t border-[var(--loyalty-line)] px-1.5 py-1.5 text-start font-medium text-[var(--loyalty-ink)]"
+                  className="border-t border-[var(--loyalty-line)] px-2 py-3 text-start text-xs font-medium text-[var(--loyalty-ink)] sm:text-sm"
                 >
                   {row.month}
                 </th>
                 {row.values.map((value, index) => (
                   <td
                     key={`${row.month}-${COHORT_HEADERS[index]}`}
-                    className="border-t border-white px-1.5 py-1.5 font-bold tabular-nums"
+                    className="border-t border-white px-2 py-3 text-xs font-bold tabular-nums sm:text-sm"
                     style={value === null ? undefined : cohortCellStyle(value)}
                   >
                     {value === null ? "–" : formatChartPercent(value)}
@@ -621,7 +891,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
           </tbody>
         </table>
       </div>
-      <p className="flex items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
+      <p className="flex shrink-0 items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
         <InfoIcon
           className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]"
           aria-hidden="true"
@@ -634,7 +904,7 @@ function RetentionCohortCard({ className }: { className?: string }) {
 
 function DataScopeNote() {
   return (
-    <p className="flex items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs">
+    <p className="flex shrink-0 items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs">
       <ShieldCheckIcon
         className="mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-violet)]"
         aria-hidden="true"
@@ -650,19 +920,22 @@ function DataScopeNote() {
 export function BuyerLoyaltyDashboard() {
   return (
     <div
-      className="flex flex-col gap-2 text-[var(--loyalty-ink)]"
+      className="flex min-h-0 flex-1 flex-col gap-2.5 text-[var(--loyalty-ink)]"
       style={loyaltyTheme}
     >
       <BuyerLoyaltyHeader />
-      <MetricStrip />
-
       <section
-        aria-label="تحلیل نگهداشت و فاصله خرید"
-        className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-2 xl:grid-cols-12"
+        aria-label="نمای کلی و تحلیل وفاداری"
+        className="grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 xl:grid-cols-12 xl:items-stretch"
       >
-        <RetentionCohortCard className="xl:col-span-5" />
-        <SecondPurchaseCard className="xl:col-span-4" />
-        <BehaviorDonutCard className="h-full xl:col-span-3" />
+        <div className="flex min-h-0 min-w-0 flex-col gap-2.5 xl:col-span-9">
+          <MetricStrip />
+          <div className="grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 lg:grid-cols-9 lg:items-stretch">
+            <RetentionCohortCard className="min-h-[22rem] lg:col-span-5" />
+            <SecondPurchaseCard className="min-h-[22rem] lg:col-span-4" />
+          </div>
+        </div>
+        <BehaviorDonutCard className="min-h-[22rem] xl:col-span-3" />
       </section>
 
       <DataScopeNote />

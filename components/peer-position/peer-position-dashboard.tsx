@@ -128,7 +128,7 @@ function Panel({
 }) {
   return (
     <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3", className)}>
-      <header className="flex flex-col gap-0.5">
+      <header className="flex shrink-0 flex-col gap-0.5">
         <h2
           id={headingId}
           className="text-sm font-bold text-[var(--peer-ink)] sm:text-base"
@@ -489,6 +489,7 @@ function RadarChart() {
 
   return (
     <Panel
+      className="h-full"
       title="نمای کلی عملکرد"
       description="مقایسه نرمال‌شده شاخص‌ها (۰ بدتر — ۱۰ بهتر)"
       headingId="peer-radar-heading"
@@ -510,7 +511,7 @@ function RadarChart() {
         </li>
       </ul>
 
-      <figure className="mx-auto w-full max-w-md">
+      <figure className="mx-auto flex w-full max-w-md flex-1 items-center">
         <figcaption className="sr-only">
           نمودار رادار مقایسه شما با میانه گروه در هشت شاخص نرمال‌شده.
           {RADAR_AXES.map(
@@ -589,9 +590,9 @@ function RadarChart() {
 
 function CohortCurve() {
   const width = 320;
-  const height = 140;
+  const height = 112;
   const paddingX = 12;
-  const paddingY = 16;
+  const paddingY = 14;
   const values = COHORT_ACTIVITY.curve;
   const max = Math.max(...values);
   const points = values.map((value, index) => {
@@ -608,19 +609,19 @@ function CohortCurve() {
   const marker = points[markerIndex] ?? points[points.length - 1];
 
   return (
-    <figure className="flex flex-col gap-2.5">
+    <figure className="flex flex-col gap-2">
       <figcaption className="sr-only">
         توزیع پذیرندگان در cohort فعالیتی؛ جایگاه شما صدک{" "}
         {toPersianDigits(COHORT_ACTIVITY.yourPercentile)}.
       </figcaption>
-      <div className="flex items-start justify-between gap-2.5">
+      <div className="flex items-end justify-between gap-2">
         <div>
           <p className="text-xs text-[var(--peer-subtle)]">جایگاه شما</p>
           <p className="text-[11px] text-[var(--peer-subtle)]">درصد پذیرندگان</p>
-          <p className="mt-1 text-3xl font-extrabold text-[var(--peer-violet)]">
-            {toPersianDigits(COHORT_ACTIVITY.yourPercentile)}٪
-          </p>
         </div>
+        <p className="text-2xl font-extrabold tabular-nums text-[var(--peer-violet)]">
+          {toPersianDigits(COHORT_ACTIVITY.yourPercentile)}٪
+        </p>
       </div>
       <svg
         viewBox={`0 0 ${width} ${height}`}
@@ -687,7 +688,7 @@ function Leaderboard() {
   } as const;
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
       <div>
         <h3 className="text-sm font-bold text-[var(--peer-ink)]">
           پذیرندگان برتر گروه شما
@@ -696,12 +697,12 @@ function Leaderboard() {
           بر اساس ترکیب چند شاخص کلیدی
         </p>
       </div>
-      <ol className="flex flex-col gap-2">
+      <ol className="flex flex-1 flex-col justify-between gap-1.5">
         {LEADERBOARD.map((row) => (
           <li
             key={row.id}
             className={cn(
-              "flex min-h-11 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm",
+              "flex min-h-10 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm",
               row.isYou
                 ? "border-[var(--peer-violet)] bg-card"
                 : "border-[var(--peer-line)] bg-card"
@@ -734,12 +735,12 @@ function Leaderboard() {
 function CohortLeaderboardSection() {
   return (
     <Panel
-      className="self-start"
+      className="h-full"
       title="مقایسه در Cohort فعالیتی شما"
       description={`ساعت اوج خرید شما: ${COHORT_ACTIVITY.peakHours}`}
       headingId="peer-cohort-heading"
     >
-      <div className="grid gap-2.5 md:grid-cols-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-2.5">
         <CohortCurve />
         <Leaderboard />
       </div>
@@ -818,7 +819,7 @@ export function PeerPositionDashboard() {
           <KpiGrid />
           <section
             aria-label="نمودارهای مقایسه‌ای"
-            className="grid grid-cols-1 gap-2 md:grid-cols-2"
+            className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-2"
           >
             <RadarChart />
             <CohortLeaderboardSection />

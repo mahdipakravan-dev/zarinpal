@@ -1,5 +1,5 @@
 import { c as __toESM, n as require_jsx_runtime, o as require_react, t as require_react_dom } from "../index.js";
-import { $ as createAttribute, $t as getNodeAncestors, A as useOpenStateTransitions, An as useRenderElement, At as AnimationFrame, B as platform, Bt as isTabbable, C as PopupTriggerMap, Cn as isElement, Ct as triggerPress, D as createDefaultInitialFocus, Dn as isShadowRoot, Dt as useOpenChangeComplete, E as attachPreventUnmountOnClose, En as isOverflowElement, Et as transitionStatusMapping, F as useSyncedFloatingRootContext, Fn as useMergedRefs, Ft as getNextTabbable, G as useFloatingParentNodeId, Gt as isElementVisible, H as FloatingNode, Hn as createLucideIcon, Ht as findNonDisabledListIndex, I as ReactStore, In as useRefWithInit, It as getPreviousTabbable, J as FloatingPortal, Jt as rectToClientRect, K as useFloatingTree, Kt as isIndexOutOfListBounds, L as useStore, Ln as formatErrorMessage, Lt as getTabbableAfterElement, M as usePopupRootStore, Mn as EMPTY_OBJECT, Mt as Timeout, N as usePopupRootSync, Nn as NOOP, Nt as useTimeout, O as setPopupOpenState, On as cn, Ot as useAnimationsFinished, P as useTriggerDataForwarding, Pn as isReactVersionAtLeast, Pt as focusable, Q as POPUP_COLLISION_AVOIDANCE, Qt as stopEvent, R as fastComponent, Rn as makeEventPreventable, Rt as getTabbableBeforeElement, S as popupStoreSelectors, Sn as getWindow, T as PopupHandleAttachment, Tn as isLastTraversableNode, Tt as useTransitionStatus, U as FloatingTree, Ut as getMaxListIndex, V as useDismiss, Vn as toast, Vt as tabbable, W as useFloatingNodeId, Wt as getMinListIndex, Xt as isVirtualClick, Y as usePortalContext, Yt as isMouseLikePointerType, Z as DROPDOWN_COLLISION_AVOIDANCE, Zt as isVirtualPointerEvent, _ as useFocus, _n as ownerDocument, _t as listNavigation, a as Tooltip, an as contains, at as addEventListener, b as createInitialPopupStoreState, bn as getNodeName, bt as siblingOpen, c as TooltipTrigger, cn as ARROW_LEFT$1, ct as pressableTriggerOpenStateMapping, d as useAnchorPositioning, dn as jsdom, dt as cancelOpen, en as getNodeChildren, et as FocusGuard, fn as webkit, ft as closePress, g as useHoverFloatingInteraction, gn as useId, gt as itemPress, h as useHoverReferenceInteraction, hn as useBaseUiId, ht as imperativeAction, i as LoaderCircle, in as activeElement, it as mergeCleanups, j as usePopupInteractionProps, jn as EMPTY_ARRAY, jt as useAnimationFrame, k as useImplicitActiveTrigger, kn as clsx, kt as resolveRef, l as usePositioner, ln as ARROW_RIGHT$1, lt as triggerOpenStateMapping, m as safePolygon, mn as mac, mt as focusOut, n as Info, nn as isTypeableCombobox, nt as visuallyHiddenInput, o as TooltipContent, on as getTarget, ot as popupStateMapping, p as useDirection, pn as ios, q as FloatingTreeStore, qt as isListIndexDisabled, r as TriangleAlert, rn as isTypeableElement, rt as useValueAsRef, sn as ARROW_DOWN$1, st as popupTransitionStateMapping, t as CircleCheck, tn as getFloatingFocusElement, tt as visuallyHidden, u as getDisabledMountTransitionStyles, un as ARROW_UP$1, ut as createChangeEventDetails, v as useFloatingRootContext, vn as useIsoLayoutEffect, vt as none, w as FOCUSABLE_POPUP_PROPS, wn as isHTMLElement, wt as windowResize, x as createPopupFloatingRootContext, xn as getParentNode, y as usePopupHandleStore, yn as useStableCallback, z as fastComponentRef, zn as mergeProps, zt as isOutsideEvent } from "./circle-check-BcK4MAq6.js";
+import { $ as createAttribute, $t as getNodeAncestors, A as useOpenStateTransitions, An as useRenderElement, At as AnimationFrame, B as platform, Bt as isTabbable, C as PopupTriggerMap, Cn as isElement, Ct as triggerPress, D as createDefaultInitialFocus, Dn as isShadowRoot, Dt as useOpenChangeComplete, E as attachPreventUnmountOnClose, En as isOverflowElement, Et as transitionStatusMapping, F as useSyncedFloatingRootContext, Fn as useMergedRefs, Ft as getNextTabbable, G as useFloatingParentNodeId, Gt as isElementVisible, H as FloatingNode, Hn as createLucideIcon, Ht as findNonDisabledListIndex, I as ReactStore, In as useRefWithInit, It as getPreviousTabbable, J as FloatingPortal, Jt as rectToClientRect, K as useFloatingTree, Kt as isIndexOutOfListBounds, L as useStore, Ln as formatErrorMessage, Lt as getTabbableAfterElement, M as usePopupRootStore, Mn as EMPTY_OBJECT, Mt as Timeout, N as usePopupRootSync, Nn as NOOP, Nt as useTimeout, O as setPopupOpenState, On as cn, Ot as useAnimationsFinished, P as useTriggerDataForwarding, Pn as isReactVersionAtLeast, Pt as focusable, Q as POPUP_COLLISION_AVOIDANCE, Qt as stopEvent, R as fastComponent, Rn as makeEventPreventable, Rt as getTabbableBeforeElement, S as popupStoreSelectors, Sn as getWindow, St as triggerHover, T as PopupHandleAttachment, Tn as isLastTraversableNode, Tt as useTransitionStatus, U as FloatingTree, Ut as getMaxListIndex, V as useDismiss, Vn as toast, Vt as tabbable, W as useFloatingNodeId, Wt as getMinListIndex, X as CLICK_TRIGGER_IDENTIFIER, Xt as isVirtualClick, Y as usePortalContext, Yt as isMouseLikePointerType, Z as DROPDOWN_COLLISION_AVOIDANCE, Zt as isVirtualPointerEvent, _ as useFocus, _n as ownerDocument, _t as listNavigation, a as Tooltip, an as contains, at as addEventListener, b as createInitialPopupStoreState, bn as getNodeName, bt as siblingOpen, c as TooltipTrigger, cn as ARROW_LEFT$1, ct as pressableTriggerOpenStateMapping, d as useAnchorPositioning, dn as jsdom, dt as cancelOpen, en as getNodeChildren, et as FocusGuard, fn as webkit, ft as closePress, g as useHoverFloatingInteraction, gn as useId, gt as itemPress, h as useHoverReferenceInteraction, hn as useBaseUiId, ht as imperativeAction, i as LoaderCircle, in as activeElement, it as mergeCleanups, j as usePopupInteractionProps, jn as EMPTY_ARRAY, jt as useAnimationFrame, k as useImplicitActiveTrigger, kn as clsx, kt as resolveRef, l as usePositioner, ln as ARROW_RIGHT$1, lt as triggerOpenStateMapping, m as safePolygon, mn as mac, mt as focusOut, n as Info, nn as isTypeableCombobox, nt as visuallyHiddenInput, o as TooltipContent, on as getTarget, ot as popupStateMapping, p as useDirection, pn as ios, q as FloatingTreeStore, qt as isListIndexDisabled, r as TriangleAlert, rn as isTypeableElement, rt as useValueAsRef, sn as ARROW_DOWN$1, st as popupTransitionStateMapping, t as CircleCheck, tn as getFloatingFocusElement, tt as visuallyHidden, u as getDisabledMountTransitionStyles, un as ARROW_UP$1, ut as createChangeEventDetails, v as useFloatingRootContext, vn as useIsoLayoutEffect, vt as none, w as FOCUSABLE_POPUP_PROPS, wn as isHTMLElement, wt as windowResize, x as createPopupFloatingRootContext, xn as getParentNode, y as usePopupHandleStore, yn as useStableCallback, z as fastComponentRef, zn as mergeProps, zt as isOutsideEvent } from "./circle-check-BS0cIZDz.js";
 //#region node_modules/lucide-react/dist/esm/icons/check.mjs
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 /**
@@ -2739,7 +2739,7 @@ function DialogInteractions({ store, parentContext, isDrawer }) {
 }
 //#endregion
 //#region node_modules/@base-ui/react/dialog/store/DialogStore.mjs
-var selectors$2 = {
+var selectors$3 = {
 	...popupStoreSelectors,
 	modal: (state) => state.modal,
 	nested: (state) => state.nested,
@@ -2760,8 +2760,8 @@ var selectors$2 = {
 var DialogStore = class extends ReactStore {
 	constructor(initialState, floatingId, nested) {
 		const triggerElements = new PopupTriggerMap();
-		const state = createInitialState$1(initialState, triggerElements, floatingId, nested);
-		super(state, createInitialContext$1(triggerElements), selectors$2);
+		const state = createInitialState$2(initialState, triggerElements, floatingId, nested);
+		super(state, createInitialContext$2(triggerElements), selectors$3);
 	}
 	setOpen = (nextOpen, eventDetails) => {
 		eventDetails.preventUnmountOnClose = () => {
@@ -2776,7 +2776,7 @@ var DialogStore = class extends ReactStore {
 		this.update(updatedState);
 	};
 };
-function createInitialState$1(initialState, triggerElements, floatingId, nested = false) {
+function createInitialState$2(initialState, triggerElements, floatingId, nested = false) {
 	const state = {
 		...createInitialPopupStoreState(),
 		modal: true,
@@ -2794,7 +2794,7 @@ function createInitialState$1(initialState, triggerElements, floatingId, nested 
 	state.floatingRootContext = createPopupFloatingRootContext(triggerElements, floatingId, nested);
 	return state;
 }
-function createInitialContext$1(triggerElements) {
+function createInitialContext$2(triggerElements) {
 	return {
 		popupRef: /* @__PURE__ */ import_react.createRef(),
 		backdropRef: /* @__PURE__ */ import_react.createRef(),
@@ -2972,7 +2972,7 @@ function SheetPortal({ ...props }) {
 function SheetOverlay({ className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogBackdrop, {
 		"data-slot": "sheet-overlay",
-		className: cn("fixed inset-0 z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs", className),
+		className: cn("fixed inset-0 z-50 bg-black/10 transition-opacity duration-300 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs motion-reduce:transition-none motion-reduce:duration-0", className),
 		...props
 	});
 }
@@ -2980,7 +2980,7 @@ function SheetContent({ className, children, side = "right", showCloseButton = t
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SheetPortal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPopup, {
 		"data-slot": "sheet-content",
 		"data-side": side,
-		className: cn("fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg transition duration-200 ease-in-out data-ending-style:opacity-0 data-starting-style:opacity-0 data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=bottom]:data-ending-style:translate-y-[2.5rem] data-[side=bottom]:data-starting-style:translate-y-[2.5rem] data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-e data-[side=left]:data-ending-style:translate-x-[-2.5rem] rtl:data-[side=left]:data-ending-style:-translate-x-[-2.5rem] data-[side=left]:data-starting-style:translate-x-[-2.5rem] rtl:data-[side=left]:data-starting-style:-translate-x-[-2.5rem] data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-s data-[side=right]:data-ending-style:translate-x-[2.5rem] rtl:data-[side=right]:data-ending-style:-translate-x-[2.5rem] data-[side=right]:data-starting-style:translate-x-[2.5rem] rtl:data-[side=right]:data-starting-style:-translate-x-[2.5rem] data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=top]:data-ending-style:translate-y-[-2.5rem] data-[side=top]:data-starting-style:translate-y-[-2.5rem] data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm", className),
+		className: cn("fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg transition-[transform,opacity] duration-300 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0 data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=bottom]:data-ending-style:translate-y-[2.5rem] data-[side=bottom]:data-starting-style:translate-y-[2.5rem] data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-e data-[side=left]:data-ending-style:translate-x-[-2.5rem] rtl:data-[side=left]:data-ending-style:-translate-x-[-2.5rem] data-[side=left]:data-starting-style:translate-x-[-2.5rem] rtl:data-[side=left]:data-starting-style:-translate-x-[-2.5rem] data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-s data-[side=right]:data-ending-style:translate-x-[2.5rem] rtl:data-[side=right]:data-ending-style:-translate-x-[2.5rem] data-[side=right]:data-starting-style:translate-x-[2.5rem] rtl:data-[side=right]:data-starting-style:-translate-x-[2.5rem] data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=top]:data-ending-style:translate-y-[-2.5rem] data-[side=top]:data-starting-style:translate-y-[-2.5rem] data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm motion-reduce:transition-none motion-reduce:duration-0", className),
 		...props,
 		children: [children, showCloseButton && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogClose, {
 			"data-slot": "sheet-close",
@@ -3165,16 +3165,16 @@ function Sidebar({ side = "left", variant = "sidebar", collapsible = "offcanvas"
 		"data-slot": "sidebar",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			"data-slot": "sidebar-gap",
-			className: cn("relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear", "group-data-[collapsible=offcanvas]:w-0", "group-data-[side=right]:rotate-180", variant === "floating" || variant === "inset" ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]" : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)")
+			className: cn("relative w-(--sidebar-width) bg-transparent transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none", "group-data-[collapsible=offcanvas]:w-0", "group-data-[side=right]:rotate-180", variant === "floating" || variant === "inset" ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]" : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)")
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			"data-slot": "sidebar-container",
 			"data-side": side,
-			className: cn("fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex", variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]" : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-e group-data-[side=right]:border-s", className),
+			className: cn("fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex", variant === "floating" || variant === "inset" ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]" : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-e group-data-[side=right]:border-s", className),
 			...props,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				"data-sidebar": "sidebar",
 				"data-slot": "sidebar-inner",
-				className: "flex size-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border",
+				className: "flex size-full flex-col bg-sidebar transition-[border-radius,box-shadow] duration-300 ease-out group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border motion-reduce:transition-none",
 				children
 			})
 		})]
@@ -3249,7 +3249,7 @@ function SidebarGroup({ className, ...props }) {
 function SidebarGroupLabel({ className, render, ...props }) {
 	return useRender({
 		defaultTagName: "div",
-		props: mergeProps({ className: cn("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0", className) }, props),
+		props: mergeProps({ className: cn("flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:translate-x-1 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 motion-reduce:transition-none [&>svg]:size-4 [&>svg]:shrink-0", className) }, props),
 		render,
 		state: {
 			slot: "sidebar-group-label",
@@ -3281,7 +3281,7 @@ function SidebarMenuItem({ className, ...props }) {
 		...props
 	});
 }
-var sidebarMenuButtonVariants = cva("peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate", {
+var sidebarMenuButtonVariants = cva("peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding,background-color,color,transform] duration-200 ease-out group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground motion-reduce:transition-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:transition-transform [&_svg]:duration-200 [&>span:last-child]:truncate", {
 	variants: {
 		variant: {
 			default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -3361,7 +3361,7 @@ function NavGroup({ label, items, activePage, onNavigate }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarGroup, {
 		className: "px-2 py-1",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupLabel, {
-			className: "h-7 px-3 text-[10px] font-semibold text-sidebar-foreground/55",
+			className: "h-8 px-3 text-xs font-semibold text-sidebar-foreground/55",
 			children: label
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarGroupContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenu, {
 			className: "gap-1",
@@ -3374,9 +3374,9 @@ function NavGroup({ label, items, activePage, onNavigate }) {
 						side: "left"
 					},
 					"aria-current": isActive ? "page" : void 0,
-					className: cn("h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:bg-muted motion-reduce:transition-none", "data-active:bg-muted data-active:text-sidebar-foreground", "group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"),
+					className: cn("h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/72 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none", "data-active:bg-muted data-active:font-semibold data-active:text-sidebar-foreground", "[&_svg]:size-5!", "group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden"),
 					onClick: () => page && onNavigate(page),
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: itemLabel })]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { "aria-hidden": "true" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: itemLabel })]
 				}) }, id);
 			})
 		}) })]
@@ -3389,9 +3389,9 @@ function SidebarCollapseControl() {
 		"aria-label": state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار",
 		title: state === "expanded" ? "جمع کردن سایدبار" : "باز کردن سایدبار",
 		onClick: toggleSidebar,
-		className: "absolute top-1/2 -left-3 z-10 hidden size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_8px_20px_rgba(15,23,42,0.10)] transition-colors duration-200 hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-border motion-reduce:transition-none md:flex",
+		className: "absolute top-1/2 -left-3 z-10 hidden size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_8px_20px_rgba(15,23,42,0.10)] transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-muted hover:shadow-[0_10px_24px_rgba(15,23,42,0.14)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-border active:scale-95 motion-reduce:transition-none md:flex",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, {
-			className: cn("size-4 transition-transform duration-200 motion-reduce:transition-none", state === "collapsed" && "rotate-180"),
+			className: cn("size-4 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none", state === "collapsed" && "rotate-180"),
 			"aria-hidden": "true"
 		})
 	});
@@ -3402,59 +3402,63 @@ function AppSidebar({ activePage, onNavigate }) {
 		side: "right",
 		variant: "floating",
 		collapsible: "icon",
-		className: "zarin-clean-sidebar pt-0",
+		className: "zarin-clean-sidebar",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarCollapseControl, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarHeader, {
-				className: "h-11 shrink-0 justify-center gap-0 border-b border-sidebar-border p-0 px-3 group-data-[collapsible=icon]:px-2",
+				className: "h-12 shrink-0 justify-center gap-0 p-0 px-3 group-data-[collapsible=icon]:px-2",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 					type: "button",
 					"aria-expanded": accountOpen,
 					"aria-controls": "sidebar-account-menu",
 					onClick: () => setAccountOpen((open) => !open),
-					className: "flex h-11 w-full cursor-pointer items-center gap-2.5 rounded-none px-0 text-start transition-colors duration-200 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center",
+					className: "flex h-12 w-full cursor-pointer items-center gap-2.5 rounded-none px-0 text-start transition-colors duration-200 hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none group-data-[collapsible=icon]:justify-center",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex size-8 shrink-0 items-center justify-center rounded-none text-sidebar-foreground",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {})
+							className: "flex size-9 shrink-0 items-center justify-center rounded-none text-sidebar-foreground",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {
+								className: "size-5",
+								"aria-hidden": "true"
+							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "min-w-0 flex-1 group-data-[collapsible=icon]:hidden",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "truncate text-sm font-bold leading-none text-sidebar-foreground",
+								className: "truncate text-sm font-bold leading-none text-sidebar-foreground sm:text-[15px]",
 								children: "مهدی پاکروان"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 truncate text-[11px] leading-none text-muted-foreground",
+								className: "mt-1.5 truncate text-xs leading-none text-muted-foreground",
 								dir: "ltr",
 								children: "zarinp.al/mahdipakravan"
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
-							className: cn("size-4 shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen && "rotate-180"),
+							className: cn("size-4.5 shrink-0 text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen && "rotate-180"),
 							"aria-hidden": "true"
 						})
 					]
 				})
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarSeparator, { className: "mx-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:w-8" }),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				id: "sidebar-account-menu",
-				className: cn("grid px-3 transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"),
+				className: cn("grid px-3 transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none group-data-[collapsible=icon]:hidden", accountOpen ? "grid-rows-[1fr] translate-y-0 opacity-100" : "grid-rows-[0fr] -translate-y-1 opacity-0"),
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "min-h-0 overflow-hidden",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1 py-1.5",
+						className: "flex flex-col gap-1 rounded-lg border border-sidebar-border bg-sidebar p-1.5",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							type: "button",
-							className: "flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none",
+							className: "flex h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-start text-sm font-medium text-sidebar-foreground/78 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 active:scale-[0.99] motion-reduce:transition-none",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Wallet, {
-								className: "size-3.5",
+								className: "size-4.5",
 								"aria-hidden": "true"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "جزئیات پذیرنده" })]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							type: "button",
-							className: "flex h-8 cursor-pointer items-center gap-2 rounded-md px-2 text-start text-xs font-medium text-sidebar-foreground/78 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 motion-reduce:transition-none",
+							className: "flex h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-start text-sm font-medium text-sidebar-foreground/78 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring/35 active:scale-[0.99] motion-reduce:transition-none",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {
-								className: "size-3.5",
+								className: "size-4.5",
 								"aria-hidden": "true"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات حساب" })]
 						})]
@@ -3482,15 +3486,15 @@ function AppSidebar({ activePage, onNavigate }) {
 							children: "تنظیمات زرین‌لینک",
 							side: "left"
 						},
-						className: "h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/72 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات زرین‌لینک" })]
+						className: "h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/72 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none [&_svg]:size-5! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, { "aria-hidden": "true" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "تنظیمات زرین‌لینک" })]
 					}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarMenuItem, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SidebarMenuButton, {
 						tooltip: {
 							children: "خروج",
 							side: "left"
 						},
-						className: "h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-[13px] font-medium text-sidebar-foreground/58 transition-colors duration-200 hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogOut, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "خروج" })]
+						className: "h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/58 transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-sidebar-foreground focus-visible:ring-sidebar-border active:scale-[0.99] motion-reduce:transition-none [&_svg]:size-5! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:[&>span]:hidden",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogOut, { "aria-hidden": "true" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "خروج" })]
 					}) })]
 				})]
 			})
@@ -3580,46 +3584,49 @@ function Badge({ className, variant = "default", render, ...props }) {
 //#endregion
 //#region components/dashboard-header.tsx
 function DashboardHeader({ compact = false }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-		className: cn("sticky top-0 z-20 flex shrink-0 items-center justify-between gap-3 border-b px-3 backdrop-blur-sm", compact ? "h-11 bg-background/95" : "h-12 bg-background/90 md:px-4"),
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+		className: cn("sticky top-0 z-20 shrink-0 border-b backdrop-blur-sm md:pt-2", compact ? "bg-background/95" : "bg-background/90"),
 		dir: "ltr",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center gap-2",
-			dir: "ltr",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				variant: "ghost",
-				size: "sm",
-				className: "hidden sm:inline-flex",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ticket, { "data-icon": "inline-start" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "font-semibold",
-					children: "تیکت‌ها"
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: cn("flex items-center justify-between gap-3 px-3", compact ? "h-12" : "h-12 md:px-4"),
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				dir: "ltr",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "ghost",
+					size: "sm",
+					className: "hidden sm:inline-flex",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Ticket, { "data-icon": "inline-start" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "font-semibold",
+						children: "تیکت‌ها"
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+					variant: "ghost",
+					size: "icon-sm",
+					className: "relative",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+							className: "absolute -top-1 -right-1 size-5 justify-center rounded-full p-0 text-[10px]",
+							children: "۱۳"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "sr-only",
+							children: "اعلان‌ها"
+						})
+					]
 				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-				variant: "ghost",
-				size: "icon-sm",
-				className: "relative",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
-						className: "absolute -top-1 -right-1 size-5 justify-center rounded-full p-0 text-[10px]",
-						children: "۱۳"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "sr-only",
-						children: "اعلان‌ها"
-					})
-				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				"aria-label": "زرین‌پال",
+				dir: "rtl",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+					src: "/zarinpal-logo.svg",
+					alt: "زرین‌پال",
+					className: cn(compact ? "h-6 w-auto" : "h-7 w-auto")
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "md:hidden" })]
 			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center gap-2",
-			"aria-label": "زرین‌پال",
-			dir: "rtl",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-				src: "/zarinpal-logo.svg",
-				alt: "زرین‌پال",
-				className: cn(compact ? "h-6 w-auto" : "h-7 w-auto")
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SidebarTrigger, { className: "md:hidden" })]
-		})]
+		})
 	});
 }
 /**
@@ -4691,6 +4698,16 @@ var CalendarDays = createLucideIcon("calendar-days", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ChevronRight = createLucideIcon("chevron-right", [["path", {
+	d: "m9 18 6-6-6-6",
+	key: "mthhwq"
+}]]);
+/**
+* @license lucide-react v1.33.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var CreditCard = createLucideIcon("credit-card", [["rect", {
 	width: "20",
 	height: "14",
@@ -5054,7 +5071,7 @@ function resolveMultipleLabels(values, items, itemToStringLabel) {
 }
 //#endregion
 //#region node_modules/@base-ui/react/select/store.mjs
-var selectors$1 = {
+var selectors$2 = {
 	id: (state) => state.id,
 	labelId: (state) => state.labelId,
 	modal: (state) => state.modal,
@@ -5195,10 +5212,10 @@ function SelectRoot(props) {
 		scrollDownArrowVisible: false,
 		hasScrollArrows: false
 	})).current;
-	const activeIndex = useStore(store, selectors$1.activeIndex);
-	const selectedIndex = useStore(store, selectors$1.selectedIndex);
-	const triggerElement = useStore(store, selectors$1.triggerElement);
-	const positionerElement = useStore(store, selectors$1.positionerElement);
+	const activeIndex = useStore(store, selectors$2.activeIndex);
+	const selectedIndex = useStore(store, selectors$2.selectedIndex);
+	const triggerElement = useStore(store, selectors$2.triggerElement);
+	const positionerElement = useStore(store, selectors$2.positionerElement);
 	const previousOpenMethod = usePreviousValue(openMethod);
 	const renderedOpenMethod = openMethod ?? previousOpenMethod;
 	const serializedValue = import_react.useMemo(() => {
@@ -5538,16 +5555,16 @@ var SelectTrigger$1 = /* @__PURE__ */ import_react.forwardRef(function SelectTri
 	const { labelId: fieldLabelId } = useLabelableContext();
 	const { store, setOpen, selectionRef, validation, readOnly, required, alignItemWithTriggerActiveRef, disabled: selectDisabled } = useSelectRootContext();
 	const disabled = fieldDisabled || selectDisabled || disabledProp;
-	const open = useStore(store, selectors$1.open);
-	const mounted = useStore(store, selectors$1.mounted);
-	const value = useStore(store, selectors$1.value);
-	const triggerProps = useStore(store, selectors$1.triggerProps);
-	const positionerElement = useStore(store, selectors$1.positionerElement);
-	const listElement = useStore(store, selectors$1.listElement);
-	const popupSideValue = useStore(store, selectors$1.popupSide);
-	const rootId = useStore(store, selectors$1.id);
-	const selectLabelId = useStore(store, selectors$1.labelId);
-	const hasSelectedValue = useStore(store, selectors$1.hasSelectedValue);
+	const open = useStore(store, selectors$2.open);
+	const mounted = useStore(store, selectors$2.mounted);
+	const value = useStore(store, selectors$2.value);
+	const triggerProps = useStore(store, selectors$2.triggerProps);
+	const positionerElement = useStore(store, selectors$2.positionerElement);
+	const listElement = useStore(store, selectors$2.listElement);
+	const popupSideValue = useStore(store, selectors$2.popupSide);
+	const rootId = useStore(store, selectors$2.id);
+	const selectLabelId = useStore(store, selectors$2.labelId);
+	const hasSelectedValue = useStore(store, selectors$2.hasSelectedValue);
 	const popupSide = mounted && positionerElement ? popupSideValue : null;
 	const id = idProp ?? rootId;
 	const ariaLabelledBy = resolveAriaLabelledBy(fieldLabelId, selectLabelId);
@@ -5657,12 +5674,12 @@ var stateAttributesMapping$1 = { value: () => null };
 var SelectValue$1 = /* @__PURE__ */ import_react.forwardRef(function SelectValue(componentProps, forwardedRef) {
 	const { className, render, children: childrenProp, placeholder, style, ...elementProps } = componentProps;
 	const { store, valueRef } = useSelectRootContext();
-	const value = useStore(store, selectors$1.value);
-	const items = useStore(store, selectors$1.items);
-	const itemToStringLabel = useStore(store, selectors$1.itemToStringLabel);
-	const hasSelectedValue = useStore(store, selectors$1.hasSelectedValue);
+	const value = useStore(store, selectors$2.value);
+	const items = useStore(store, selectors$2.items);
+	const itemToStringLabel = useStore(store, selectors$2.itemToStringLabel);
+	const hasSelectedValue = useStore(store, selectors$2.hasSelectedValue);
 	const shouldCheckNullItemLabel = !hasSelectedValue && placeholder != null && childrenProp == null;
-	const hasNullLabel = useStore(store, selectors$1.hasNullItemLabel, shouldCheckNullItemLabel);
+	const hasNullLabel = useStore(store, selectors$2.hasNullItemLabel, shouldCheckNullItemLabel);
 	const state = {
 		value,
 		placeholder: !hasSelectedValue
@@ -5692,7 +5709,7 @@ var SelectIcon = /* @__PURE__ */ import_react.forwardRef(function SelectIcon(com
 	const { render, className, style, ...elementProps } = componentProps;
 	const { store } = useSelectRootContext();
 	return useRenderElement("span", componentProps, {
-		state: { open: useStore(store, selectors$1.open) },
+		state: { open: useStore(store, selectors$2.open) },
 		ref: forwardedRef,
 		props: [{
 			"aria-hidden": true,
@@ -5712,8 +5729,8 @@ var SelectIcon = /* @__PURE__ */ import_react.forwardRef(function SelectIcon(com
 */
 var SelectPortal = /* @__PURE__ */ import_react.forwardRef(function SelectPortal(portalProps, forwardedRef) {
 	const { store } = useSelectRootContext();
-	const mounted = useStore(store, selectors$1.mounted);
-	const forceMount = useStore(store, selectors$1.forceMount);
+	const mounted = useStore(store, selectors$2.mounted);
+	const forceMount = useStore(store, selectors$2.forceMount);
 	if (!(mounted || forceMount)) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingPortal, {
 		ref: forwardedRef,
@@ -5953,15 +5970,15 @@ var FIXED = { position: "fixed" };
 var SelectPositioner = /* @__PURE__ */ import_react.forwardRef(function SelectPositioner(componentProps, forwardedRef) {
 	const { anchor, className, render, positionMethod, side, align, sideOffset, alignOffset, collisionBoundary = "clipping-ancestors", collisionPadding, arrowPadding, sticky, disableAnchorTracking, alignItemWithTrigger = true, collisionAvoidance = DROPDOWN_COLLISION_AVOIDANCE, style, ...elementProps } = componentProps;
 	const { store, listRef, labelsRef, alignItemWithTriggerActiveRef, selectedItemTextRef, valuesRef, initialValueRef, popupRef, setValue, floatingContext: floatingRootContext } = useSelectRootContext();
-	const open = useStore(store, selectors$1.open);
-	const mounted = useStore(store, selectors$1.mounted);
-	const modal = useStore(store, selectors$1.modal);
-	const value = useStore(store, selectors$1.value);
-	const openMethod = useStore(store, selectors$1.openMethod);
-	const positionerElement = useStore(store, selectors$1.positionerElement);
-	const triggerElement = useStore(store, selectors$1.triggerElement);
-	const isItemEqualToValue = useStore(store, selectors$1.isItemEqualToValue);
-	const transitionStatus = useStore(store, selectors$1.transitionStatus);
+	const open = useStore(store, selectors$2.open);
+	const mounted = useStore(store, selectors$2.mounted);
+	const modal = useStore(store, selectors$2.modal);
+	const value = useStore(store, selectors$2.value);
+	const openMethod = useStore(store, selectors$2.openMethod);
+	const positionerElement = useStore(store, selectors$2.positionerElement);
+	const triggerElement = useStore(store, selectors$2.triggerElement);
+	const isItemEqualToValue = useStore(store, selectors$2.isItemEqualToValue);
+	const transitionStatus = useStore(store, selectors$2.transitionStatus);
 	const scrollUpArrowRef = import_react.useRef(null);
 	const scrollDownArrowRef = import_react.useRef(null);
 	const [controlledAlignItemWithTrigger, setControlledAlignItemWithTrigger] = import_react.useState(alignItemWithTrigger);
@@ -6117,15 +6134,15 @@ var SelectPopup = /* @__PURE__ */ import_react.forwardRef(function SelectPopup(c
 	const insideToolbar = useToolbarRootContext(true) != null;
 	const direction = useDirection();
 	const { nonce, disableStyleElements } = useCSPContext();
-	const id = useStore(store, selectors$1.id);
-	const open = useStore(store, selectors$1.open);
-	const openMethod = useStore(store, selectors$1.openMethod);
-	const mounted = useStore(store, selectors$1.mounted);
-	const popupProps = useStore(store, selectors$1.popupProps);
-	const transitionStatus = useStore(store, selectors$1.transitionStatus);
-	const triggerElement = useStore(store, selectors$1.triggerElement);
-	const positionerElement = useStore(store, selectors$1.positionerElement);
-	const listElement = useStore(store, selectors$1.listElement);
+	const id = useStore(store, selectors$2.id);
+	const open = useStore(store, selectors$2.open);
+	const openMethod = useStore(store, selectors$2.openMethod);
+	const mounted = useStore(store, selectors$2.mounted);
+	const popupProps = useStore(store, selectors$2.popupProps);
+	const transitionStatus = useStore(store, selectors$2.transitionStatus);
+	const triggerElement = useStore(store, selectors$2.triggerElement);
+	const positionerElement = useStore(store, selectors$2.positionerElement);
+	const listElement = useStore(store, selectors$2.listElement);
 	const reachedMaxHeightRef = import_react.useRef(false);
 	const initialPlacedRef = import_react.useRef(false);
 	const originalPositionerStylesRef = import_react.useRef({});
@@ -6225,7 +6242,7 @@ var SelectPopup = /* @__PURE__ */ import_react.forwardRef(function SelectPopup(c
 		const restoreTransformStyles = unsetTransformStyles(popupElement);
 		try {
 			let textElement = selectedItemTextRef.current;
-			if (!textElement?.isConnected) textElement = !selectors$1.hasSelectedValue(store.state) && firstItemTextRef.current?.isConnected ? firstItemTextRef.current : null;
+			if (!textElement?.isConnected) textElement = !selectors$2.hasSelectedValue(store.state) && firstItemTextRef.current?.isConnected ? firstItemTextRef.current : null;
 			const valueElement = valueRef.current;
 			const win = getWindow(positionerElement);
 			const positionerStyles = win.getComputedStyle(positionerElement);
@@ -6427,10 +6444,10 @@ var SelectList = /* @__PURE__ */ import_react.forwardRef(function SelectList(com
 	const { render, className, style, ...elementProps } = componentProps;
 	const { store, scrollHandlerRef, multiple } = useSelectRootContext();
 	const { alignItemWithTriggerActive } = useSelectPositionerContext();
-	const hasScrollArrows = useStore(store, selectors$1.hasScrollArrows);
-	const openMethod = useStore(store, selectors$1.openMethod);
+	const hasScrollArrows = useStore(store, selectors$2.hasScrollArrows);
+	const openMethod = useStore(store, selectors$2.openMethod);
 	const defaultProps = {
-		id: `${useStore(store, selectors$1.id)}-list`,
+		id: `${useStore(store, selectors$2.id)}-list`,
 		role: "listbox",
 		"aria-multiselectable": multiple || void 0,
 		onScroll(event) {
@@ -6519,11 +6536,11 @@ var SelectItem$1 = /* @__PURE__ */ import_react.memo(/* @__PURE__ */ import_reac
 	});
 	const { store, itemProps, setOpen, setValue, selectionRef, typingRef, valuesRef, multiple, selectedItemTextRef, disabled: selectDisabled, readOnly } = useSelectRootContext();
 	const disabled = selectDisabled || disabledProp;
-	const highlighted = useStore(store, selectors$1.isActive, listItem.index);
-	const open = useStore(store, selectors$1.open);
-	const selected = useStore(store, selectors$1.isSelected, itemValue);
-	const selectedByFocus = useStore(store, selectors$1.isSelectedByFocus, listItem.index);
-	const isItemEqualToValue = useStore(store, selectors$1.isItemEqualToValue);
+	const highlighted = useStore(store, selectors$2.isActive, listItem.index);
+	const open = useStore(store, selectors$2.open);
+	const selected = useStore(store, selectors$2.isSelected, itemValue);
+	const selectedByFocus = useStore(store, selectors$2.isSelectedByFocus, listItem.index);
+	const isItemEqualToValue = useStore(store, selectors$2.isItemEqualToValue);
 	const index = listItem.index;
 	const itemRef = import_react.useRef(null);
 	useIsoLayoutEffect(() => {
@@ -6737,8 +6754,8 @@ var SelectScrollArrow = /* @__PURE__ */ import_react.forwardRef(function SelectS
 	const isUp = direction === "up";
 	const { store, popupRef, listRef, handleScrollArrowVisibility, scrollArrowsMountedCountRef } = useSelectRootContext();
 	const { side, scrollDownArrowRef, scrollUpArrowRef } = useSelectPositionerContext();
-	const stateVisible = useStore(store, isUp ? selectors$1.scrollUpArrowVisible : selectors$1.scrollDownArrowVisible);
-	const openMethod = useStore(store, selectors$1.openMethod);
+	const stateVisible = useStore(store, isUp ? selectors$2.scrollUpArrowVisible : selectors$2.scrollDownArrowVisible);
+	const openMethod = useStore(store, selectors$2.openMethod);
 	const visible = stateVisible && openMethod !== "touch";
 	const timeout = useTimeout();
 	const scrollArrowRef = isUp ? scrollUpArrowRef : scrollDownArrowRef;
@@ -6923,12 +6940,12 @@ function SelectTrigger({ className, size = "default", children, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger$1, {
 		"data-slot": "select-trigger",
 		"data-size": size,
-		className: cn("flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pe-2 ps-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4", className),
+		className: cn("flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-transparent py-2 pe-2 ps-2.5 text-sm whitespace-nowrap outline-none select-none transition-[color,background-color,border-color,box-shadow] duration-200 ease-out focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 motion-reduce:transition-none", "[&_svg:last-child]:transition-transform [&_svg:last-child]:duration-200 [&_svg:last-child]:ease-out data-popup-open:[&_svg:last-child]:rotate-180 data-open:[&_svg:last-child]:rotate-180 motion-reduce:[&_svg:last-child]:transition-none", className),
 		...props,
 		children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectIcon, { render: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "pointer-events-none size-4 text-muted-foreground" }) })]
 	});
 }
-function SelectContent({ className, children, side = "bottom", sideOffset = 4, align = "center", alignOffset = 0, alignItemWithTrigger = true, ...props }) {
+function SelectContent({ className, children, side = "bottom", sideOffset = 6, align = "start", alignOffset = 0, alignItemWithTrigger = false, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectPortal, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectPositioner, {
 		side,
 		sideOffset,
@@ -6939,7 +6956,7 @@ function SelectContent({ className, children, side = "bottom", sideOffset = 4, a
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectPopup, {
 			"data-slot": "select-content",
 			"data-align-trigger": alignItemWithTrigger,
-			className: cn("relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-start-2 data-[side=inline-start]:slide-in-from-end-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", className),
+			className: cn("popup-motion relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10", className),
 			...props,
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectScrollUpButton, {}),
@@ -6952,7 +6969,7 @@ function SelectContent({ className, children, side = "bottom", sideOffset = 4, a
 function SelectItem({ className, children, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectItem$1, {
 		"data-slot": "select-item",
-		className: cn("relative flex w-full cursor-default items-center gap-1.5 rounded-md py-1 pe-8 ps-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2", className),
+		className: cn("relative flex w-full cursor-default items-center gap-1.5 rounded-md py-1 pe-8 ps-1.5 text-sm outline-hidden select-none transition-colors duration-150 ease-out focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2", className),
 		...props,
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItemText, {
 			className: "flex flex-1 shrink-0 gap-2 whitespace-nowrap",
@@ -6977,6 +6994,641 @@ function SelectScrollDownButton({ className, ...props }) {
 		className: cn("bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-4", className),
 		...props,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {})
+	});
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/root/PopoverRootContext.mjs
+var PopoverRootContext = /* @__PURE__ */ import_react.createContext(void 0);
+function usePopoverRootContext(optional) {
+	const context = import_react.useContext(PopoverRootContext);
+	if (context === void 0 && !optional) throw new Error(formatErrorMessage(47));
+	return context;
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/store/PopoverStore.mjs
+var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+var selectors$1 = {
+	...popupStoreSelectors,
+	disabled: (state) => state.disabled,
+	instantType: (state) => state.instantType,
+	openMethod: (state) => state.openMethod,
+	openChangeReason: (state) => state.openChangeReason,
+	modal: (state) => state.modal,
+	focusManagerModal: (state) => state.focusManagerModal,
+	stickIfOpen: (state) => state.stickIfOpen,
+	titleElementId: (state) => state.titleElementId,
+	descriptionElementId: (state) => state.descriptionElementId,
+	openOnHover: (state) => state.openOnHover,
+	closeDelay: (state) => state.closeDelay,
+	adaptiveOrigin: (state) => state.adaptiveOrigin
+};
+/**
+* The store view that detached handle-backed triggers read from. Both the real `PopoverStore` and
+* the inert fallback store satisfy it, so a trigger can read from whichever store the handle
+* currently exposes. Narrowed to the members a trigger actually uses — the trigger-data members plus
+* `setOpen` (called by the focus guards) — so the exposed surface can't bypass the open-change
+* pipeline; on the detached fallback store every one of these mutations is a no-op.
+*/
+var PopoverStore = class extends ReactStore {
+	constructor(initialState, floatingId, nested) {
+		const triggerElements = new PopupTriggerMap();
+		super(createInitialState$1(initialState, triggerElements, floatingId, nested), createInitialContext$1(triggerElements), selectors$1);
+	}
+	setOpen = (nextOpen, eventDetails) => {
+		const isHover = eventDetails.reason === triggerHover;
+		const isKeyboardClick = eventDetails.reason === "trigger-press" && eventDetails.event.detail === 0;
+		const isDismissClose = !nextOpen && (eventDetails.reason === "escape-key" || eventDetails.reason == null);
+		const shouldPreventUnmountOnClose = attachPreventUnmountOnClose(eventDetails);
+		const activeTriggerId = this.select("activeTriggerId");
+		if (!nextOpen && eventDetails.reason === "close-press" && eventDetails.trigger == null && activeTriggerId != null) eventDetails.trigger = this.context.triggerElements.getById(activeTriggerId) ?? this.select("activeTriggerElement") ?? void 0;
+		this.context.onOpenChange?.(nextOpen, eventDetails);
+		if (eventDetails.isCanceled) return;
+		this.state.floatingRootContext.dispatchOpenChange(nextOpen, eventDetails);
+		const changeState = () => {
+			const updatedState = {
+				open: nextOpen,
+				openChangeReason: eventDetails.reason
+			};
+			setPopupOpenState(updatedState, nextOpen, eventDetails.trigger, shouldPreventUnmountOnClose());
+			this.update(updatedState);
+		};
+		if (isHover) {
+			this.set("stickIfOpen", true);
+			this.context.stickIfOpenTimeout.start(500, () => {
+				this.set("stickIfOpen", false);
+			});
+			import_react_dom.flushSync(changeState);
+		} else changeState();
+		let instantType;
+		if (isKeyboardClick) instantType = "click";
+		else if (isDismissClose) instantType = "dismiss";
+		else if (eventDetails.reason === "focus-out") instantType = "focus";
+		this.set("instantType", instantType);
+	};
+};
+function createInitialState$1(initialState, triggerElements, floatingId, nested = false) {
+	const state = {
+		...createInitialPopupStoreState(),
+		disabled: false,
+		modal: false,
+		focusManagerModal: false,
+		instantType: void 0,
+		openMethod: null,
+		openChangeReason: null,
+		titleElementId: void 0,
+		descriptionElementId: void 0,
+		stickIfOpen: true,
+		openOnHover: false,
+		closeDelay: 0,
+		adaptiveOrigin: void 0,
+		...initialState
+	};
+	if (state.open && initialState?.mounted === void 0) state.mounted = true;
+	state.floatingRootContext = createPopupFloatingRootContext(triggerElements, floatingId, nested);
+	return state;
+}
+function createInitialContext$1(triggerElements) {
+	return {
+		popupRef: /* @__PURE__ */ import_react.createRef(),
+		onOpenChange: void 0,
+		onOpenChangeComplete: void 0,
+		triggerFocusTargetRef: /* @__PURE__ */ import_react.createRef(),
+		beforeContentFocusGuardRef: /* @__PURE__ */ import_react.createRef(),
+		stickIfOpenTimeout: new Timeout(),
+		triggerElements
+	};
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/root/PopoverRoot.mjs
+function PopoverRootComponent({ props }) {
+	const { children, open: openProp, defaultOpen = false, onOpenChange, onOpenChangeComplete, modal = false, handle, triggerId: triggerIdProp, defaultTriggerId: defaultTriggerIdProp = null } = props;
+	const store = usePopoverRootStore(handle, {
+		modal,
+		open: defaultOpen,
+		openProp,
+		activeTriggerId: defaultTriggerIdProp,
+		triggerIdProp
+	});
+	store.useControlledProp("openProp", openProp);
+	store.useControlledProp("triggerIdProp", triggerIdProp);
+	const open = store.useState("open");
+	const mounted = store.useState("mounted");
+	const payload = store.useState("payload");
+	store.useContextCallback("onOpenChange", onOpenChange);
+	store.useContextCallback("onOpenChangeComplete", onOpenChangeComplete);
+	usePopupRootSync(store, open);
+	useImplicitActiveTrigger(store);
+	const { forceUnmount } = useOpenStateTransitions(open, store, () => {
+		store.update({
+			stickIfOpen: true,
+			openChangeReason: null
+		});
+	});
+	store.useSyncedValues({ modal });
+	import_react.useEffect(() => {
+		if (!open) store.context.stickIfOpenTimeout.clear();
+	}, [store, open]);
+	import_react.useImperativeHandle(props.actionsRef, () => ({
+		unmount: forceUnmount,
+		close: () => store.setOpen(false, createChangeEventDetails(imperativeAction))
+	}), [forceUnmount, store]);
+	const shouldRenderInteractions = open || mounted;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PopoverRootContext.Provider, {
+		value: store,
+		children: [
+			handle && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopupHandleAttachment, {
+				handle,
+				store
+			}),
+			shouldRenderInteractions && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverInteractions, {
+				store,
+				modal
+			}),
+			typeof children === "function" ? children({ payload }) : children
+		]
+	});
+}
+/**
+* Groups all parts of the popover.
+* Doesn't render its own HTML element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+function PopoverRoot(props) {
+	if (usePopoverRootContext(true)) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverRootComponent, { props });
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingTree, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverRootComponent, { props }) });
+}
+function usePopoverRootStore(handle, initialState) {
+	const store = usePopupRootStore((floatingId, nested) => new PopoverStore(initialState, floatingId, nested));
+	import_react.useEffect(() => store.context.stickIfOpenTimeout.disposeEffect(), [store]);
+	return store;
+}
+function PopoverInteractions({ store, modal }) {
+	const dismiss = useDismiss(store.useState("floatingRootContext"), { outsidePressEvent: {
+		mouse: modal === "trap-focus" ? "sloppy" : "intentional",
+		touch: "sloppy"
+	} });
+	const triggerProps = dismiss.reference;
+	const popupProps = dismiss.floating;
+	usePopupInteractionProps(store, {
+		activeTriggerProps: triggerProps,
+		inactiveTriggerProps: triggerProps,
+		popupProps
+	});
+	return null;
+}
+//#endregion
+//#region node_modules/@base-ui/react/utils/popups/useTriggerFocusGuards.mjs
+/**
+* Minimal store interface required by the focus guard hook.
+* Both PopoverStore and MenuStore satisfy this interface.
+*/
+/**
+* Provides focus guard handlers for popup triggers (Popover, Menu).
+*
+* When the popup is open, invisible focus guard elements are placed before and after
+* the trigger. These handlers close the popup and move focus to the appropriate
+* tabbable element when the guards receive focus (i.e. when the user tabs out).
+*/
+function useTriggerFocusGuards(store, triggerElementRef) {
+	const preFocusGuardRef = import_react.useRef(null);
+	function handlePreFocusGuardFocus(event) {
+		import_react_dom.flushSync(() => {
+			store.setOpen(false, createChangeEventDetails(focusOut, event.nativeEvent, event.currentTarget));
+		});
+		getTabbableBeforeElement(preFocusGuardRef.current)?.focus();
+	}
+	function handleFocusTargetFocus(event) {
+		const positionerElement = store.select("positionerElement");
+		if (positionerElement && isOutsideEvent(event, positionerElement)) store.context.beforeContentFocusGuardRef.current?.focus();
+		else {
+			import_react_dom.flushSync(() => {
+				store.setOpen(false, createChangeEventDetails(focusOut, event.nativeEvent, event.currentTarget));
+			});
+			let nextTabbable = getTabbableAfterElement(store.context.triggerFocusTargetRef.current || triggerElementRef.current);
+			while (nextTabbable !== null && contains(positionerElement, nextTabbable)) {
+				const prevTabbable = nextTabbable;
+				nextTabbable = getNextTabbable(nextTabbable);
+				if (nextTabbable === prevTabbable) break;
+			}
+			nextTabbable?.focus();
+		}
+	}
+	return {
+		preFocusGuardRef,
+		handlePreFocusGuardFocus,
+		handleFocusTargetFocus
+	};
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/trigger/PopoverTrigger.mjs
+/**
+* A button that opens the popover.
+* Renders a `<button>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverTrigger$1 = /* @__PURE__ */ import_react.forwardRef(function PopoverTrigger(componentProps, forwardedRef) {
+	const { render, className, style, disabled = false, nativeButton = true, handle, payload, openOnHover = false, delay = 300, closeDelay = 0, id: idProp, ...elementProps } = componentProps;
+	const rootStore = usePopoverRootContext(true);
+	const store = usePopupHandleStore(handle) ?? rootStore;
+	if (!store) throw new Error(formatErrorMessage(74));
+	const thisTriggerId = useBaseUiId(idProp);
+	const isTriggerActive = store.useState("isTriggerActive", thisTriggerId);
+	const floatingContext = store.useState("floatingRootContext");
+	const isOpenedByThisTrigger = store.useState("isOpenedByTrigger", thisTriggerId);
+	const popupId = store.useState("triggerPopupId", thisTriggerId);
+	const triggerElementRef = import_react.useRef(null);
+	const { registerTrigger, isMountedByThisTrigger } = useTriggerDataForwarding(thisTriggerId, triggerElementRef, store, {
+		payload,
+		disabled,
+		openOnHover,
+		closeDelay
+	});
+	const openReason = store.useState("openChangeReason");
+	const stickIfOpen = store.useState("stickIfOpen");
+	const openMethod = store.useState("openMethod");
+	const focusManagerModal = store.useState("focusManagerModal");
+	const hoverProps = useHoverReferenceInteraction(floatingContext, {
+		enabled: !disabled && openOnHover && (openMethod !== "touch" || openReason !== "trigger-press"),
+		mouseOnly: true,
+		move: false,
+		handleClose: safePolygon(),
+		restMs: delay,
+		delay: { close: closeDelay },
+		triggerElementRef,
+		isActiveTrigger: isTriggerActive,
+		isClosing: () => store.select("transitionStatus") === "ending"
+	});
+	const click = useClick(floatingContext, { stickIfOpen });
+	const interactionTypeProps = useOpenMethodTriggerProps(() => store.select("open"), (interactionType) => {
+		store.set("openMethod", interactionType);
+	});
+	const rootTriggerProps = store.useState("triggerProps", isMountedByThisTrigger);
+	const { getButtonProps, buttonRef } = useButton({
+		disabled,
+		native: nativeButton
+	});
+	const stateAttributesMapping = { open(value) {
+		if (value && openReason === "trigger-press") return pressableTriggerOpenStateMapping.open(value);
+		return triggerOpenStateMapping.open(value);
+	} };
+	const { preFocusGuardRef, handlePreFocusGuardFocus, handleFocusTargetFocus } = useTriggerFocusGuards(store, triggerElementRef);
+	const element = useRenderElement("button", componentProps, {
+		state: {
+			disabled,
+			open: isOpenedByThisTrigger
+		},
+		ref: [
+			buttonRef,
+			forwardedRef,
+			registerTrigger,
+			triggerElementRef
+		],
+		props: [
+			click.reference,
+			hoverProps,
+			rootTriggerProps,
+			interactionTypeProps,
+			{
+				[CLICK_TRIGGER_IDENTIFIER]: "",
+				id: thisTriggerId,
+				"aria-haspopup": "dialog",
+				"aria-expanded": isOpenedByThisTrigger,
+				"aria-controls": popupId
+			},
+			elementProps,
+			getButtonProps
+		],
+		stateAttributesMapping
+	});
+	const keyedElement = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react.Fragment, { children: element }, thisTriggerId);
+	if (isMountedByThisTrigger && !focusManagerModal) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_react.Fragment, { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+			ref: preFocusGuardRef,
+			onFocus: handlePreFocusGuardFocus
+		}),
+		keyedElement,
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusGuard, {
+			ref: store.context.triggerFocusTargetRef,
+			onFocus: handleFocusTargetFocus
+		})
+	] });
+	return keyedElement;
+});
+//#endregion
+//#region node_modules/@base-ui/react/popover/portal/PopoverPortalContext.mjs
+var PopoverPortalContext = /* @__PURE__ */ import_react.createContext(void 0);
+function usePopoverPortalContext() {
+	const value = import_react.useContext(PopoverPortalContext);
+	if (value === void 0) throw new Error(formatErrorMessage(45));
+	return value;
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/portal/PopoverPortal.mjs
+/**
+* A portal element that moves the popup to a different part of the DOM.
+* By default, the portal element is appended to `<body>`.
+* Renders a `<div>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverPortal = /* @__PURE__ */ import_react.forwardRef(function PopoverPortal(props, forwardedRef) {
+	const { keepMounted = false, ...portalProps } = props;
+	if (!(usePopoverRootContext().useState("mounted") || keepMounted)) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverPortalContext.Provider, {
+		value: keepMounted,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingPortal, {
+			ref: forwardedRef,
+			...portalProps
+		})
+	});
+});
+//#endregion
+//#region node_modules/@base-ui/react/popover/positioner/PopoverPositionerContext.mjs
+var PopoverPositionerContext = /* @__PURE__ */ import_react.createContext(void 0);
+function usePopoverPositionerContext() {
+	const context = import_react.useContext(PopoverPositionerContext);
+	if (!context) throw new Error(formatErrorMessage(46));
+	return context;
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/positioner/PopoverPositioner.mjs
+/**
+* Positions the popover against the trigger.
+* Renders a `<div>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverPositioner = /* @__PURE__ */ import_react.forwardRef(function PopoverPositioner(componentProps, forwardedRef) {
+	const { render, className, style, anchor, positionMethod, side, align, sideOffset, alignOffset, collisionBoundary = "clipping-ancestors", collisionPadding, arrowPadding, sticky, disableAnchorTracking = false, collisionAvoidance = POPUP_COLLISION_AVOIDANCE, ...elementProps } = componentProps;
+	const store = usePopoverRootContext();
+	const keepMounted = usePopoverPortalContext();
+	const nodeId = useFloatingNodeId();
+	const floatingRootContext = store.useState("floatingRootContext");
+	const mounted = store.useState("mounted");
+	const open = store.useState("open");
+	const openReason = store.useState("openChangeReason");
+	const triggerElement = store.useState("activeTriggerElement");
+	const modal = store.useState("modal");
+	const openMethod = store.useState("openMethod");
+	const positionerElement = store.useState("positionerElement");
+	const instantType = store.useState("instantType");
+	const transitionStatus = store.useState("transitionStatus");
+	const adaptiveOrigin = store.useState("adaptiveOrigin");
+	const prevTriggerElementRef = import_react.useRef(null);
+	const runOnceAnimationsFinish = useAnimationsFinished(positionerElement);
+	const positioning = useAnchorPositioning({
+		anchor,
+		floatingRootContext,
+		positionMethod,
+		mounted,
+		side,
+		sideOffset,
+		align,
+		alignOffset,
+		arrowPadding,
+		collisionBoundary,
+		collisionPadding,
+		sticky,
+		disableAnchorTracking,
+		keepMounted,
+		nodeId,
+		collisionAvoidance,
+		adaptiveOrigin
+	});
+	const domReference = floatingRootContext.useState("domReferenceElement");
+	useIsoLayoutEffect(() => {
+		const currentTriggerElement = domReference;
+		const prevTriggerElement = prevTriggerElementRef.current;
+		if (currentTriggerElement) prevTriggerElementRef.current = currentTriggerElement;
+		if (prevTriggerElement && currentTriggerElement && currentTriggerElement !== prevTriggerElement) {
+			store.set("instantType", void 0);
+			const ac = new AbortController();
+			runOnceAnimationsFinish(() => {
+				store.set("instantType", "trigger-change");
+			}, ac.signal);
+			return () => {
+				ac.abort();
+			};
+		}
+	}, [
+		domReference,
+		runOnceAnimationsFinish,
+		store
+	]);
+	const trueModalNonHover = modal === true && openReason !== "trigger-hover";
+	useAnchoredPopupScrollLock(open && trueModalNonHover, openMethod === "touch", positionerElement, triggerElement);
+	const setPositionerElement = store.useStateSetter("positionerElement");
+	const element = usePositioner(componentProps, {
+		open,
+		side: positioning.side,
+		align: positioning.align,
+		anchorHidden: positioning.anchorHidden,
+		instant: instantType
+	}, {
+		styles: positioning.positionerStyles,
+		transitionStatus,
+		props: elementProps,
+		refs: [forwardedRef, setPositionerElement],
+		hidden: !mounted,
+		inert: !open
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PopoverPositionerContext.Provider, {
+		value: positioning,
+		children: [mounted && trueModalNonHover && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InternalBackdrop, {
+			inert: inertValue(!open),
+			cutout: triggerElement
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingNode, {
+			id: nodeId,
+			children: element
+		})]
+	});
+});
+//#endregion
+//#region node_modules/@base-ui/react/utils/closePart.mjs
+var ClosePartContext = /* @__PURE__ */ import_react.createContext(void 0);
+function useClosePartCount() {
+	const [closePartCount, setClosePartCount] = import_react.useState(0);
+	const register = useStableCallback(() => {
+		setClosePartCount((count) => count + 1);
+		return () => {
+			setClosePartCount((count) => Math.max(0, count - 1));
+		};
+	});
+	return {
+		context: import_react.useMemo(() => ({ register }), [register]),
+		hasClosePart: closePartCount > 0
+	};
+}
+//#endregion
+//#region node_modules/@base-ui/react/popover/popup/PopoverPopup.mjs
+/**
+* A container for the popover contents.
+* Renders a `<div>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverPopup = /* @__PURE__ */ import_react.forwardRef(function PopoverPopup(componentProps, forwardedRef) {
+	const { render, className, style, initialFocus, finalFocus, ...elementProps } = componentProps;
+	const store = usePopoverRootContext();
+	const positioner = usePopoverPositionerContext();
+	const insideToolbar = useToolbarRootContext(true) != null;
+	const { context: closePartContext, hasClosePart } = useClosePartCount();
+	const open = store.useState("open");
+	const openMethod = store.useState("openMethod");
+	const instantType = store.useState("instantType");
+	const transitionStatus = store.useState("transitionStatus");
+	const popupProps = store.useState("popupProps");
+	const titleId = store.useState("titleElementId");
+	const descriptionId = store.useState("descriptionElementId");
+	const modal = store.useState("modal");
+	const mounted = store.useState("mounted");
+	const openReason = store.useState("openChangeReason");
+	const activeTriggerElement = store.useState("activeTriggerElement");
+	const floatingContext = store.useState("floatingRootContext");
+	const floatingId = floatingContext.useState("floatingId");
+	const disabled = store.useState("disabled");
+	const openOnHover = store.useState("openOnHover");
+	const closeDelay = store.useState("closeDelay");
+	useOpenChangeComplete({
+		open,
+		ref: store.context.popupRef,
+		onComplete() {
+			if (open) store.context.onOpenChangeComplete?.(true);
+		}
+	});
+	useHoverFloatingInteraction(floatingContext, {
+		enabled: openOnHover && !disabled,
+		closeDelay
+	});
+	const resolvedInitialFocus = initialFocus === void 0 ? createDefaultInitialFocus(store.context.popupRef) : initialFocus;
+	const focusManagerModal = modal !== false && hasClosePart;
+	store.useSyncedValue("focusManagerModal", focusManagerModal);
+	const setPopupElement = store.useStateSetter("popupElement");
+	const element = useRenderElement("div", componentProps, {
+		state: {
+			open,
+			side: positioner.side,
+			align: positioner.align,
+			instant: instantType,
+			transitionStatus
+		},
+		ref: [
+			forwardedRef,
+			store.context.popupRef,
+			setPopupElement
+		],
+		props: [
+			popupProps,
+			{
+				id: floatingId,
+				role: "dialog",
+				...FOCUSABLE_POPUP_PROPS,
+				"aria-labelledby": titleId,
+				"aria-describedby": descriptionId,
+				onKeyDown(event) {
+					if (insideToolbar && COMPOSITE_KEYS.has(event.key)) event.stopPropagation();
+				}
+			},
+			getDisabledMountTransitionStyles(transitionStatus),
+			elementProps
+		],
+		stateAttributesMapping: popupTransitionStateMapping
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FloatingFocusManager, {
+		context: floatingContext,
+		openInteractionType: openMethod,
+		modal: focusManagerModal,
+		disabled: !mounted || openReason === "trigger-hover",
+		initialFocus: resolvedInitialFocus,
+		returnFocus: finalFocus,
+		restoreFocus: "popup",
+		previousFocusableElement: isHTMLElement(activeTriggerElement) ? activeTriggerElement : void 0,
+		nextFocusableElement: store.context.triggerFocusTargetRef,
+		beforeContentFocusGuardRef: store.context.beforeContentFocusGuardRef,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClosePartContext.Provider, {
+			value: closePartContext,
+			children: element
+		})
+	});
+});
+//#endregion
+//#region node_modules/@base-ui/react/popover/title/PopoverTitle.mjs
+/**
+* A heading that labels the popover.
+* Renders an `<h2>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverTitle$1 = /* @__PURE__ */ import_react.forwardRef(function PopoverTitle(componentProps, forwardedRef) {
+	const { render, className, style, ...elementProps } = componentProps;
+	const store = usePopoverRootContext();
+	const id = useBaseUiId(elementProps.id);
+	store.useSyncedValueWithCleanup("titleElementId", id);
+	return useRenderElement("h2", componentProps, {
+		ref: forwardedRef,
+		props: [{ id }, elementProps]
+	});
+});
+//#endregion
+//#region node_modules/@base-ui/react/popover/description/PopoverDescription.mjs
+/**
+* A paragraph with additional information about the popover.
+* Renders a `<p>` element.
+*
+* Documentation: [Base UI Popover](https://base-ui.com/react/components/popover)
+*/
+var PopoverDescription$1 = /* @__PURE__ */ import_react.forwardRef(function PopoverDescription(componentProps, forwardedRef) {
+	const { render, className, style, ...elementProps } = componentProps;
+	const store = usePopoverRootContext();
+	const id = useBaseUiId(elementProps.id);
+	store.useSyncedValueWithCleanup("descriptionElementId", id);
+	return useRenderElement("p", componentProps, {
+		ref: forwardedRef,
+		props: [{ id }, elementProps]
+	});
+});
+//#endregion
+//#region components/ui/popover.tsx
+function Popover({ ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverRoot, {
+		"data-slot": "popover",
+		...props
+	});
+}
+function PopoverTrigger({ ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger$1, {
+		"data-slot": "popover-trigger",
+		...props
+	});
+}
+function PopoverContent({ className, align = "center", alignOffset = 0, side = "bottom", sideOffset = 6, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverPortal, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverPositioner, {
+		align,
+		alignOffset,
+		side,
+		sideOffset,
+		className: "isolate z-50",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverPopup, {
+			"data-slot": "popover-content",
+			className: cn("popup-motion z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden", className),
+			...props
+		})
+	}) });
+}
+function PopoverTitle({ className, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTitle$1, {
+		"data-slot": "popover-title",
+		className: cn("font-medium", className),
+		...props
+	});
+}
+function PopoverDescription({ className, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverDescription$1, {
+		"data-slot": "popover-description",
+		className: cn("text-muted-foreground", className),
+		...props
 	});
 }
 //#endregion
@@ -7013,7 +7665,9 @@ var loyaltyTheme = {
 	"--loyalty-mint-alpha": "color-mix(in oklch, #6ac89e 68%, transparent)",
 	"--loyalty-teal-alpha": "color-mix(in oklch, #0f9a84 18%, transparent)",
 	"--loyalty-muted-line": "#96a3ba",
-	"--loyalty-yellow": "#ffd60a"
+	"--loyalty-yellow": "#ffd60a",
+	"--loyalty-yellow-soft": "#fff6bf",
+	"--loyalty-yellow-strong": "#d4ad00"
 };
 var panelClass$3 = "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-violet)] [--rail-line:var(--loyalty-line)]";
 var toneStyles = {
@@ -7081,11 +7735,6 @@ var metricIconMap$1 = {
 	trend: TrendingUp,
 	users: Users
 };
-var primaryMetricIds = new Set([
-	"verified-purchases",
-	"observed-cards",
-	"returning-rate"
-]);
 var behaviorArcs = BEHAVIOR_SEGMENTS.reduce((items, segment) => {
 	const offset = items.reduce((sum, item) => sum + item.share, 0);
 	return [...items, {
@@ -7093,14 +7742,227 @@ var behaviorArcs = BEHAVIOR_SEGMENTS.reduce((items, segment) => {
 		offset
 	}];
 }, []);
+var calendarWeekdays = [
+	"ش",
+	"ی",
+	"د",
+	"س",
+	"چ",
+	"پ",
+	"ج"
+];
+var calendarMonthFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+	month: "long",
+	year: "numeric"
+});
+var calendarDayFormatter = new Intl.NumberFormat("fa-IR");
+var compactDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+	day: "numeric",
+	month: "short"
+});
+var fullDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+	day: "numeric",
+	month: "long",
+	year: "numeric"
+});
+function startOfDay(date) {
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+function createDefaultDateRange() {
+	const end = startOfDay(/* @__PURE__ */ new Date());
+	const start = new Date(end);
+	start.setMonth(start.getMonth() - 6);
+	return {
+		start,
+		end
+	};
+}
+function isSameDate(first, second) {
+	return Boolean(second && first.getFullYear() === second.getFullYear() && first.getMonth() === second.getMonth() && first.getDate() === second.getDate());
+}
+function monthCells(month) {
+	const year = month.getFullYear();
+	const monthIndex = month.getMonth();
+	const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+	const leadingBlanks = (new Date(year, monthIndex, 1).getDay() + 1) % 7;
+	const cells = Array.from({ length: leadingBlanks }, () => null);
+	for (let day = 1; day <= daysInMonth; day += 1) cells.push(new Date(year, monthIndex, day));
+	return cells;
+}
+function shiftMonth(month, offset) {
+	return new Date(month.getFullYear(), month.getMonth() + offset, 1);
+}
+function DateRangePicker() {
+	const [open, setOpen] = (0, import_react.useState)(false);
+	const [appliedRange, setAppliedRange] = (0, import_react.useState)(() => createDefaultDateRange());
+	const [draftRange, setDraftRange] = (0, import_react.useState)(() => createDefaultDateRange());
+	const [visibleMonth, setVisibleMonth] = (0, import_react.useState)(() => new Date(createDefaultDateRange().end ?? /* @__PURE__ */ new Date()));
+	const cells = monthCells(visibleMonth);
+	const appliedLabel = appliedRange.end ? `${compactDateFormatter.format(appliedRange.start)} – ${compactDateFormatter.format(appliedRange.end)}` : compactDateFormatter.format(appliedRange.start);
+	const selectionLabel = draftRange.end ? `از ${fullDateFormatter.format(draftRange.start)} تا ${fullDateFormatter.format(draftRange.end)}` : `تاریخ شروع: ${fullDateFormatter.format(draftRange.start)}؛ تاریخ پایان را انتخاب کنید`;
+	const handleOpenChange = (nextOpen) => {
+		setOpen(nextOpen);
+		if (nextOpen) {
+			setDraftRange(appliedRange);
+			setVisibleMonth(new Date(appliedRange.end ?? appliedRange.start));
+		}
+	};
+	const handleDateSelection = (date) => {
+		if (draftRange.end) {
+			setDraftRange({ start: date });
+			return;
+		}
+		if (date < draftRange.start) {
+			setDraftRange({
+				start: date,
+				end: draftRange.start
+			});
+			return;
+		}
+		setDraftRange({
+			start: draftRange.start,
+			end: date
+		});
+	};
+	const handleCancel = () => {
+		setDraftRange(appliedRange);
+		setOpen(false);
+	};
+	const handleApply = () => {
+		if (!draftRange.end) return;
+		setAppliedRange(draftRange);
+		setOpen(false);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Popover, {
+		open,
+		onOpenChange: handleOpenChange,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PopoverTrigger, {
+			render: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				variant: "outline",
+				size: "sm",
+				className: "h-9 w-full min-w-0 justify-between",
+				"aria-label": `انتخاب بازه زمانی؛ بازه فعلی ${appliedLabel}`
+			}),
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+				className: "flex min-w-0 items-center gap-1.5",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarDays, {
+					"data-icon": "inline-start",
+					"aria-hidden": "true"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "truncate text-xs font-extrabold",
+					children: appliedLabel
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, {
+				"data-icon": "inline-end",
+				"aria-hidden": "true"
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PopoverContent, {
+			align: "end",
+			className: "w-[min(21rem,calc(100vw-1.5rem))] gap-3 p-3",
+			style: {
+				...loyaltyTheme,
+				"--primary": "var(--loyalty-yellow)",
+				"--primary-foreground": "var(--loyalty-ink)"
+			},
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTitle, {
+					className: "sr-only",
+					children: "انتخاب بازه زمانی"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverDescription, {
+					className: "sr-only",
+					children: "ابتدا تاریخ شروع و سپس تاریخ پایان را از تقویم انتخاب کنید."
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between gap-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "font-bold text-[var(--loyalty-ink)]",
+						children: calendarMonthFormatter.format(visibleMonth)
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center gap-1",
+						dir: "ltr",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							type: "button",
+							variant: "ghost",
+							size: "icon-sm",
+							onClick: () => setVisibleMonth((month) => shiftMonth(month, -1)),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { "aria-hidden": "true" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "sr-only",
+								children: "ماه قبل"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+							type: "button",
+							variant: "ghost",
+							size: "icon-sm",
+							onClick: () => setVisibleMonth((month) => shiftMonth(month, 1)),
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { "aria-hidden": "true" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "sr-only",
+								children: "ماه بعد"
+							})]
+						})]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-7 gap-y-1 text-center",
+					role: "group",
+					"aria-label": calendarMonthFormatter.format(visibleMonth),
+					children: [calendarWeekdays.map((weekday) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "flex h-8 items-center justify-center text-xs font-semibold text-[var(--loyalty-subtle)]",
+						"aria-hidden": "true",
+						children: weekday
+					}, weekday)), cells.map((date, index) => {
+						if (!date) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "size-9",
+							"aria-hidden": "true"
+						}, `blank-${index}`);
+						const isStart = isSameDate(date, draftRange.start);
+						const isEnd = isSameDate(date, draftRange.end);
+						return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: cn("mx-auto flex size-9 cursor-pointer items-center justify-center rounded-full border border-transparent text-sm font-medium text-[var(--loyalty-ink)] outline-none transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-[var(--loyalty-yellow-soft)] focus-visible:ring-2 focus-visible:ring-[var(--loyalty-yellow-strong)] focus-visible:ring-offset-2 active:scale-95 motion-reduce:transition-none", isStart && "border-[var(--loyalty-yellow)] bg-[var(--loyalty-yellow)] font-extrabold", isEnd && !isStart && "border-[var(--loyalty-yellow-strong)] bg-card font-extrabold"),
+							onClick: () => handleDateSelection(date),
+							"aria-label": fullDateFormatter.format(date),
+							"aria-pressed": isStart || isEnd,
+							children: calendarDayFormatter.format(date.getDate())
+						}, date.toISOString());
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-2 border-t border-[var(--loyalty-line)] pt-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "min-h-5 text-xs leading-5 text-[var(--loyalty-subtle)]",
+						role: "status",
+						"aria-live": "polite",
+						children: selectionLabel
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-end gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							type: "button",
+							variant: "ghost",
+							size: "sm",
+							onClick: handleCancel,
+							children: "انصراف"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							type: "button",
+							size: "sm",
+							disabled: !draftRange.end,
+							onClick: handleApply,
+							children: "اعمال بازه"
+						})]
+					})]
+				})
+			]
+		})]
+	});
+}
 function formatChartPercent(value) {
 	return formatPersianPercent(value);
 }
 function Panel$2({ title, description, children, className }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: cn(panelClass$3, "flex flex-col gap-2.5 p-2.5 sm:p-3", className),
+		className: cn(panelClass$3, "flex h-full min-h-0 flex-col gap-2 p-2.5 sm:gap-2.5 sm:p-3", className),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex flex-col gap-0.5",
+			className: "flex shrink-0 flex-col gap-0.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 				className: "text-sm font-bold text-[var(--loyalty-ink)] sm:text-base",
 				children: title
@@ -7112,10 +7974,9 @@ function Panel$2({ title, description, children, className }) {
 	});
 }
 function BuyerLoyaltyHeader() {
-	const [merchantId, setMerchantId] = (0, import_react.useState)("merchant");
-	const [periodId, setPeriodId] = (0, import_react.useState)("period");
+	const [merchantId, setMerchantId] = (0, import_react.useState)("main-store");
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-		className: "flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between",
+		className: "flex shrink-0 flex-col gap-3 border-b border-[var(--loyalty-line)] pb-3 md:flex-row md:items-center md:justify-between",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex min-w-0 items-center gap-2.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -7135,47 +7996,33 @@ function BuyerLoyaltyHeader() {
 				})]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid w-full shrink-0 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5 md:w-auto md:min-w-[18rem]",
+			className: "grid w-full shrink-0 grid-cols-2 gap-2 md:w-auto md:min-w-[21rem]",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "min-w-0 sm:min-w-36",
+				className: "min-w-0 md:min-w-40",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
 					value: merchantId,
 					onValueChange: (value) => value && setMerchantId(value),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
-						className: "h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]",
+						className: "h-9 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]",
 						"aria-label": "انتخاب پذیرنده برای تحلیل وفاداری",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, {
-							className: "size-4 text-[var(--loyalty-violet)]",
+							className: "text-[var(--loyalty-violet)]",
 							"aria-hidden": "true"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]",
-							children: "پذیرنده"
+							children: "فروشگاه اصلی"
 						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-						value: "merchant",
-						children: "پذیرنده"
-					}) })]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectGroup, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "main-store",
+						children: "فروشگاه اصلی"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+						value: "all-stores",
+						children: "همه پذیرنده‌ها"
+					})] }) })]
 				})
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "min-w-0 sm:min-w-36",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-					value: periodId,
-					onValueChange: (value) => value && setPeriodId(value),
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectTrigger, {
-						className: "h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]",
-						"aria-label": "انتخاب بازه زمانی تحلیل وفاداری",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarDays, {
-							className: "size-4 text-[var(--loyalty-violet)]",
-							"aria-hidden": "true"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]",
-							children: "بازه"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-						value: "period",
-						children: "بازه"
-					}) })]
-				})
+				className: "min-w-0 md:min-w-40",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DateRangePicker, {})
 			})]
 		})]
 	});
@@ -7184,37 +8031,39 @@ function MetricCard({ metric }) {
 	const Icon = metricIconMap$1[metric.icon];
 	const styles = toneStyles[metric.tone];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: cn(panelClass$3, "flex items-start justify-between gap-2 p-2.5"),
+		className: cn(panelClass$3, "flex h-full min-h-28 flex-col justify-between gap-2.5 p-3"),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex min-w-0 flex-col gap-1",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-					className: "text-[11px] font-semibold leading-4 text-[var(--loyalty-ink)]",
-					children: metric.label
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: cn("text-lg font-extrabold leading-none tracking-tight sm:text-xl", styles.text),
-					children: metric.value
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-[11px] text-[var(--loyalty-subtle)]",
-					children: metric.caption
+			className: "flex min-w-0 items-start justify-between gap-2",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				className: "text-xs font-semibold leading-4 text-[var(--loyalty-ink)]",
+				children: metric.label
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: cn("flex size-8 shrink-0 items-center justify-center rounded-md border", styles.border, styles.soft, styles.text),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+					className: "size-4",
+					"aria-hidden": "true"
 				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: cn("flex size-8 shrink-0 items-center justify-center rounded-md border", styles.border, styles.text),
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-				className: "size-3.5",
-				"aria-hidden": "true"
-			})
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex min-w-0 flex-col gap-1",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: cn("text-xl font-extrabold leading-none tracking-tight sm:text-2xl", styles.text),
+				children: metric.value
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-[10px] text-[var(--loyalty-subtle)]",
+				children: metric.caption
+			})]
 		})]
 	});
 }
 function MetricStrip() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 		"aria-label": "شاخص‌های خلاصه وفاداری",
-		className: "grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2.5",
-		children: BUYER_LOYALTY_METRICS.filter((metric) => primaryMetricIds.has(metric.id)).map((metric) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricCard, { metric }, metric.id))
+		className: "grid shrink-0 grid-cols-2 gap-2 lg:grid-cols-5",
+		children: BUYER_LOYALTY_METRICS.map((metric, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: cn(index === BUYER_LOYALTY_METRICS.length - 1 && "col-span-2 lg:col-span-1"),
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricCard, { metric })
+		}, metric.id))
 	});
 }
 function BehaviorDonutCard({ className }) {
@@ -7223,14 +8072,14 @@ function BehaviorDonutCard({ className }) {
 		title: "تقسیم‌بندی کارت‌ها بر اساس رفتار",
 		description: "سهم کارت‌های مشاهده‌شده در هر وضعیت رفتاری",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-			className: "grid flex-1 items-center gap-2.5",
+			className: "flex min-h-0 flex-1 flex-col justify-center gap-3",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
 					className: "sr-only",
 					children: "توزیع کارت‌های یکتا بر اساس رفتار خرید و بازگشت."
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative mx-auto flex size-36 items-center justify-center",
+					className: "relative mx-auto flex size-44 items-center justify-center sm:size-52",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 						viewBox: "0 0 120 120",
 						className: "size-full -rotate-90 motion-reduce:rotate-0",
@@ -7254,20 +8103,20 @@ function BehaviorDonutCard({ className }) {
 							strokeDashoffset: -segment.offset
 						}, segment.label))]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "absolute inset-0 flex flex-col items-center justify-center px-5 text-center",
+						className: "absolute inset-0 flex flex-col items-center justify-center px-6 text-center",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-lg font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-xl",
+							className: "text-xl font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-2xl",
 							children: "۳۹۶,۳۶۵"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "mt-1 text-[11px] text-[var(--loyalty-subtle)]",
+							className: "mt-1.5 text-xs text-[var(--loyalty-subtle)]",
 							children: "کارت یکتا"
 						})]
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-					className: "grid grid-cols-1 gap-1.5 sm:grid-cols-2 xl:grid-cols-1",
+					className: "grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1",
 					children: BEHAVIOR_SEGMENTS.map((segment) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-						className: "grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-xs",
+						className: "grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-[var(--loyalty-line)] bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: cn("size-3 rounded-sm", toneStyles[segment.tone].bg),
@@ -7278,7 +8127,7 @@ function BehaviorDonutCard({ className }) {
 								children: segment.label
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "tabular-nums text-[var(--loyalty-subtle)]",
+								className: "tabular-nums font-semibold text-[var(--loyalty-subtle)]",
 								children: formatChartPercent(segment.share)
 							})
 						]
@@ -7286,16 +8135,16 @@ function BehaviorDonutCard({ className }) {
 				})
 			]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
+			className: "shrink-0 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
 			children: "در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده است."
 		})]
 	});
 }
 function buildChartPoints(values, labels, max) {
 	const width = 460;
-	const height = 190;
-	const top = 20;
-	const left = 44;
+	const height = 240;
+	const top = 22;
+	const left = 40;
 	const xStep = width / Math.max(labels.length - 1, 1);
 	return values.map((value, index) => ({
 		label: labels[index] ?? "",
@@ -7304,20 +8153,22 @@ function buildChartPoints(values, labels, max) {
 		y: top + height - value / max * height
 	}));
 }
-function TrendChart({ labels, compact = false, max, series, title }) {
+function TrendChart({ labels, max, series, title }) {
 	const chartSeries = series.map((item) => ({
 		...item,
 		points: buildChartPoints(item.values, labels, max)
 	}));
+	const plotBottom = 262;
+	const viewHeight = 290;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: cn("flex flex-col gap-2.5", !compact && "flex-1"),
+		className: "flex min-h-0 flex-1 flex-col justify-center gap-2",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
 				className: "sr-only",
 				children: title
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex justify-center gap-4 text-xs text-[var(--loyalty-subtle)]",
+				className: "flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-[var(--loyalty-subtle)]",
 				children: series.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 					className: "flex items-center gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -7327,8 +8178,8 @@ function TrendChart({ labels, compact = false, max, series, title }) {
 				}, item.label))
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-				viewBox: "0 0 560 250",
-				className: cn("h-auto w-full", compact ? "max-h-40" : "min-h-40 sm:min-h-48"),
+				viewBox: `0 0 520 ${viewHeight}`,
+				className: "h-auto min-h-[15rem] w-full flex-1",
 				role: "img",
 				"aria-label": title,
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
@@ -7341,36 +8192,36 @@ function TrendChart({ labels, compact = false, max, series, title }) {
 							30,
 							40
 						].map((tick) => {
-							const y = 210 - tick / max * 190;
+							const y = plotBottom - tick / max * 240;
 							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-								x1: "44",
-								x2: "520",
+								x1: "40",
+								x2: "500",
 								y1: y,
 								y2: y,
 								className: "stroke-[var(--loyalty-line)]",
 								strokeWidth: "1"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-								x: "22",
-								y: y + 4,
+								x: "20",
+								y: y + 3,
 								textAnchor: "middle",
-								className: "fill-[var(--loyalty-subtle)] text-[10px]",
+								className: "fill-[var(--loyalty-subtle)] text-[9px]",
 								children: formatChartPercent(tick)
 							})] }, tick);
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", {
-							x1: "44",
-							x2: "520",
-							y1: "210",
-							y2: "210",
+							x1: "40",
+							x2: "500",
+							y1: plotBottom,
+							y2: plotBottom,
 							className: "stroke-[var(--loyalty-line)]",
 							strokeWidth: "1.5"
 						}),
 						labels.map((label, index) => {
 							return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
-								x: 44 + index * (460 / Math.max(labels.length - 1, 1)),
-								y: "235",
+								x: 40 + index * (460 / Math.max(labels.length - 1, 1)),
+								y: viewHeight - 4,
 								textAnchor: "middle",
-								className: "fill-[var(--loyalty-subtle)] text-[11px]",
+								className: "fill-[var(--loyalty-subtle)] text-[10px]",
 								children: label
 							}, label);
 						})
@@ -7382,21 +8233,21 @@ function TrendChart({ labels, compact = false, max, series, title }) {
 						points: item.points.map((point) => `${point.x},${point.y}`).join(" "),
 						fill: "none",
 						className: lineTone,
-						strokeWidth: "3",
+						strokeWidth: "2.5",
 						strokeLinecap: "round",
 						strokeLinejoin: "round",
-						strokeDasharray: item.tone === "muted" ? "7 8" : void 0
+						strokeDasharray: item.tone === "muted" ? "6 7" : void 0
 					}), item.points.map((point) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
 						cx: point.x,
 						cy: point.y,
-						r: "5",
+						r: "4",
 						className: cn("fill-card", lineTone),
-						strokeWidth: "3"
+						strokeWidth: "2.5"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
 						x: point.x,
-						y: point.y - 12,
+						y: point.y - 8,
 						textAnchor: "middle",
-						className: cn("text-[11px] font-semibold", textTone),
+						className: cn("text-[9px] font-semibold", textTone),
 						children: formatChartPercent(point.value)
 					})] }, `${item.label}-${point.label}`))] }, item.label);
 				})]
@@ -7405,16 +8256,19 @@ function TrendChart({ labels, compact = false, max, series, title }) {
 	});
 }
 function SecondPurchaseCard({ className }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$2, {
 		className,
 		title: "نرخ خرید دوم یا بعدی در بازه‌های زمانی",
 		description: "از بین کارت‌های اولین‌بار مشاهده‌شده",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendChart, {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendChart, {
 			labels: SECOND_PURCHASE_LABELS,
 			max: 40,
 			series: SECOND_PURCHASE_SERIES,
 			title: "نمودار نرخ خرید دوم یا بعدی در روزهای ۷، ۳۰، ۶۰ و ۹۰"
-		})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "shrink-0 border-s-2 border-[var(--loyalty-amber)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
+			children: "نرخ بازگشت ۹۰ روزه، ۱۰ واحد درصد پایین‌تر از میانه همتایان است."
+		})]
 	});
 }
 function cohortCellStyle(value) {
@@ -7429,9 +8283,9 @@ function RetentionCohortCard({ className }) {
 		title: "Retention Cohort بر اساس ماه اولین مشاهده",
 		description: "درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "overflow-x-auto",
+			className: "flex min-h-0 flex-1 flex-col justify-center overflow-x-auto",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
-				className: "w-full min-w-[28rem] border-separate border-spacing-0 text-center text-xs",
+				className: "w-full min-w-[24rem] border-separate border-spacing-0 text-center text-sm",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("caption", {
 						className: "sr-only",
@@ -7439,26 +8293,26 @@ function RetentionCohortCard({ className }) {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 						scope: "col",
-						className: "p-2 text-start font-medium text-[var(--loyalty-subtle)]",
+						className: "px-2 py-2.5 text-start text-xs font-medium text-[var(--loyalty-subtle)]",
 						children: "ماه اول مشاهده"
 					}), COHORT_HEADERS.map((header) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 						scope: "col",
-						className: "p-2 font-medium text-[var(--loyalty-subtle)]",
+						className: "px-2 py-2.5 text-xs font-medium text-[var(--loyalty-subtle)]",
 						children: header
 					}, header))] }) }),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: RETENTION_COHORT_ROWS.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 						scope: "row",
-						className: "border-t border-[var(--loyalty-line)] p-2 text-start font-medium text-[var(--loyalty-ink)]",
+						className: "border-t border-[var(--loyalty-line)] px-2 py-3 text-start text-xs font-medium text-[var(--loyalty-ink)] sm:text-sm",
 						children: row.month
 					}), row.values.map((value, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
-						className: "border-t border-white p-2 font-bold tabular-nums",
+						className: "border-t border-white px-2 py-3 text-xs font-bold tabular-nums sm:text-sm",
 						style: value === null ? void 0 : cohortCellStyle(value),
 						children: value === null ? "–" : formatChartPercent(value)
 					}, `${row.month}-${COHORT_HEADERS[index]}`))] }, row.month)) })
 				]
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-			className: "flex items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
+			className: "flex shrink-0 items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Info, {
 				className: "mt-0.5 shrink-0 text-[var(--loyalty-navy)]",
 				"aria-hidden": "true"
@@ -7468,7 +8322,7 @@ function RetentionCohortCard({ className }) {
 }
 function DataScopeNote() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-		className: "flex items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs",
+		className: "flex shrink-0 items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, {
 			className: "mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-violet)]",
 			"aria-hidden": "true"
@@ -7477,19 +8331,20 @@ function DataScopeNote() {
 }
 function BuyerLoyaltyDashboard() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-2 text-[var(--loyalty-ink)]",
+		className: "flex min-h-0 flex-1 flex-col gap-2.5 text-[var(--loyalty-ink)]",
 		style: loyaltyTheme,
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BuyerLoyaltyHeader, {}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricStrip, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				"aria-label": "تحلیل نگهداشت و فاصله خرید",
-				className: "grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-12",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetentionCohortCard, { className: "xl:col-span-5" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SecondPurchaseCard, { className: "xl:col-span-4" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BehaviorDonutCard, { className: "xl:col-span-3" })
-				]
+				"aria-label": "نمای کلی و تحلیل وفاداری",
+				className: "grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 xl:grid-cols-12 xl:items-stretch",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex min-h-0 min-w-0 flex-col gap-2.5 xl:col-span-9",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(MetricStrip, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 lg:grid-cols-9 lg:items-stretch",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetentionCohortCard, { className: "min-h-[22rem] lg:col-span-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SecondPurchaseCard, { className: "min-h-[22rem] lg:col-span-4" })]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BehaviorDonutCard, { className: "min-h-[22rem] xl:col-span-3" })]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DataScopeNote, {})
 		]
@@ -7974,11 +8829,11 @@ function HealthHeader() {
 function PaymentFunnelDiagram() {
 	const stages = PAYMENT_FUNNEL;
 	const width = 320;
-	const stageH = 46;
-	const gap = 6;
-	const topPad = 8;
+	const stageH = 40;
+	const gap = 4;
+	const topPad = 4;
 	const sidePad = 8;
-	const height = topPad + stages.length * stageH + (stages.length - 1) * gap + 8;
+	const height = topPad + stages.length * stageH + (stages.length - 1) * gap + 4;
 	function stageGeometry(index) {
 		const inset = sidePad + index / (stages.length - 1) * 52;
 		const nextInset = sidePad + (index + 1) / (stages.length - 1) * 52;
@@ -7991,15 +8846,15 @@ function PaymentFunnelDiagram() {
 		};
 	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "flex flex-col gap-2.5",
+		className: "flex flex-col gap-2",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
 			className: "sr-only",
 			children: ["قیف مسیر پرداخت از نمایش درگاه تا پرداخت موفق.", stages.map((stage) => ` ${stage.label}: ${formatPersianNumber(stage.count)} نشست، ${formatPersianPercent(stage.rate)} از کل.`).join("")]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-3 lg:grid-cols-[minmax(0,1fr)_11rem] lg:items-center",
+			className: "grid gap-2 lg:grid-cols-[minmax(0,1fr)_10rem] lg:items-stretch",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 				viewBox: `0 0 ${width} ${height}`,
-				className: "mx-auto h-auto w-full max-w-md",
+				className: "mx-auto h-auto w-full max-w-sm",
 				role: "img",
 				"aria-hidden": "true",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
@@ -8038,24 +8893,24 @@ function PaymentFunnelDiagram() {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
 							x: width / 2,
-							y: midY - 6,
+							y: midY - 5,
 							textAnchor: "middle",
-							className: "fill-white text-[11px] font-semibold",
+							className: "fill-white text-[10px] font-semibold",
 							children: stage.label
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
 							x: width / 2,
-							y: midY + 10,
+							y: midY + 9,
 							textAnchor: "middle",
-							className: "fill-white/95 text-[12px] font-extrabold",
+							className: "fill-white/95 text-[11px] font-extrabold",
 							children: formatPersianNumber(stage.count)
 						})
 					] }, stage.id);
 				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
-				className: "flex flex-col gap-2",
+				className: "flex flex-col justify-center gap-0",
 				children: stages.map((stage, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-					className: "flex items-center justify-between gap-2 border-b border-[var(--health-line)] px-1 py-2 last:border-b-0",
+					className: "flex items-center justify-between gap-2 border-b border-[var(--health-line)] px-1 py-1.5 last:border-b-0",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 						className: "flex min-w-0 items-center gap-2 text-xs text-[var(--health-ink)]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -8083,13 +8938,13 @@ function FunnelHero() {
 		title: "قیف مسیر پرداخت",
 		description: "از نمایش درگاه تا پرداخت موفق؛ ریزش بین مراحل مسیر فروش بالقوه را نشان می‌دهد",
 		headingId: "payment-funnel-heading",
-		className: "lg:col-span-2",
+		className: "h-full lg:col-span-2",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PaymentFunnelDiagram, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-2 border-t border-[var(--health-line)] pt-2.5 sm:grid-cols-[auto_1fr] sm:items-center",
+				className: "grid gap-2 border-t border-[var(--health-line)] pt-2 sm:grid-cols-[auto_1fr] sm:items-center",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-2xl font-extrabold tabular-nums text-[var(--health-warn)]",
+					className: "text-xl font-extrabold tabular-nums text-[var(--health-warn)] sm:text-2xl",
 					children: formatPersianPercent(FUNNEL_SUMMARY.postEntrySuccess)
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex flex-col gap-0.5 text-xs sm:text-sm",
@@ -8108,7 +8963,7 @@ function FunnelHero() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-				className: "rail-banner p-2.5 sm:p-3",
+				className: "rail-banner p-2.5",
 				"aria-labelledby": "funnel-insight-heading",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "relative flex items-center gap-2 text-[var(--health-teal)]",
@@ -8121,7 +8976,7 @@ function FunnelHero() {
 						children: "بینش کلیدی قیف"
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "relative mt-1.5 text-sm leading-6 text-[var(--health-ink)]",
+					className: "relative mt-1 text-sm leading-6 text-[var(--health-ink)]",
 					children: [
 						FUNNEL_SUMMARY.headline,
 						" ",
@@ -8137,12 +8992,12 @@ function FunnelHero() {
 }
 function DropOffPanel() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
-		className: "self-start",
+		className: "h-full",
 		title: "ریزش بین مراحل",
 		description: "بزرگ‌ترین گلوگاه مسیر را اول هدف بگیرید",
 		headingId: "payment-dropoff-heading",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-			className: "flex flex-col gap-1.5",
+			className: "flex flex-1 flex-col gap-1.5",
 			children: FUNNEL_DROPOFFS.map((step) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
 				className: cn("rounded-lg border p-2", step.severity === "high" ? "border-[var(--health-warn)]/25 bg-card" : step.severity === "medium" ? "border-[var(--health-amber)]/30 bg-[var(--health-amber-soft)]" : "border-[var(--health-line)] bg-[var(--health-wash)]"),
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -8204,14 +9059,15 @@ function KpiCard$1({ kpi }) {
 function AmountSuccessChart() {
 	const max = 100;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$1, {
+		className: "h-full",
 		title: "موفقیت پس از ورود به بانک",
 		description: "به‌تفکیک بازه مبلغ، در برابر میانه همتایان",
 		headingId: "amount-success-heading",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-			className: "flex flex-col gap-2.5",
+			className: "flex flex-1 flex-col justify-center gap-2",
 			"aria-label": "نرخ موفقیت بر اساس مبلغ",
 			children: AMOUNT_BUCKETS.map((bucket) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-				className: "flex flex-col gap-1.5",
+				className: "flex flex-col gap-1",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between gap-2 text-xs",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -8228,7 +9084,7 @@ function AmountSuccessChart() {
 						]
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative h-2.5 overflow-hidden rounded-full bg-[var(--health-wash)]",
+					className: "relative h-2 overflow-hidden rounded-full bg-[var(--health-wash)]",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "absolute inset-y-0 start-0 rounded-full bg-[var(--health-violet-line)]",
 						style: { width: `${bucket.peerMedian / max * 100}%` },
@@ -8248,11 +9104,12 @@ function AmountSuccessChart() {
 }
 function RetryPanel() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel$1, {
+		className: "h-full",
 		title: "بازیابی با Retry",
 		description: "نشست‌هایی که پس از تلاش مجدد به خرید موفق رسیدند",
 		headingId: "retry-heading",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid grid-cols-2 gap-2",
+			className: "grid flex-1 grid-cols-2 content-center gap-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "border-e border-[var(--health-line)] pe-2.5",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
@@ -8289,11 +9146,12 @@ function RetryPanel() {
 }
 function TerminalTable() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
+		className: "h-full",
 		title: "تفاوت ترمینال‌ها",
 		description: "فقط ترمینال‌هایی با نمونه کافی",
 		headingId: "terminal-heading",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			className: "overflow-x-auto",
+			className: "flex-1 overflow-x-auto",
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
 				className: "w-full min-w-[22rem] border-separate border-spacing-0 text-xs",
 				children: [
@@ -8352,11 +9210,12 @@ function TerminalTable() {
 }
 function PspAnomalyPanel() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel$1, {
+		className: "h-full",
 		title: "ناهنجاری PSP یا صادرکننده",
 		description: "انحراف تعدیل‌شده نسبت به الگوی مورد انتظار",
 		headingId: "psp-anomaly-heading",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-			className: "flex flex-col gap-2",
+			className: "flex flex-1 flex-col justify-center gap-1",
 			children: PSP_ANOMALIES.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
 				className: "flex items-start justify-between gap-2.5 border-b border-[var(--health-line)] px-1 py-2 last:border-b-0",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -8405,15 +9264,17 @@ function PaymentHealthDashboard() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				"aria-label": "قیف و ریزش مسیر پرداخت",
-				className: "grid grid-cols-1 gap-2 lg:grid-cols-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FunnelHero, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropOffPanel, {})]
+				className: "grid grid-cols-1 items-stretch gap-2 lg:grid-cols-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FunnelHero, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1 lg:content-stretch",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DropOffPanel, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetryPanel, {})]
+				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 				"aria-label": "تحلیل‌های تکمیلی مسیر پرداخت",
-				className: "grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3",
+				className: "grid grid-cols-1 items-stretch gap-2 md:grid-cols-2 xl:grid-cols-3",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AmountSuccessChart, {}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RetryPanel, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TerminalTable, {}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PspAnomalyPanel, {})
 				]
@@ -9079,7 +9940,7 @@ function Panel({ title, description, children, className, headingId }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
 		className: cn(panelClass$1, "flex flex-col gap-2.5 p-2.5 sm:p-3", className),
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-			className: "flex flex-col gap-0.5",
+			className: "flex shrink-0 flex-col gap-0.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 				id: headingId,
 				className: "text-sm font-bold text-[var(--peer-ink)] sm:text-base",
@@ -9445,6 +10306,7 @@ function RadarChart() {
 	const youValues = RADAR_AXES.map((axis) => axis.you);
 	const medianValues = RADAR_AXES.map((axis) => axis.median);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Panel, {
+		className: "h-full",
 		title: "نمای کلی عملکرد",
 		description: "مقایسه نرمال‌شده شاخص‌ها (۰ بدتر — ۱۰ بهتر)",
 		headingId: "peer-radar-heading",
@@ -9465,7 +10327,7 @@ function RadarChart() {
 				}), "میانه گروه"]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-			className: "mx-auto w-full max-w-md",
+			className: "mx-auto flex w-full max-w-md flex-1 items-center",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
 				className: "sr-only",
 				children: ["نمودار رادار مقایسه شما با میانه گروه در هشت شاخص نرمال‌شده.", RADAR_AXES.map((axis) => ` ${axis.label}: شما ${toPersianDigits(axis.you)}، میانه ${toPersianDigits(axis.median)}.`).join("")]
@@ -9537,9 +10399,9 @@ function RadarChart() {
 }
 function CohortCurve() {
 	const width = 320;
-	const height = 140;
+	const height = 112;
 	const paddingX = 12;
-	const paddingY = 16;
+	const paddingY = 14;
 	const values = COHORT_ACTIVITY.curve;
 	const max = Math.max(...values);
 	const points = values.map((value, index) => {
@@ -9551,7 +10413,7 @@ function CohortCurve() {
 	const path = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
 	const marker = points[Math.round(COHORT_ACTIVITY.yourPercentile / 100 * (values.length - 1))] ?? points[points.length - 1];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "flex flex-col gap-2.5",
+		className: "flex flex-col gap-2",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
 				className: "sr-only",
@@ -9562,22 +10424,18 @@ function CohortCurve() {
 					"."
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex items-start justify-between gap-2.5",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs text-[var(--peer-subtle)]",
-						children: "جایگاه شما"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-[11px] text-[var(--peer-subtle)]",
-						children: "درصد پذیرندگان"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-						className: "mt-1 text-3xl font-extrabold text-[var(--peer-violet)]",
-						children: [toPersianDigits(COHORT_ACTIVITY.yourPercentile), "٪"]
-					})
-				] })
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-end justify-between gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-xs text-[var(--peer-subtle)]",
+					children: "جایگاه شما"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-[11px] text-[var(--peer-subtle)]",
+					children: "درصد پذیرندگان"
+				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-2xl font-extrabold tabular-nums text-[var(--peer-violet)]",
+					children: [toPersianDigits(COHORT_ACTIVITY.yourPercentile), "٪"]
+				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 				viewBox: `0 0 ${width} ${height}`,
@@ -9650,7 +10508,7 @@ function Leaderboard() {
 		bronze: "text-orange-700"
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col gap-2.5",
+		className: "flex min-h-0 flex-1 flex-col gap-2",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 			className: "text-sm font-bold text-[var(--peer-ink)]",
 			children: "پذیرندگان برتر گروه شما"
@@ -9658,9 +10516,9 @@ function Leaderboard() {
 			className: "text-xs text-[var(--peer-subtle)]",
 			children: "بر اساس ترکیب چند شاخص کلیدی"
 		})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
-			className: "flex flex-col gap-2",
+			className: "flex flex-1 flex-col justify-between gap-1.5",
 			children: LEADERBOARD.map((row) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-				className: cn("flex min-h-11 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm", row.isYou ? "border-[var(--peer-violet)] bg-card" : "border-[var(--peer-line)] bg-card"),
+				className: cn("flex min-h-10 items-center justify-between gap-2.5 rounded-lg border px-2.5 py-2 text-sm", row.isYou ? "border-[var(--peer-violet)] bg-card" : "border-[var(--peer-line)] bg-card"),
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center gap-2",
 					children: [
@@ -9690,12 +10548,12 @@ function Leaderboard() {
 }
 function CohortLeaderboardSection() {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Panel, {
-		className: "self-start",
+		className: "h-full",
 		title: "مقایسه در Cohort فعالیتی شما",
 		description: `ساعت اوج خرید شما: ${COHORT_ACTIVITY.peakHours}`,
 		headingId: "peer-cohort-heading",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "grid gap-2.5 md:grid-cols-2",
+			className: "flex min-h-0 flex-1 flex-col gap-2.5",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CohortCurve, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Leaderboard, {})]
 		})
 	});
@@ -9771,7 +10629,7 @@ function PeerPositionDashboard() {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KpiGrid, {}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 							"aria-label": "نمودارهای مقایسه‌ای",
-							className: "grid grid-cols-1 gap-2 md:grid-cols-2",
+							className: "grid grid-cols-1 items-stretch gap-2 md:grid-cols-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadarChart, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CohortLeaderboardSection, {})]
 						})
 					]
@@ -10285,7 +11143,24 @@ var SALES_PULSE_INSIGHT = {
 		"پیک فروش بین ۱۸:۰۰ تا ۲۱:۰۰ مشاهده شد؛ سهم این بازه ۳۴٪ از کل رشد است.",
 		"سهم کارت‌های بازگشتی ۶٫۱ واحد درصدی بالاتر رفت، اما اثر خالص تجزیه رشد منفی بود."
 	],
-	action: "پیشنهاد: کمپین بازگشت مشتری برای ساعات غیرپیک ۱۲:۰۰–۱۵:۰۰ را آزمایش کنید."
+	action: "پیشنهاد: کمپین بازگشت مشتری برای ساعات غیرپیک ۱۲:۰۰–۱۵:۰۰ را آزمایش کنید.",
+	stats: [
+		{
+			label: "رشد خالص",
+			value: "+۲۷٪",
+			tone: "good"
+		},
+		{
+			label: "اوج ۱۸–۲۱",
+			value: "۳۴٪",
+			tone: "neutral"
+		},
+		{
+			label: "کارت بازگشتی",
+			value: "+۶٫۱",
+			tone: "amber"
+		}
+	]
 };
 var SALES_PULSE_CUMULATIVE_TREND = [
 	{
@@ -10569,7 +11444,87 @@ var Lightbulb = createLucideIcon("lightbulb", [
 ]);
 //#endregion
 //#region components/sales-pulse/insight-panel.tsx
-function InsightPanel({ headline, bullets, action, variant = "panel" }) {
+var toneClass = {
+	good: "text-[var(--pulse-good)]",
+	neutral: "text-[var(--pulse-blue)]",
+	amber: "text-[var(--pulse-amber)]"
+};
+function InsightSparkline({ trend }) {
+	const width = 280;
+	const height = 72;
+	const padX = 8;
+	const padY = 10;
+	const max = Math.max(...trend.flatMap((point) => [point.actual, point.baseline]), 1);
+	function buildPath(key) {
+		return trend.map((point, index) => {
+			const x = padX + index / Math.max(trend.length - 1, 1) * (width - padX * 2);
+			const y = height - padY - point[key] / max * (height - padY * 2);
+			return `${index === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+		}).join(" ");
+	}
+	const last = trend[trend.length - 1];
+	const lift = last && last.baseline > 0 ? (last.actual - last.baseline) / last.baseline * 100 : 0;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
+		className: "flex flex-col gap-2 rounded-lg border border-[var(--pulse-line)] bg-[var(--pulse-wash)] p-2.5",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
+				className: "flex items-center justify-between gap-2 text-xs",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1.5 font-medium text-[var(--pulse-ink)]",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, {
+						className: "size-3.5 text-[var(--pulse-blue)]",
+						"aria-hidden": "true"
+					}), "فاصله فروش از baseline"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "font-extrabold tabular-nums text-[var(--pulse-good)]",
+					children: [
+						"+",
+						formatPersianNumber(lift, { maximumFractionDigits: 0 }),
+						"٪"
+					]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+				viewBox: `0 0 ${width} ${height}`,
+				className: "h-16 w-full",
+				role: "img",
+				"aria-label": "روند فروش واقعی در برابر baseline",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: buildPath("baseline"),
+					fill: "none",
+					stroke: "var(--pulse-subtle)",
+					strokeWidth: "1.75",
+					strokeDasharray: "4 3",
+					strokeLinecap: "round"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: buildPath("actual"),
+					fill: "none",
+					stroke: "var(--pulse-blue)",
+					strokeWidth: "2.25",
+					strokeLinecap: "round",
+					strokeLinejoin: "round"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center justify-between text-[10px] text-[var(--pulse-subtle)]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "h-0.5 w-4 bg-[var(--pulse-blue)]",
+						"aria-hidden": "true"
+					}), "واقعی"]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "flex items-center gap-1.5",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "h-0 w-4 border-t border-dashed border-[var(--pulse-subtle)]",
+						"aria-hidden": "true"
+					}), "baseline"]
+				})]
+			})
+		]
+	});
+}
+function InsightPanel({ headline, bullets, action, stats = [], trend = [], variant = "panel" }) {
 	if (variant === "card") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("aside", {
 		className: "rounded-lg border border-[var(--pulse-line)] bg-card p-2.5",
 		"aria-labelledby": "sales-pulse-insight-heading",
@@ -10627,6 +11582,23 @@ function InsightPanel({ headline, bullets, action, variant = "panel" }) {
 				className: "relative text-sm leading-6 text-[var(--pulse-ink)]",
 				children: headline
 			}),
+			stats.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "grid grid-cols-3 gap-2",
+				role: "list",
+				"aria-label": "شاخص‌های خلاصه بینش",
+				children: stats.map((stat) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					role: "listitem",
+					className: "rounded-lg border border-[var(--pulse-line)] bg-[var(--pulse-wash)] px-2 py-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-[10px] text-[var(--pulse-subtle)]",
+						children: stat.label
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: cn("mt-1 text-sm font-extrabold tabular-nums", toneClass[stat.tone]),
+						children: stat.value
+					})]
+				}, stat.label))
+			}) : null,
+			trend.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightSparkline, { trend }) : null,
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
 				className: "relative flex flex-col gap-1.5 text-xs text-[var(--pulse-subtle)] sm:text-sm",
 				children: bullets.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
@@ -10638,16 +11610,22 @@ function InsightPanel({ headline, bullets, action, variant = "panel" }) {
 				}, item))
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "relative mt-auto flex gap-2 border-t border-[var(--pulse-line)] pt-2",
+				className: "relative mt-auto flex gap-2 rounded-lg border border-[var(--pulse-line)] bg-[var(--pulse-wash)] p-2.5",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Target, {
-					className: "size-3.5 shrink-0 text-[var(--pulse-teal)]",
+					className: "mt-0.5 size-3.5 shrink-0 text-[var(--pulse-teal)]",
 					"aria-hidden": "true"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "text-xs leading-5 text-[var(--pulse-ink)] sm:text-sm sm:leading-6",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "font-semibold text-[var(--pulse-teal)]",
-						children: "پیشنهاد: "
-					}), action]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "min-w-0",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "flex items-center gap-1.5 text-[11px] font-semibold text-[var(--pulse-teal)]",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, {
+							className: "size-3",
+							"aria-hidden": "true"
+						}), "اقدام پیشنهادی"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mt-1 text-xs leading-5 text-[var(--pulse-ink)] sm:text-sm sm:leading-6",
+						children: action.replace(/^پیشنهاد:\s*/, "")
+					})]
 				})]
 			})
 		]
@@ -11089,7 +12067,9 @@ function SalesPulseDashboard() {
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InsightPanel, {
 					headline: SALES_PULSE_INSIGHT.headline,
 					bullets: SALES_PULSE_INSIGHT.bullets,
-					action: SALES_PULSE_INSIGHT.action
+					action: SALES_PULSE_INSIGHT.action,
+					stats: SALES_PULSE_INSIGHT.stats,
+					trend: SALES_PULSE_CUMULATIVE_TREND
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
@@ -12153,50 +13133,6 @@ function findRootOwnerId(node) {
 	return findRootOwnerId(getParentNode(node));
 }
 //#endregion
-//#region node_modules/@base-ui/react/utils/popups/useTriggerFocusGuards.mjs
-var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
-/**
-* Minimal store interface required by the focus guard hook.
-* Both PopoverStore and MenuStore satisfy this interface.
-*/
-/**
-* Provides focus guard handlers for popup triggers (Popover, Menu).
-*
-* When the popup is open, invisible focus guard elements are placed before and after
-* the trigger. These handlers close the popup and move focus to the appropriate
-* tabbable element when the guards receive focus (i.e. when the user tabs out).
-*/
-function useTriggerFocusGuards(store, triggerElementRef) {
-	const preFocusGuardRef = import_react.useRef(null);
-	function handlePreFocusGuardFocus(event) {
-		import_react_dom.flushSync(() => {
-			store.setOpen(false, createChangeEventDetails(focusOut, event.nativeEvent, event.currentTarget));
-		});
-		getTabbableBeforeElement(preFocusGuardRef.current)?.focus();
-	}
-	function handleFocusTargetFocus(event) {
-		const positionerElement = store.select("positionerElement");
-		if (positionerElement && isOutsideEvent(event, positionerElement)) store.context.beforeContentFocusGuardRef.current?.focus();
-		else {
-			import_react_dom.flushSync(() => {
-				store.setOpen(false, createChangeEventDetails(focusOut, event.nativeEvent, event.currentTarget));
-			});
-			let nextTabbable = getTabbableAfterElement(store.context.triggerFocusTargetRef.current || triggerElementRef.current);
-			while (nextTabbable !== null && contains(positionerElement, nextTabbable)) {
-				const prevTabbable = nextTabbable;
-				nextTabbable = getNextTabbable(nextTabbable);
-				if (nextTabbable === prevTabbable) break;
-			}
-			nextTabbable?.focus();
-		}
-	}
-	return {
-		preFocusGuardRef,
-		handlePreFocusGuardFocus,
-		handleFocusTargetFocus
-	};
-}
-//#endregion
 //#region node_modules/@base-ui/react/utils/useMixedToggleClickHandler.mjs
 /**
 * Returns `click` and `mousedown` handlers that fix the behavior of triggers of popups that are toggled by different events.
@@ -12439,7 +13375,7 @@ function DropdownMenuTrigger({ ...props }) {
 		...props
 	});
 }
-function DropdownMenuContent({ align = "start", alignOffset = 0, side = "bottom", sideOffset = 4, className, ...props }) {
+function DropdownMenuContent({ align = "start", alignOffset = 0, side = "bottom", sideOffset = 6, className, ...props }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuPortal, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuPositioner, {
 		className: "isolate z-50 outline-none",
 		align,
@@ -12448,7 +13384,7 @@ function DropdownMenuContent({ align = "start", alignOffset = 0, side = "bottom"
 		sideOffset,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MenuPopup, {
 			"data-slot": "dropdown-menu-content",
-			className: cn("z-50 max-h-(--available-height) w-(--anchor-width) min-w-32 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-start-2 data-[side=inline-start]:slide-in-from-end-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95", className),
+			className: cn("popup-motion z-50 max-h-(--available-height) w-(--anchor-width) min-w-32 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-none data-closed:overflow-hidden", className),
 			...props
 		})
 	}) });
@@ -12458,7 +13394,7 @@ function DropdownMenuItem({ className, inset, variant = "default", ...props }) {
 		"data-slot": "dropdown-menu-item",
 		"data-inset": inset,
 		"data-variant": variant,
-		className: cn("group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:ps-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive", className),
+		className: cn("group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none transition-colors duration-150 ease-out focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:ps-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-disabled:pointer-events-none data-disabled:opacity-50 motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive", className),
 		...props
 	});
 }
@@ -12844,7 +13780,7 @@ function Home() {
 			tabIndex: -1,
 			"aria-label": PAGE_TITLES[page],
 			"data-page": page,
-			className: cn("dashboard-shell flex flex-1 flex-col outline-none", page === "business-graph" ? "gap-3 px-3 pb-3 pt-4 md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6" : "gap-2 px-2.5 pb-2.5 pt-3 md:px-3 md:pb-3 md:pt-3.5 xl:px-4 xl:pb-4 xl:pt-4"),
+			className: cn("dashboard-shell flex min-h-0 flex-1 flex-col outline-none", page === "business-graph" ? "gap-3 px-3 pb-3 pt-4 md:px-4 md:pb-4 md:pt-5 xl:px-5 xl:pb-5 xl:pt-6" : "gap-2 px-2.5 pb-2.5 pt-3 md:px-3 md:pb-3 md:pt-3.5 xl:px-4 xl:pb-4 xl:pt-4"),
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ActivePage, {})
 		})]
 	})] });
