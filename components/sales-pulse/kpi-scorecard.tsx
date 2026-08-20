@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import type { SalesPulseKpi } from "@/lib/sales-pulse-mock-data";
+import type { SalesPulseKpi } from "@/lib/sales-pulse-data";
 import { cn } from "@/lib/utils";
 
 import { Sparkline } from "@/components/sales-pulse/sparkline";
@@ -48,12 +48,14 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
   const Icon = iconMap[kpi.icon];
   const styles = accentStyles[kpi.accent];
   const changeSuffix =
-    kpi.changeType === "points" ? " واحد درصدی نسبت به baseline" : " نسبت به baseline";
+    kpi.changeType === "points"
+      ? " واحد درصدی نسبت به میانگین مشابه"
+      : " نسبت به میانگین مشابه";
 
   return (
     <article
       className={cn(
-        "rail-panel rail-panel-interactive flex flex-col gap-2 p-2.5 [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]"
+        "rail-panel rail-panel-interactive flex flex-col gap-2 p-2.5 [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)] last:col-span-2 md:last:col-span-1"
       )}
     >
       <div className="flex items-start justify-between gap-2">
@@ -80,7 +82,12 @@ export function KpiScorecard({ kpi }: { kpi: SalesPulseKpi }) {
             </span>
           ) : null}
         </p>
-        <p className={cn("flex items-center gap-1 text-xs font-medium sm:text-sm", styles.change)}>
+        <p
+          className={cn(
+            "flex items-center gap-1 text-xs font-medium sm:text-sm",
+            kpi.change.startsWith("-") ? "text-[var(--pulse-warn)]" : styles.change
+          )}
+        >
           <TrendingUpIcon className="size-3.5 shrink-0" aria-hidden="true" />
           <span>
             {kpi.change}

@@ -1,9 +1,9 @@
-import type { GrowthFactor } from "@/lib/sales-pulse-mock-data";
+import type { GrowthFactor } from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 type GrowthWaterfallProps = {
-        factors: GrowthFactor[];
+  factors: GrowthFactor[];
   total: number;
 };
 
@@ -14,7 +14,8 @@ function formatFactorValue(value: number): string {
 
 export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
   const maxBarHeight = 128;
-  const maxAbs = Math.max(...factors.map((f) => Math.abs(f.value)), total);
+  const maxAbs = Math.max(...factors.map((f) => Math.abs(f.value)), Math.abs(total), 1);
+  const totalPositive = total >= 0;
 
   return (
     <figure className="flex h-full flex-col">
@@ -63,20 +64,28 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
         })}
 
         <div className="flex max-w-16 flex-1 flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[var(--pulse-good)]">
-            +{formatPersianNumber(total)}٪
+          <span
+            className={cn(
+              "text-xs font-bold",
+              totalPositive ? "text-[var(--pulse-good)]" : "text-[var(--pulse-warn)]"
+            )}
+          >
+            {total > 0 ? "+" : ""}{formatPersianNumber(total)}٪
           </span>
           <div
             className="flex w-full max-w-10 items-end justify-center"
             style={{ height: maxBarHeight }}
           >
             <div
-              className="w-full rounded-t-md bg-[var(--pulse-good)]"
-              style={{ height: (total / maxAbs) * maxBarHeight }}
+              className={cn(
+                "w-full rounded-t-md",
+                totalPositive ? "bg-[var(--pulse-good)]" : "bg-[var(--pulse-warn)]"
+              )}
+              style={{ height: Math.max((Math.abs(total) / maxAbs) * maxBarHeight, 8) }}
             />
           </div>
           <span className="text-center text-[11px] font-medium leading-tight">
-            رشد خالص فروش
+            تغییر خالص فروش
           </span>
         </div>
       </div>
@@ -87,8 +96,9 @@ export function GrowthWaterfall({ factors, total }: GrowthWaterfallProps) {
 export function GrowthDonut({ total }: { total: number }) {
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
-  const progress = Math.min(total / 40, 1);
+  const progress = Math.min(Math.abs(total) / 40, 1);
   const dashOffset = circumference * (1 - progress);
+  const positive = total >= 0;
 
   return (
     <div className="relative mx-auto flex size-36 items-center justify-center">
@@ -110,7 +120,9 @@ export function GrowthDonut({ total }: { total: number }) {
           cy="64"
           r={radius}
           fill="none"
-          className="stroke-[var(--pulse-good)]"
+          className={cn(
+            positive ? "stroke-[var(--pulse-good)]" : "stroke-[var(--pulse-warn)]"
+          )}
           strokeWidth="12"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -118,8 +130,13 @@ export function GrowthDonut({ total }: { total: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold text-[var(--pulse-good)]">
-          +{formatPersianNumber(total)}٪
+        <span
+          className={cn(
+            "text-2xl font-bold",
+            positive ? "text-[var(--pulse-good)]" : "text-[var(--pulse-warn)]"
+          )}
+        >
+          {total > 0 ? "+" : ""}{formatPersianNumber(total)}٪
         </span>
         <span className="text-xs text-muted-foreground">رشد کل</span>
       </div>
@@ -158,8 +175,13 @@ export function GrowthBreakdownBlocks({
         </div>
       ))}
       <span className="text-muted-foreground">=</span>
-      <span className="rounded-md bg-[var(--pulse-good)] px-2.5 py-1.5 font-bold text-white">
-        {formatPersianNumber(total)}٪ رشد کل
+      <span
+        className={cn(
+          "rounded-md px-2.5 py-1.5 font-bold text-white",
+          total >= 0 ? "bg-[var(--pulse-good)]" : "bg-[var(--pulse-warn)]"
+        )}
+      >
+        {formatPersianNumber(total)}٪ تغییر کل
       </span>
     </div>
   );

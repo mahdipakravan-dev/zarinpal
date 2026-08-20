@@ -2,7 +2,7 @@ import {
   HEATMAP_BLOCKS,
   HEATMAP_DAYS,
   type HeatmapCell,
-} from "@/lib/sales-pulse-mock-data";
+} from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 

@@ -1,4 +1,4 @@
-import type { TrendPoint } from "@/lib/sales-pulse-mock-data";
+import type { TrendPoint } from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
 
 type CumulativeTrendChartProps = {
@@ -13,10 +13,10 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
   const chartHeight = height - padding.top - padding.bottom;
 
   const values = data.flatMap((point) => [point.actual, point.baseline]);
-  const maxValue = Math.max(...values) * 1.08;
+  const maxValue = Math.max(...values, 1) * 1.08;
   const minValue = 0;
 
-  const xStep = chartWidth / (data.length - 1);
+  const xStep = data.length > 1 ? chartWidth / (data.length - 1) : 0;
 
   const toX = (index: number) => padding.left + index * xStep;
   const toY = (value: number) =>
@@ -33,7 +33,7 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
   return (
     <figure className="w-full">
       <figcaption className="sr-only">
-        روند تجمعی فروش موفق در بازه مناسبت در مقایسه با baseline
+        روند تجمعی فروش موفق در مقایسه با میانگین دوره‌های مشابه
       </figcaption>
       <svg
         viewBox={`0 0 ${width} ${height}`}
@@ -112,7 +112,7 @@ export function CumulativeTrendChart({ data }: CumulativeTrendChartProps) {
             className="inline-block h-0.5 w-5 rounded border-t-2 border-dashed border-muted-foreground/60"
             aria-hidden="true"
           />
-          baseline
+          میانگین مشابه
         </span>
       </div>
     </figure>

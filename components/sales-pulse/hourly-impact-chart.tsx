@@ -1,4 +1,4 @@
-import type { HourlyImpact } from "@/lib/sales-pulse-mock-data";
+import type { HourlyImpact } from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 

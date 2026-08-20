@@ -7,7 +7,12 @@
   },
   "scripts": {
     "install:ci": "bash scripts/install-ci.sh",
+    "data:sales-pulse": "node scripts/generate-sales-pulse-data.mjs",
+    "data:sales-pulse:ai": "node --env-file-if-exists=.env.local scripts/enrich-sales-pulse-ai.mjs",
+    "data:buyer-loyalty": "node scripts/generate-buyer-loyalty-data.mjs",
+    "predev": "node scripts/generate-sales-pulse-data.mjs --if-stale && node scripts/generate-buyer-loyalty-data.mjs --if-stale",
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
+    "prebuild": "node scripts/generate-sales-pulse-data.mjs --if-stale && node scripts/generate-buyer-loyalty-data.mjs --if-stale",
     "build": "bash scripts/build-verified.sh",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",

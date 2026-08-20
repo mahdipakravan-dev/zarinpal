@@ -14,7 +14,7 @@ export function QuickComparisonList({ items }: QuickComparisonProps) {
         مقایسه سریع
       </h3>
       <p className="mb-2 text-xs text-[var(--pulse-subtle)]">
-        انحراف‌های کلیدی نسبت به baseline
+        تفاوت شاخص‌های کلیدی با میانگین دوره‌های مشابه
       </p>
       <ul className="flex flex-1 flex-col gap-1.5">
         {items.map((item) => (
@@ -28,6 +28,8 @@ export function QuickComparisonList({ items }: QuickComparisonProps) {
                 "font-extrabold tabular-nums",
                 item.value.startsWith("+")
                   ? "text-[var(--pulse-good)]"
+                  : item.value.startsWith("-")
+                    ? "text-[var(--pulse-warn)]"
                   : "text-[var(--pulse-ink)]"
               )}
             >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { ActivityIcon } from "lucide-react";
 
 import { CumulativeTrendChart } from "@/components/sales-pulse/cumulative-trend-chart";
@@ -18,40 +18,131 @@ import {
   PeriodToolbar,
 } from "@/components/sales-pulse/period-toolbar";
 import { QuickComparisonList } from "@/components/sales-pulse/quick-comparison-list";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  SALES_PULSE_CUMULATIVE_TREND,
-  SALES_PULSE_GROWTH_FACTORS,
-  SALES_PULSE_HEATMAP,
-  SALES_PULSE_HOURLY_IMPACT,
-  SALES_PULSE_INSIGHT,
-  SALES_PULSE_KPIS,
-  SALES_PULSE_QUICK_COMPARISON,
-  SALES_PULSE_TOTAL_GROWTH,
-} from "@/lib/sales-pulse-mock-data";
+  SALES_PULSE_INDEX,
+  salesPulseMerchantDataUrl,
+  type SalesPulseKpi,
+  type SalesPulseResult,
+} from "@/lib/sales-pulse-data";
+import { formatPersianNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { streamSalesPulseAction } from "@/lib/sales-pulse-ai-stream";
 
 const pulseTheme = {
-  "--pulse-ink": "#17191d",
-  "--pulse-subtle": "#68707d",
-  "--pulse-line": "#e6e8ec",
-  "--pulse-wash": "#f7f8fa",
+  "--pulse-ink": "#1a2148",
+  "--pulse-subtle": "#6b7590",
+  "--pulse-line": "#e4e9f3",
+  "--pulse-wash": "#f6f8fc",
   "--pulse-blue": "#174fd6",
-  "--pulse-blue-soft": "#f2f5fb",
-  "--pulse-blue-line": "#d7deeb",
+  "--pulse-blue-soft": "#eaf1ff",
+  "--pulse-blue-line": "#c8d8ff",
   "--pulse-violet": "#174fd6",
-  "--pulse-violet-soft": "#f2f5fb",
-  "--pulse-violet-line": "#d7deeb",
+  "--pulse-violet-soft": "#eaf1ff",
+  "--pulse-violet-line": "#c8d8ff",
   "--pulse-teal": "#0f9a84",
   "--pulse-good": "#119a6c",
   "--pulse-warn": "#d44949",
   "--pulse-amber": "#e8892d",
-  "--pulse-amber-soft": "#fbf7f0",
-  "--pulse-amber-line": "#eadfce",
+  "--pulse-amber-soft": "#fff6ea",
+  "--pulse-amber-line": "#ffe0b5",
   "--pulse-yellow": "#ffd60a",
 } as CSSProperties;
 
 const panelClass =
   "rail-panel rail-panel-interactive [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]";
+
+function formatSigned(value: number, suffix = ""): string {
+  const prefix = value > 0 ? "+" : "";
+  return `${prefix}${formatPersianNumber(value, { maximumFractionDigits: 1 })}${suffix}`;
+}
+
+function salesScale(value: number, baseline: number) {
+  const largest = Math.max(Math.abs(value), Math.abs(baseline));
+  if (largest >= 10_000_000_000) {
+    return { divisor: 10_000_000_000, unit: "میلیارد تومان" };
+  }
+  if (largest >= 10_000_000) {
+    return { divisor: 10_000_000, unit: "میلیون تومان" };
+  }
+  return { divisor: 10, unit: "تومان" };
+}
+
+function formatSalesPulseKpis(result: SalesPulseResult): SalesPulseKpi[] {
+  const sales = result.kpis.salesAmount;
+  const salesUnit = salesScale(sales.value, sales.baseline);
+  const count = result.kpis.successfulCount;
+  const basket = result.kpis.avgBasket;
+  const success = result.kpis.successRate;
+  const returning = result.kpis.returningShare;
+
+  return [
+    {
+      id: "successful-count",
+      label: "تعداد خرید موفق",
+      value: formatPersianNumber(count.value, { maximumFractionDigits: 0 }),
+      change: formatSigned(count.change, "٪"),
+      changeType: "percent",
+      baseline: formatPersianNumber(count.baseline, { maximumFractionDigits: 0 }),
+      baselineLabel: "میانگین مشابه",
+      trend: count.trend,
+      accent: "emerald",
+      icon: "receipt",
+    },
+    {
+      id: "sales-amount",
+      label: "مبلغ فروش موفق",
+      value: formatPersianNumber(sales.value / salesUnit.divisor, { maximumFractionDigits: 2 }),
+      unit: salesUnit.unit,
+      change: formatSigned(sales.change, "٪"),
+      changeType: "percent",
+      baseline: formatPersianNumber(sales.baseline / salesUnit.divisor, {
+        maximumFractionDigits: 2,
+      }),
+      baselineLabel: "میانگین مشابه",
+      trend: sales.trend,
+      accent: "violet",
+      icon: "wallet",
+    },
+    {
+      id: "avg-basket",
+      label: "متوسط مبلغ هر خرید",
+      value: formatPersianNumber(basket.value / 10, { maximumFractionDigits: 0 }),
+      unit: "تومان",
+      change: formatSigned(basket.change, "٪"),
+      changeType: "percent",
+      baseline: formatPersianNumber(basket.baseline / 10, { maximumFractionDigits: 0 }),
+      baselineLabel: "میانگین مشابه",
+      trend: basket.trend,
+      accent: "blue",
+      icon: "basket",
+    },
+    {
+      id: "success-rate",
+      label: "نرخ موفقیت پرداخت",
+      value: `${formatPersianNumber(success.value, { maximumFractionDigits: 1 })}٪`,
+      change: formatSigned(success.change),
+      changeType: "points",
+      baseline: `${formatPersianNumber(success.baseline, { maximumFractionDigits: 1 })}٪`,
+      baselineLabel: "میانگین مشابه",
+      trend: success.trend,
+      accent: "emerald",
+      icon: "check",
+    },
+    {
+      id: "returning-share",
+      label: "سهم مشتریان بازگشتی",
+      value: `${formatPersianNumber(returning.value, { maximumFractionDigits: 1 })}٪`,
+      change: formatSigned(returning.change),
+      changeType: "points",
+      baseline: `${formatPersianNumber(returning.baseline, { maximumFractionDigits: 1 })}٪`,
+      baselineLabel: "میانگین مشابه",
+      trend: returning.trend,
+      accent: "amber",
+      icon: "users",
+    },
+  ];
+}
 
 function SalesPulseHeader({ controls }: { controls: ReactNode }) {
   return (
@@ -65,7 +156,7 @@ function SalesPulseHeader({ controls }: { controls: ReactNode }) {
             نبض فروش و مناسبت‌ها
           </h1>
           <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
-            انحراف مناسبت نسبت به baseline · کنترل مبلغ، ساعت و ترکیب خریدار
+            مقایسه با میانگین همان روز و ساعت در هشت هفته گذشته
           </p>
         </div>
       </div>
@@ -77,34 +168,151 @@ function SalesPulseHeader({ controls }: { controls: ReactNode }) {
   );
 }
 
-export function SalesPulseDashboard() {
-  const [merchantId, setMerchantId] = useState("merchant-a");
+function SalesPulseLoading() {
+  return (
+    <div className="flex flex-col gap-2.5" aria-label="در حال بارگذاری داده نبض فروش">
+      <section className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-3 xl:grid-cols-5">
+        {Array.from({ length: 5 }, (_, index) => (
+          <Skeleton key={index} className="h-36 rounded-lg" />
+        ))}
+      </section>
+      <section className="grid grid-cols-1 gap-2.5 lg:grid-cols-2">
+        <Skeleton className="h-80 rounded-lg" />
+        <Skeleton className="h-80 rounded-lg" />
+      </section>
+      <section className="grid grid-cols-1 gap-2.5 md:grid-cols-3">
+        <Skeleton className="h-64 rounded-lg md:col-span-2" />
+        <Skeleton className="h-64 rounded-lg" />
+      </section>
+    </div>
+  );
+}
 
-  function handleMerchantChange(value: string | null) {
-    if (value) setMerchantId(value);
+export function SalesPulseDashboard() {
+  const [periodId, setPeriodId] = useState("nowruz-1405");
+  const [merchantId, setMerchantId] = useState(SALES_PULSE_INDEX.merchants[0].id);
+  const [merchantResults, setMerchantResults] = useState<Record<
+    string,
+    SalesPulseResult
+  > | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [liveAction, setLiveAction] = useState<{
+    key: string;
+    text: string;
+    status: "streaming" | "complete" | "error";
+  } | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(salesPulseMerchantDataUrl(merchantId), { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json() as Promise<Record<string, SalesPulseResult>>;
+      })
+      .then(setMerchantResults)
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setLoadError("فایل تجمیعی این پذیرنده بارگذاری نشد.");
+      });
+
+    return () => controller.abort();
+  }, [merchantId]);
+
+  const result = merchantResults?.[periodId];
+
+  useEffect(() => {
+    if (!result) return;
+    const key = `${merchantId}:${periodId}`;
+    const merchant = SALES_PULSE_INDEX.merchants.find((item) => item.id === merchantId);
+    const period = SALES_PULSE_INDEX.periods.find((item) => item.id === periodId);
+    if (!merchant || !period) return;
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => {
+      setLiveAction({ key, text: "", status: "streaming" });
+      streamSalesPulseAction({
+        merchantCategory: merchant.categoryTitle,
+        periodLabel: period.label,
+        result,
+        signal: controller.signal,
+        onText: (text) => setLiveAction({ key, text, status: "streaming" }),
+      })
+        .then((text) => setLiveAction({ key, text, status: "complete" }))
+        .catch(() => {
+          if (controller.signal.aborted) return;
+          setLiveAction({ key, text: result.insight.ruleAction, status: "error" });
+        });
+    }, 50);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [merchantId, periodId, result]);
+
+  function handlePeriodChange(value: string | null) {
+    if (value) setPeriodId(value);
   }
 
+  function handleMerchantChange(value: string | null) {
+    if (value) {
+      setMerchantResults(null);
+      setLoadError(null);
+      setMerchantId(value);
+    }
+  }
+
+  const controls = (
+    <PeriodToolbar
+      variant="inline"
+      periodId={periodId}
+      merchantId={merchantId}
+      periods={SALES_PULSE_INDEX.periods}
+      merchants={SALES_PULSE_INDEX.merchants}
+      onPeriodChange={handlePeriodChange}
+      onMerchantChange={handleMerchantChange}
+    />
+  );
+
+  if (!result) {
+    return (
+      <div className="flex flex-col gap-2.5 text-[var(--pulse-ink)]" style={pulseTheme}>
+        <SalesPulseHeader controls={controls} />
+        {loadError ? (
+          <div className={cn(panelClass, "flex min-h-48 items-center justify-center p-4")} role="alert">
+            <p className="text-sm text-[var(--pulse-warn)]">{loadError}</p>
+          </div>
+        ) : (
+          <SalesPulseLoading />
+        )}
+      </div>
+    );
+  }
+
+  const kpis = formatSalesPulseKpis(result);
+  const insightKey = `${merchantId}:${periodId}`;
+  const activeLiveAction = liveAction?.key === insightKey ? liveAction : null;
+  const quickComparison = result.quickComparison.map((item) => ({
+    label: item.label,
+    value: formatSigned(item.value, item.type === "percent" ? "٪" : ""),
+  }));
+
   return (
-    <div className="flex flex-col gap-2 text-[var(--pulse-ink)]" style={pulseTheme}>
+    <div className="flex flex-col gap-2.5 text-[var(--pulse-ink)]" style={pulseTheme}>
       <SalesPulseHeader
-        controls={
-          <PeriodToolbar
-            variant="inline"
-            merchantId={merchantId}
-            onMerchantChange={handleMerchantChange}
-          />
-        }
+        controls={controls}
       />
 
       <KpiScorecardGrid>
-        {SALES_PULSE_KPIS.map((kpi) => (
+        {kpis.map((kpi) => (
           <KpiScorecard key={kpi.id} kpi={kpi} />
         ))}
       </KpiScorecardGrid>
 
       <section
         aria-labelledby="growth-breakdown-heading"
-        className="grid grid-cols-1 gap-2 lg:grid-cols-2"
+        className="grid grid-cols-1 gap-2.5 lg:grid-cols-2"
       >
         <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3")}>
           <header>
@@ -115,54 +323,54 @@ export function SalesPulseDashboard() {
               تجزیه رشد مناسبت
             </h2>
             <p className="mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]">
-              اثر تعداد خرید، سبد، موفقیت پرداخت و سهم کارت‌های بازگشتی
+              اثر حجم نشست، موفقیت پرداخت، مبلغ خرید و سهم مشتریان بازگشتی
             </p>
           </header>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-[7.5rem_1fr] lg:grid-cols-[8rem_1fr]">
-            <GrowthDonut total={SALES_PULSE_TOTAL_GROWTH} />
+            <GrowthDonut total={result.totalGrowth} />
             <GrowthWaterfall
-              factors={SALES_PULSE_GROWTH_FACTORS}
-              total={SALES_PULSE_TOTAL_GROWTH}
+              factors={result.growthFactors}
+              total={result.totalGrowth}
             />
           </div>
 
           <GrowthBreakdownBlocks
-            factors={SALES_PULSE_GROWTH_FACTORS}
-            total={SALES_PULSE_TOTAL_GROWTH}
+            factors={result.growthFactors}
+            total={result.totalGrowth}
           />
         </article>
 
         <InsightPanel
-          headline={SALES_PULSE_INSIGHT.headline}
-          bullets={SALES_PULSE_INSIGHT.bullets}
-          action={SALES_PULSE_INSIGHT.action}
-          stats={SALES_PULSE_INSIGHT.stats}
-          trend={SALES_PULSE_CUMULATIVE_TREND}
+          headline={result.insight.headline}
+          bullets={result.insight.bullets}
+          action={activeLiveAction?.text ?? result.insight.action}
+          actionSource={activeLiveAction?.status === "error" ? "rules" : "ai"}
+          actionStatus={activeLiveAction?.status ?? "idle"}
         />
       </section>
 
       <section
         aria-label="نمودارهای تکمیلی"
-        className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3"
+        className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3"
       >
         <article className={cn(panelClass, "p-2.5 sm:p-3 md:col-span-2 xl:col-span-2")}>
           <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
-              روند تجمعی فروش موفق
+              روند تجمعی فروش موفق (میلیارد تومان)
             </h2>
             <p className="mt-0.5 text-xs leading-5 text-[var(--pulse-subtle)]">
-              واقعی در برابر baseline در طول بازه مناسبت
+              فروش واقعی در برابر میانگین دوره‌های مشابه
             </p>
           </header>
-          <CumulativeTrendChart data={SALES_PULSE_CUMULATIVE_TREND} />
+          <CumulativeTrendChart data={result.cumulativeTrend} />
         </article>
 
         <article className={cn(panelClass, "p-2.5 sm:p-3")}>
-          <QuickComparisonList items={SALES_PULSE_QUICK_COMPARISON} />
+          <QuickComparisonList items={quickComparison} />
         </article>
 
-        <article className={cn(panelClass, "flex flex-col p-2.5 sm:p-3")}>
+        <article className={cn(panelClass, "self-start p-2.5 sm:p-3")}>
           <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               توزیع اثر رشد بر اساس ساعت
@@ -171,15 +379,10 @@ export function SalesPulseDashboard() {
               سهم خالص هر بازه ساعتی از رشد کل
             </p>
           </header>
-          <HourlyImpactChart data={SALES_PULSE_HOURLY_IMPACT} />
+          <HourlyImpactChart data={result.hourlyImpact} />
         </article>
 
-        <article
-          className={cn(
-            panelClass,
-            "flex flex-col overflow-x-auto p-2.5 sm:p-3 md:col-span-2"
-          )}
-        >
+        <article className={cn(panelClass, "self-start overflow-x-auto p-2.5 sm:p-3 md:col-span-2")}>
           <header className="mb-2">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               ماتریس اثر خالص رشد
@@ -188,11 +391,16 @@ export function SalesPulseDashboard() {
               شدت اثر بر اساس روز هفته و بازه ساعتی
             </p>
           </header>
-          <ImpactHeatmap values={SALES_PULSE_HEATMAP} />
+          <ImpactHeatmap values={result.heatmap} />
         </article>
       </section>
 
-      <DataLimitNote />
+      <DataLimitNote
+        eligible={result.eligible}
+        confidence={result.confidence}
+        sampleSize={result.sampleSize}
+        sourceHash={SALES_PULSE_INDEX.source.sha256}
+      />
     </div>
   );
 }

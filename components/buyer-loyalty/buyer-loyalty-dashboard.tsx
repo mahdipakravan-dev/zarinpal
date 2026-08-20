@@ -1,679 +1,321 @@
-import { useState, type CSSProperties, type ReactNode } from "react";
+"use client";
+
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
+  BadgeDollarSignIcon,
+  CalendarClockIcon,
   CreditCardIcon,
   InfoIcon,
-  RepeatIcon,
+  LightbulbIcon,
+  RefreshCwIcon,
   ShieldCheckIcon,
-  ShoppingCartIcon,
+  SparklesIcon,
   StoreIcon,
-  TrendingUpIcon,
+  TargetIcon,
   UsersIcon,
-  type LucideIcon,
 } from "lucide-react";
 
-import { PeriodRangePicker } from "@/components/dashboard/period-range-picker";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { streamBuyerLoyaltyAction } from "@/lib/buyer-loyalty-ai-stream";
 import {
-  BEHAVIOR_SEGMENTS,
-  BUYER_LOYALTY_METRICS,
-  COHORT_HEADERS,
-  RETENTION_COHORT_ROWS,
-  SECOND_PURCHASE_LABELS,
-  SECOND_PURCHASE_SERIES,
-  type BehaviorSegment,
-  type LineSeries,
-  type LoyaltyMetricIcon,
-  type LoyaltyTone,
-} from "@/lib/buyer-loyalty-mock-data";
-import { formatPersianPercent } from "@/lib/format";
+  BUYER_LOYALTY_INDEX,
+  buyerLoyaltyMerchantDataUrl,
+  type BuyerLoyaltyResult,
+  type LoyaltySegment,
+} from "@/lib/buyer-loyalty-data";
+import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
 
-const loyaltyTheme = {
-  "--loyalty-ink": "#17191d",
-  "--loyalty-subtle": "#68707d",
-  "--loyalty-line": "#e6e8ec",
-  "--loyalty-wash": "#f7f8fa",
-  "--loyalty-navy": "#171f4a",
-  "--loyalty-navy-2": "#1e3f85",
-  "--loyalty-teal": "#0f9a84",
-  "--loyalty-teal-soft": "#f1f7f5",
-  "--loyalty-teal-line": "#d6e6e1",
-  "--loyalty-teal-wash": "#f7faf9",
-  "--loyalty-mint": "#6ac89e",
-  "--loyalty-mint-soft": "#f2f7f4",
-  "--loyalty-mint-line": "#dae7df",
-  "--loyalty-sky": "#2f6fe8",
-  "--loyalty-sky-soft": "#f2f5fb",
-  "--loyalty-sky-line": "#d7deeb",
-  "--loyalty-violet": "#174fd6",
-  "--loyalty-violet-alpha": "color-mix(in oklch, #174fd6 58%, transparent)",
-  "--loyalty-violet-soft": "#f2f5fb",
-  "--loyalty-violet-line": "#d7deeb",
-  "--loyalty-amber": "#e8892d",
-  "--loyalty-amber-alpha": "color-mix(in oklch, #e8892d 78%, transparent)",
-  "--loyalty-amber-soft": "#fbf7f0",
-  "--loyalty-amber-line": "#eadfce",
-  "--loyalty-rose": "#e25555",
-  "--loyalty-rose-soft": "#f6f8fc",
-  "--loyalty-rose-line": "#e4e9f3",
-  "--loyalty-sky-alpha": "color-mix(in oklch, #2f6fe8 68%, transparent)",
-  "--loyalty-mint-alpha": "color-mix(in oklch, #6ac89e 68%, transparent)",
-  "--loyalty-teal-alpha": "color-mix(in oklch, #0f9a84 18%, transparent)",
-  "--loyalty-muted-line": "#96a3ba",
+const theme = {
+  "--loyalty-ink": "#172042",
+  "--loyalty-subtle": "#68728b",
+  "--loyalty-line": "#e1e6ef",
+  "--loyalty-wash": "#f6f8fb",
+  "--loyalty-blue": "#2457d6",
+  "--loyalty-blue-soft": "#eaf0ff",
+  "--loyalty-green": "#11966f",
+  "--loyalty-green-soft": "#e7f7f1",
+  "--loyalty-amber": "#db7b22",
+  "--loyalty-amber-soft": "#fff2e2",
+  "--loyalty-rose": "#d64d62",
+  "--loyalty-rose-soft": "#fdecef",
   "--loyalty-yellow": "#ffd60a",
-  "--loyalty-yellow-soft": "#fff6bf",
-  "--loyalty-yellow-strong": "#d4ad00",
 } as CSSProperties;
 
-const panelClass =
-  "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-violet)] [--rail-line:var(--loyalty-line)]";
+const panel = "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-blue)] [--rail-line:var(--loyalty-line)]";
 
-const toneStyles: Record<
-  LoyaltyTone,
-  {
-    bg: string;
-    border: string;
-    soft: string;
-    stroke: string;
-    text: string;
-    wash: string;
-  }
-> = {
-  amber: {
-    bg: "bg-[var(--loyalty-amber)]",
-    border: "border-[var(--loyalty-amber-line)]",
-    soft: "bg-[var(--loyalty-amber-soft)]",
-    stroke: "stroke-[var(--loyalty-amber)]",
-    text: "text-[var(--loyalty-amber)]",
-    wash: "bg-[var(--loyalty-amber-soft)]",
-  },
-  mint: {
-    bg: "bg-[var(--loyalty-mint)]",
-    border: "border-[var(--loyalty-mint-line)]",
-    soft: "bg-[var(--loyalty-mint-soft)]",
-    stroke: "stroke-[var(--loyalty-mint)]",
-    text: "text-[var(--loyalty-mint)]",
-    wash: "bg-[var(--loyalty-mint-soft)]",
-  },
-  navy: {
-    bg: "bg-[var(--loyalty-navy)]",
-    border: "border-[var(--loyalty-line)]",
-    soft: "bg-[var(--loyalty-wash)]",
-    stroke: "stroke-[var(--loyalty-navy)]",
-    text: "text-[var(--loyalty-navy)]",
-    wash: "bg-[var(--loyalty-wash)]",
-  },
-  rose: {
-    bg: "bg-[var(--loyalty-rose)]",
-    border: "border-[var(--loyalty-line)]",
-    soft: "bg-[var(--loyalty-wash)]",
-    stroke: "stroke-[var(--loyalty-rose)]",
-    text: "text-[var(--loyalty-rose)]",
-    wash: "bg-[var(--loyalty-wash)]",
-  },
-  sky: {
-    bg: "bg-[var(--loyalty-sky)]",
-    border: "border-[var(--loyalty-sky-line)]",
-    soft: "bg-[var(--loyalty-sky-soft)]",
-    stroke: "stroke-[var(--loyalty-sky)]",
-    text: "text-[var(--loyalty-sky)]",
-    wash: "bg-[var(--loyalty-sky-soft)]",
-  },
-  teal: {
-    bg: "bg-[var(--loyalty-teal)]",
-    border: "border-[var(--loyalty-teal-line)]",
-    soft: "bg-[var(--loyalty-teal-soft)]",
-    stroke: "stroke-[var(--loyalty-teal)]",
-    text: "text-[var(--loyalty-teal)]",
-    wash: "bg-[var(--loyalty-teal-wash)]",
-  },
-  violet: {
-    bg: "bg-[var(--loyalty-violet)]",
-    border: "border-[var(--loyalty-violet-line)]",
-    soft: "bg-[var(--loyalty-violet-soft)]",
-    stroke: "stroke-[var(--loyalty-violet)]",
-    text: "text-[var(--loyalty-violet)]",
-    wash: "bg-[var(--loyalty-violet-soft)]",
-  },
-};
-
-const metricIconMap: Record<LoyaltyMetricIcon, LucideIcon> = {
-  card: CreditCardIcon,
-  cart: ShoppingCartIcon,
-  repeat: RepeatIcon,
-  trend: TrendingUpIcon,
-  users: UsersIcon,
-};
-
-const behaviorArcs = BEHAVIOR_SEGMENTS.reduce<
-  Array<BehaviorSegment & { offset: number }>
->((items, segment) => {
-  const offset = items.reduce((sum, item) => sum + item.share, 0);
-
-  return [...items, { ...segment, offset }];
-}, []);
-
-function formatChartPercent(value: number): string {
-  return formatPersianPercent(value);
-}
-
-function Panel({
-  title,
-  description,
-  children,
-  className,
-}: {
+function Panel({ title, description, children, className }: {
   title: string;
-  description?: string;
+  description: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <article
-      className={cn(
-        panelClass,
-        "flex h-full min-h-0 flex-col gap-2 p-2.5 sm:gap-2.5 sm:p-3",
-        className
-      )}
-    >
-      <header className="flex shrink-0 flex-col gap-0.5">
-        <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">
-          {title}
-        </h2>
-        {description ? (
-          <p className="text-xs leading-5 text-[var(--loyalty-subtle)]">
-            {description}
-          </p>
-        ) : null}
+    <article className={cn(panel, "flex min-w-0 flex-col gap-3 p-2.5 sm:p-3", className)}>
+      <header>
+        <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">{title}</h2>
+        <p className="mt-0.5 text-xs leading-5 text-[var(--loyalty-subtle)]">{description}</p>
       </header>
       {children}
     </article>
   );
 }
 
-function BuyerLoyaltyHeader() {
-  const [merchantId, setMerchantId] = useState("main-store");
-
+function Header({ merchantId, onMerchantChange }: {
+  merchantId: string;
+  onMerchantChange: (value: string | null) => void;
+}) {
+  const merchant = BUYER_LOYALTY_INDEX.merchants.find((item) => item.id === merchantId);
   return (
-    <header className="flex shrink-0 flex-col gap-3 border-b border-[var(--loyalty-line)] pb-3 md:flex-row md:items-center md:justify-between">
+    <header className="flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
       <div className="flex min-w-0 items-center gap-2.5">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)] sm:size-11">
-          <UsersIcon className="size-5" aria-hidden="true" />
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] sm:size-11">
+          <UsersIcon className="size-5 text-[var(--loyalty-ink)]" aria-hidden="true" />
         </div>
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <h1 className="text-lg font-extrabold tracking-tight text-[var(--loyalty-ink)] sm:text-xl">
-            رفتار و وفاداری خریداران
-          </h1>
-          <p className="text-xs text-[var(--loyalty-subtle)] sm:text-sm">
-            تحلیل رفتار کارت‌ها بر اساس خریدهای قابل شناسایی
-          </p>
+        <div className="min-w-0">
+          <h1 className="text-lg font-extrabold text-[var(--loyalty-ink)] sm:text-xl">خریداران وفادار</h1>
+          <p className="text-xs text-[var(--loyalty-subtle)] sm:text-sm">رفتار مشتریان از اولین خرید مشاهده‌شده تا بازگشت بعدی</p>
         </div>
       </div>
-
-      <div className="grid w-full shrink-0 grid-cols-2 gap-2 md:w-auto md:min-w-[21rem]">
-        <div className="min-w-0 md:min-w-40">
-          <PeriodRangePicker />
-        </div>
-        <div className="min-w-0 md:min-w-40">
-          <Select
-            value={merchantId}
-            onValueChange={(value) => value && setMerchantId(value)}
-          >
-            <SelectTrigger
-              className="h-10 w-full border-[var(--loyalty-line)] bg-card [&>svg:last-child]:text-[var(--loyalty-violet)]"
-              aria-label="انتخاب پذیرنده برای تحلیل وفاداری"
-            >
-              <StoreIcon
-                className="size-4 text-[var(--loyalty-violet)]"
-                aria-hidden="true"
-              />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--loyalty-ink)]">
-                پذیرنده
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="main-store">فروشگاه اصلی</SelectItem>
-                <SelectItem value="all-stores">همه پذیرنده‌ها</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+      <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,20rem)_auto] lg:w-auto">
+        <Select value={merchantId} onValueChange={onMerchantChange}>
+          <SelectTrigger className="h-10 w-full justify-start gap-2 border-[var(--loyalty-line)] bg-card px-3" aria-label="انتخاب پذیرنده">
+            <StoreIcon className="size-4 text-[var(--loyalty-blue)]" aria-hidden="true" />
+            <span className="min-w-0 flex-1 truncate text-start text-xs font-bold text-[var(--loyalty-ink)]">{merchant?.label ?? "انتخاب پذیرنده"}</span>
+          </SelectTrigger>
+          <SelectContent className="min-w-72 p-1.5">
+            <SelectGroup>
+              {BUYER_LOYALTY_INDEX.merchants.map((item) => (
+                <SelectItem key={item.id} value={item.id} label={item.label} className="py-2 pe-8 ps-2">
+                  <span className="flex min-w-0 flex-col items-start">
+                    <span className="text-sm font-semibold">{item.label}</span>
+                    <span className="text-[11px] text-muted-foreground">{formatPersianNumber(item.verifiedPurchases)} خرید موفق</span>
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-3 text-xs text-[var(--loyalty-subtle)]">
+          <CalendarClockIcon className="size-4 text-[var(--loyalty-amber)]" aria-hidden="true" /> دی ۱۴۰۴ تا تیر ۱۴۰۵
         </div>
       </div>
     </header>
   );
 }
 
-function MetricCard({ metric }: { metric: (typeof BUYER_LOYALTY_METRICS)[number] }) {
-  const Icon = metricIconMap[metric.icon];
-  const styles = toneStyles[metric.tone];
+const kpiDefinitions = [
+  { id: "cards", label: "مشتری مشاهده‌شده", icon: CreditCardIcon, tone: "blue" },
+  { id: "returning", label: "مشتری دارای خرید مجدد", icon: RefreshCwIcon, tone: "green" },
+  { id: "repeat-purchases", label: "سهم تعداد خریدهای تکراری", icon: UsersIcon, tone: "amber" },
+  { id: "repeat-amount", label: "سهم مبلغ خریدهای تکراری", icon: BadgeDollarSignIcon, tone: "rose" },
+  { id: "median", label: "میانه زمان تا خرید دوم", icon: CalendarClockIcon, tone: "green" },
+] as const;
 
+function Kpis({ result }: { result: BuyerLoyaltyResult }) {
+  const values = {
+    cards: { value: formatPersianNumber(result.kpis.observedCards), note: `${formatPersianNumber(result.kpis.verifiedPurchases)} خرید موفق` },
+    returning: { value: formatPersianPercent(result.kpis.returningCardRate), note: `${formatPersianNumber(result.kpis.returningCards)} مشتری با ۲+ خرید` },
+    "repeat-purchases": { value: formatPersianPercent(result.kpis.repeatPurchaseShare), note: "خرید دوم و بعدی از کل خریدها" },
+    "repeat-amount": { value: formatPersianPercent(result.kpis.repeatAmountShare), note: "از کل مبلغ فروش موفق" },
+    median: {
+      value: result.intervalStats.sampleSize
+        ? `${formatPersianNumber(result.kpis.medianSecondPurchaseDays, { maximumFractionDigits: 1 })} روز`
+        : "داده ناکافی",
+      note: `${formatPersianNumber(result.intervalStats.sampleSize)} مشتری بازگشتی`,
+    },
+  };
   return (
-    <article className={cn(panelClass, "flex h-full min-h-28 flex-col justify-between gap-2.5 p-3")}>
-      <div className="flex min-w-0 items-start justify-between gap-2">
-        <h2 className="text-xs font-semibold leading-4 text-[var(--loyalty-ink)]">
-          {metric.label}
-        </h2>
-        <div
-          className={cn(
-            "flex size-8 shrink-0 items-center justify-center rounded-md border",
-            styles.border,
-            styles.soft,
-            styles.text
-          )}
-        >
-          <Icon className="size-4" aria-hidden="true" />
-        </div>
-      </div>
-      <div className="flex min-w-0 flex-col gap-1">
-        <p className={cn("text-xl font-extrabold leading-none tracking-tight sm:text-2xl", styles.text)}>
-          {metric.value}
-        </p>
-        <p className="text-[10px] text-[var(--loyalty-subtle)]">
-          {metric.caption}
-        </p>
-      </div>
-    </article>
-  );
-}
-
-function MetricStrip() {
-  return (
-    <section
-      aria-label="شاخص‌های خلاصه وفاداری"
-      className="grid shrink-0 grid-cols-2 gap-2 lg:grid-cols-5"
-    >
-      {BUYER_LOYALTY_METRICS.map((metric, index) => (
-        <div
-          key={metric.id}
-          className={cn(index === BUYER_LOYALTY_METRICS.length - 1 && "col-span-2 lg:col-span-1")}
-        >
-          <MetricCard metric={metric} />
-        </div>
-      ))}
+    <section className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-5" aria-label="شاخص‌های اصلی وفاداری">
+      {kpiDefinitions.map((item) => {
+        const Icon = item.icon;
+        const value = values[item.id];
+        return (
+          <article key={item.id} className={cn(panel, "flex min-h-28 flex-col justify-between gap-2 p-2.5 last:col-span-2 md:last:col-span-1")}>
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-[11px] font-semibold leading-4 text-[var(--loyalty-subtle)]">{item.label}</p>
+              <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-md", item.tone === "blue" && "bg-[var(--loyalty-blue-soft)] text-[var(--loyalty-blue)]", item.tone === "green" && "bg-[var(--loyalty-green-soft)] text-[var(--loyalty-green)]", item.tone === "amber" && "bg-[var(--loyalty-amber-soft)] text-[var(--loyalty-amber)]", item.tone === "rose" && "bg-[var(--loyalty-rose-soft)] text-[var(--loyalty-rose)]")}>
+                <Icon className="size-4" aria-hidden="true" />
+              </span>
+            </div>
+            <div>
+              <p className="text-lg font-extrabold text-[var(--loyalty-ink)] sm:text-xl">{value.value}</p>
+              <p className="text-[10px] leading-4 text-[var(--loyalty-subtle)]">{value.note}</p>
+            </div>
+          </article>
+        );
+      })}
     </section>
   );
 }
 
-function BehaviorDonutCard({ className }: { className?: string }) {
+function RetentionChart({ result }: { result: BuyerLoyaltyResult }) {
   return (
-    <Panel
-      className={className}
-      title="تقسیم‌بندی کارت‌ها بر اساس رفتار"
-      description="سهم کارت‌های مشاهده‌شده در هر وضعیت رفتاری"
-    >
-      <figure className="flex min-h-0 flex-1 flex-col justify-center gap-3">
-        <figcaption className="sr-only">
-          توزیع کارت‌های یکتا بر اساس رفتار خرید و بازگشت.
-        </figcaption>
-        <div className="relative mx-auto flex size-44 items-center justify-center sm:size-52">
-          <svg
-            viewBox="0 0 120 120"
-            className="size-full -rotate-90 motion-reduce:rotate-0"
-            aria-hidden="true"
-          >
-            <circle
-              cx="60"
-              cy="60"
-              r="45"
-              fill="none"
-              className="stroke-[var(--loyalty-line)]"
-              strokeWidth="15"
-            />
-            {behaviorArcs.map((segment) => (
-              <circle
-                key={segment.label}
-                cx="60"
-                cy="60"
-                r="45"
-                fill="none"
-                pathLength={100}
-                className={toneStyles[segment.tone].stroke}
-                strokeWidth="15"
-                strokeDasharray={`${segment.share} ${100 - segment.share}`}
-                strokeDashoffset={-segment.offset}
-              />
-            ))}
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-            <span className="text-xl font-extrabold leading-none tracking-tight tabular-nums text-[var(--loyalty-ink)] sm:text-2xl">
-              ۳۹۶,۳۶۵
-            </span>
-            <span className="mt-1.5 text-xs text-[var(--loyalty-subtle)]">
-              کارت یکتا
-            </span>
+    <Panel title="نرخ خرید مجدد" description="درصد مشتریان واجد شرایط که تا هر افق زمانی خرید دیگری داشته‌اند">
+      <div className="flex flex-col gap-3">
+        {result.retentionCurve.map((point) => (
+          <div key={point.horizon} className="grid grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] items-center gap-2">
+            <div className="text-xs font-semibold text-[var(--loyalty-ink)]">تا {formatPersianNumber(point.horizon)} روز</div>
+            <div className="relative h-8 overflow-hidden rounded-md bg-[var(--loyalty-wash)]">
+              <div className="h-full rounded-md bg-[var(--loyalty-green)]" style={{ width: `${Math.max(1, point.rate)}%` }} />
+              <span className="absolute inset-0 flex items-center px-2 text-[10px] font-medium text-[var(--loyalty-ink)]">{formatPersianNumber(point.returned)} از {formatPersianNumber(point.eligible)} مشتری</span>
+            </div>
+            <div className="text-end">
+              <p className="text-sm font-bold text-[var(--loyalty-green)]">{formatPersianPercent(point.rate)}</p>
+              <p className="text-[9px] text-[var(--loyalty-subtle)]">{formatPersianNumber(point.interval.low, { maximumFractionDigits: 1 })}–{formatPersianNumber(point.interval.high, { maximumFractionDigits: 1 })}</p>
+            </div>
           </div>
-        </div>
-        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1">
-          {BEHAVIOR_SEGMENTS.map((segment) => (
-            <li
-              key={segment.label}
-              className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-[var(--loyalty-line)] bg-[var(--loyalty-wash)] px-2.5 py-2 text-xs"
-            >
-              <span
-                className={cn("size-3 rounded-sm", toneStyles[segment.tone].bg)}
-                aria-hidden="true"
-              />
-              <span className="min-w-0 truncate text-[var(--loyalty-ink)]">
-                {segment.label}
-              </span>
-              <span className="tabular-nums font-semibold text-[var(--loyalty-subtle)]">
-                {formatChartPercent(segment.share)}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </figure>
-      <p className="shrink-0 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
-        در معرض ریزش: آخرین خرید ۶۰ تا ۹۰ روز قبل و هنوز خرید جدیدی انجام نشده
-        است.
-      </p>
-    </Panel>
-  );
-}
-
-function buildChartPoints(values: number[], labels: string[], max: number) {
-  const width = 460;
-  const height = 240;
-  const top = 22;
-  const left = 40;
-  const xStep = width / Math.max(labels.length - 1, 1);
-
-  return values.map((value, index) => ({
-    label: labels[index] ?? "",
-    value,
-    x: left + index * xStep,
-    y: top + height - (value / max) * height,
-  }));
-}
-
-function TrendChart({
-  labels,
-  max,
-  series,
-  title,
-}: {
-  labels: string[];
-  max: number;
-  series: LineSeries[];
-  title: string;
-}) {
-  const chartSeries = series.map((item) => ({
-    ...item,
-    points: buildChartPoints(item.values, labels, max),
-  }));
-  const plotBottom = 262;
-  const viewHeight = 290;
-
-  return (
-    <figure className="flex min-h-0 flex-1 flex-col justify-center gap-2">
-      <figcaption className="sr-only">{title}</figcaption>
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-[var(--loyalty-subtle)]">
-        {series.map((item) => (
-          <span key={item.label} className="flex items-center gap-2">
-            <span
-              className={cn(
-                "h-0.5 w-8 rounded-full",
-                item.tone === "muted"
-                  ? "bg-[var(--loyalty-muted-line)]"
-                  : item.tone === "teal"
-                    ? "bg-[var(--loyalty-teal)]"
-                    : "bg-[var(--loyalty-navy)]"
-              )}
-              aria-hidden="true"
-            />
-            {item.label}
-          </span>
         ))}
       </div>
-      <svg
-        viewBox={`0 0 520 ${viewHeight}`}
-        className="h-auto min-h-[15rem] w-full flex-1"
-        role="img"
-        aria-label={title}
-      >
-        <g aria-hidden="true">
-          {[0, 10, 20, 30, 40].map((tick) => {
-            const y = plotBottom - (tick / max) * 240;
-
-            return (
-              <g key={tick}>
-                <line
-                  x1="40"
-                  x2="500"
-                  y1={y}
-                  y2={y}
-                  className="stroke-[var(--loyalty-line)]"
-                  strokeWidth="1"
-                />
-                <text
-                  x="20"
-                  y={y + 3}
-                  textAnchor="middle"
-                  className="fill-[var(--loyalty-subtle)] text-[9px]"
-                >
-                  {formatChartPercent(tick)}
-                </text>
-              </g>
-            );
-          })}
-          <line
-            x1="40"
-            x2="500"
-            y1={plotBottom}
-            y2={plotBottom}
-            className="stroke-[var(--loyalty-line)]"
-            strokeWidth="1.5"
-          />
-          {labels.map((label, index) => {
-            const x = 40 + index * (460 / Math.max(labels.length - 1, 1));
-
-            return (
-              <text
-                key={label}
-                x={x}
-                y={viewHeight - 4}
-                textAnchor="middle"
-                className="fill-[var(--loyalty-subtle)] text-[10px]"
-              >
-                {label}
-              </text>
-            );
-          })}
-        </g>
-
-        {chartSeries.map((item) => {
-          const lineTone =
-            item.tone === "muted"
-              ? "stroke-[var(--loyalty-muted-line)]"
-              : item.tone === "teal"
-                ? "stroke-[var(--loyalty-teal)]"
-                : "stroke-[var(--loyalty-navy)]";
-          const textTone =
-            item.tone === "muted"
-              ? "fill-[var(--loyalty-muted-line)]"
-              : item.tone === "teal"
-                ? "fill-[var(--loyalty-teal)]"
-                : "fill-[var(--loyalty-navy)]";
-
-          return (
-            <g key={item.label}>
-              <polyline
-                points={item.points
-                  .map((point) => `${point.x},${point.y}`)
-                  .join(" ")}
-                fill="none"
-                className={lineTone}
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray={item.tone === "muted" ? "6 7" : undefined}
-              />
-              {item.points.map((point) => (
-                <g key={`${item.label}-${point.label}`}>
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r="4"
-                    className={cn("fill-card", lineTone)}
-                    strokeWidth="2.5"
-                  />
-                  <text
-                    x={point.x}
-                    y={point.y - 8}
-                    textAnchor="middle"
-                    className={cn("text-[9px] font-semibold", textTone)}
-                  >
-                    {formatChartPercent(point.value)}
-                  </text>
-                </g>
-              ))}
-            </g>
-          );
-        })}
-      </svg>
-    </figure>
-  );
-}
-
-function SecondPurchaseCard({ className }: { className?: string }) {
-  return (
-    <Panel
-      className={className}
-      title="نرخ خرید دوم یا بعدی در بازه‌های زمانی"
-      description="از بین کارت‌های اولین‌بار مشاهده‌شده"
-    >
-      <TrendChart
-        labels={SECOND_PURCHASE_LABELS}
-        max={40}
-        series={SECOND_PURCHASE_SERIES}
-        title="نمودار نرخ خرید دوم یا بعدی در روزهای ۷، ۳۰، ۶۰ و ۹۰"
-      />
-      <p className="shrink-0 border-s-2 border-[var(--loyalty-amber)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
-        نرخ بازگشت ۹۰ روزه، ۱۰ واحد درصد پایین‌تر از میانه همتایان است.
-      </p>
+      <p className="text-[10px] leading-4 text-[var(--loyalty-subtle)]">بازه کوچک زیر هر نرخ، فاصله اطمینان ۹۵٪ است؛ مخرج هر افق فقط مشتریان دارای فرصت کامل مشاهده را شامل می‌شود.</p>
     </Panel>
   );
 }
 
-function cohortCellStyle(value: number): CSSProperties {
-  const mix = Math.min(34 + value * 1.8, 78);
-
-  return {
-    backgroundColor: `color-mix(in oklch, var(--loyalty-violet) ${mix}%, white)`,
-    color: value >= 20 ? "white" : "var(--loyalty-ink)",
-  };
+function Insight({ result, action, status }: { result: BuyerLoyaltyResult; action: string; status: "streaming" | "complete" | "error" }) {
+  const ActionIcon = status === "error" ? TargetIcon : SparklesIcon;
+  return (
+    <aside className="rail-banner flex min-h-72 flex-col gap-2.5 p-2.5 sm:p-3">
+      <div className="relative flex items-center gap-2 text-[var(--loyalty-yellow)]"><LightbulbIcon className="size-4" aria-hidden="true" /><h2 className="text-sm font-bold text-white">بینش کلیدی</h2></div>
+      <p className="relative text-sm leading-6 text-white/95">{result.insight.headline}</p>
+      <ul className="relative flex flex-col gap-1.5 text-xs leading-5 text-white/80 sm:text-sm">
+        {result.insight.bullets.map((bullet) => <li key={bullet} className="flex gap-2"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-[var(--loyalty-green)]" /><span>{bullet}</span></li>)}
+      </ul>
+      <div className="relative mt-auto flex gap-2 rounded-md border border-white/15 bg-white/10 p-2.5">
+        <ActionIcon className="mt-0.5 size-4 shrink-0 text-[var(--loyalty-yellow)]" aria-hidden="true" />
+        <p className="text-xs leading-5 text-white/90 sm:text-sm"><span className="font-semibold text-[var(--loyalty-yellow)]">{status === "error" ? "پیشنهاد: " : "پیشنهاد هوشمند: "}</span><span aria-live="polite">{action || "در حال تحلیل الگوی بازگشت…"}{status === "streaming" ? <span className="ms-1 inline-block h-4 w-0.5 animate-pulse bg-current align-middle" /> : null}</span></p>
+      </div>
+    </aside>
+  );
 }
 
-function RetentionCohortCard({ className }: { className?: string }) {
+function CohortHeatmap({ result }: { result: BuyerLoyaltyResult }) {
   return (
-    <Panel
-      className={className}
-      title="Retention Cohort بر اساس ماه اولین مشاهده"
-      description="درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند"
-    >
-      <div className="flex min-h-0 flex-1 flex-col justify-center overflow-x-auto">
-        <table className="w-full min-w-[24rem] border-separate border-spacing-0 text-center text-sm">
-          <caption className="sr-only">
-            جدول cohort نگهداشت کارت‌ها بر اساس ماه اولین مشاهده و بازگشت در روزهای
-            ۷، ۳۰، ۶۰ و ۹۰.
-          </caption>
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                className="px-2 py-2.5 text-start text-xs font-medium text-[var(--loyalty-subtle)]"
-              >
-                ماه اول مشاهده
-              </th>
-              {COHORT_HEADERS.map((header) => (
-                <th
-                  key={header}
-                  scope="col"
-                  className="px-2 py-2.5 text-xs font-medium text-[var(--loyalty-subtle)]"
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
+    <Panel className="xl:col-span-2" title="نسل‌های خرید و بازگشت" description="نرخ خرید مجدد براساس ماه اولین خرید مشاهده‌شده؛ خانه خالی یعنی فرصت مشاهده کامل نشده است">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[36rem] border-separate border-spacing-1 text-center text-xs">
+          <thead><tr><th className="p-1.5 text-start font-medium text-[var(--loyalty-subtle)]">ماه اولین مشاهده</th><th className="p-1.5 font-medium text-[var(--loyalty-subtle)]">مشتری</th>{[7, 30, 60, 90].map((horizon) => <th key={horizon} className="p-1.5 font-medium text-[var(--loyalty-subtle)]">تا {formatPersianNumber(horizon)} روز</th>)}</tr></thead>
           <tbody>
-            {RETENTION_COHORT_ROWS.map((row) => (
-              <tr key={row.month}>
-                <th
-                  scope="row"
-                  className="border-t border-[var(--loyalty-line)] px-2 py-3 text-start text-xs font-medium text-[var(--loyalty-ink)] sm:text-sm"
-                >
-                  {row.month}
-                </th>
-                {row.values.map((value, index) => (
-                  <td
-                    key={`${row.month}-${COHORT_HEADERS[index]}`}
-                    className="border-t border-white px-2 py-3 text-xs font-bold tabular-nums sm:text-sm"
-                    style={value === null ? undefined : cohortCellStyle(value)}
-                  >
-                    {value === null ? "–" : formatChartPercent(value)}
-                  </td>
-                ))}
+            {result.cohort.map((row) => (
+              <tr key={row.id}>
+                <th className="rounded-md bg-[var(--loyalty-wash)] p-2 text-start font-semibold text-[var(--loyalty-ink)]">{row.label}{row.partial ? <span className="ms-1 text-[9px] font-normal text-[var(--loyalty-subtle)]">(ناقص)</span> : null}</th>
+                <td className="p-2 text-[var(--loyalty-subtle)]">{formatPersianNumber(row.cards)}</td>
+                {row.retention.map((cell, index) => <td key={index} className={cn("rounded-md p-2 font-bold", cell ? "text-white" : "bg-[var(--loyalty-wash)] text-[var(--loyalty-subtle)]")} style={cell ? { backgroundColor: `color-mix(in oklch, var(--loyalty-blue) ${Math.min(35 + cell.rate, 88)}%, white)` } : undefined} title={cell ? `${cell.returned} از ${cell.eligible} مشتری` : "فرصت مشاهده کامل نشده"}>{cell ? formatPersianPercent(cell.rate) : "—"}</td>)}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p className="flex shrink-0 items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
-        <InfoIcon
-          className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]"
-          aria-hidden="true"
-        />
-        سطرهای اخیر به دلیل right-censoring فرصت کامل برای ۹۰ روز ندارند.
-      </p>
     </Panel>
   );
 }
 
-function DataScopeNote() {
+function IntervalDistribution({ result }: { result: BuyerLoyaltyResult }) {
+  const max = Math.max(...result.intervalDistribution.map((item) => item.share), 1);
   return (
-    <p className="flex shrink-0 items-start gap-2 px-1 text-[11px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs">
-      <ShieldCheckIcon
-        className="mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-violet)]"
-        aria-hidden="true"
-      />
-      <span>
-        محدودیت شش‌ماهه داده و محاسبه روی payer_card_key یعنی نتایج انحراف
-        عملکرد نسبت به baseline هستند، نه اثبات اثر علّی.
-      </span>
-    </p>
+    <Panel title="چه زمانی دوباره خرید می‌کنند؟" description="توزیع فاصله اولین خرید مشاهده‌شده تا خرید دوم">
+      <div className="grid h-44 grid-cols-6 items-end gap-1.5 border-b border-[var(--loyalty-line)] pt-5">
+        {result.intervalDistribution.map((bucket) => <div key={bucket.id} className="flex h-full min-w-0 flex-col items-center justify-end gap-1"><span className="text-[9px] font-semibold text-[var(--loyalty-green)]">{formatPersianPercent(bucket.share)}</span><div className="w-full rounded-t bg-[var(--loyalty-green)]" style={{ height: `${Math.max(4, (bucket.share / max) * 105)}px` }} title={`${bucket.count} مشتری`} /><span className="min-h-7 text-center text-[9px] leading-3 text-[var(--loyalty-subtle)]">{bucket.label}</span></div>)}
+      </div>
+      <div className="grid grid-cols-3 gap-2 text-center text-xs">
+        <div className="rounded-md bg-[var(--loyalty-blue-soft)] p-2"><span className="block text-[10px] text-[var(--loyalty-subtle)]">چارک اول</span><strong>{formatPersianNumber(result.intervalStats.p25, { maximumFractionDigits: 1 })} روز</strong></div>
+        <div className="rounded-md bg-[var(--loyalty-green-soft)] p-2"><span className="block text-[10px] text-[var(--loyalty-subtle)]">میانه</span><strong>{formatPersianNumber(result.intervalStats.median, { maximumFractionDigits: 1 })} روز</strong></div>
+        <div className="rounded-md bg-[var(--loyalty-amber-soft)] p-2"><span className="block text-[10px] text-[var(--loyalty-subtle)]">چارک سوم</span><strong>{formatPersianNumber(result.intervalStats.p75, { maximumFractionDigits: 1 })} روز</strong></div>
+      </div>
+    </Panel>
   );
 }
 
-export function BuyerLoyaltyDashboard() {
+function SegmentValue({ result }: { result: BuyerLoyaltyResult }) {
+  const colors: Record<LoyaltySegment["id"], string> = { new: "bg-[var(--loyalty-blue)]", single: "bg-[var(--loyalty-amber)]", "active-returning": "bg-[var(--loyalty-green)]", loyal: "bg-[#6d4bc3]", "low-activity": "bg-[var(--loyalty-rose)]" };
   return (
-    <div
-      className="flex min-h-0 flex-1 flex-col gap-2.5 text-[var(--loyalty-ink)]"
-      style={loyaltyTheme}
-    >
-      <BuyerLoyaltyHeader />
-      <section
-        aria-label="نمای کلی و تحلیل وفاداری"
-        className="grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 xl:grid-cols-12 xl:items-stretch"
-      >
-        <div className="flex min-h-0 min-w-0 flex-col gap-2.5 xl:col-span-9">
-          <MetricStrip />
-          <div className="grid min-h-0 min-w-0 flex-1 grid-cols-1 gap-2.5 lg:grid-cols-9 lg:items-stretch">
-            <RetentionCohortCard className="min-h-[22rem] lg:col-span-5" />
-            <SecondPurchaseCard className="min-h-[22rem] lg:col-span-4" />
-          </div>
-        </div>
-        <BehaviorDonutCard className="min-h-[22rem] xl:col-span-3" />
-      </section>
+    <Panel className="xl:col-span-2" title="ترکیب مشتریان و ارزش هر گروه" description="گروه‌ها غیرهم‌پوشان‌اند؛ سهم مشتری با سهم مبلغ فروش کنار هم مقایسه شده است">
+      <div className="flex flex-col gap-2.5">
+        {result.segments.map((segment) => <div key={segment.id} className="grid gap-1.5 rounded-md border border-[var(--loyalty-line)] p-2 sm:grid-cols-[9rem_minmax(0,1fr)] sm:items-center"><div><div className="flex items-center gap-1.5"><span className={cn("size-2.5 rounded-sm", colors[segment.id])} /><strong className="text-xs text-[var(--loyalty-ink)]">{segment.label}</strong></div><p className="mt-0.5 text-[9px] leading-4 text-[var(--loyalty-subtle)]">{segment.definition}</p></div><div className="grid grid-cols-[2.8rem_minmax(0,1fr)_3rem] items-center gap-x-2 gap-y-1 text-[10px]"><span className="text-[var(--loyalty-subtle)]">مشتری</span><div className="h-2 rounded bg-[var(--loyalty-wash)]"><div className={cn("h-full rounded", colors[segment.id])} style={{ width: `${segment.share}%` }} /></div><strong>{formatPersianPercent(segment.share)}</strong><span className="text-[var(--loyalty-subtle)]">مبلغ</span><div className="h-2 rounded bg-[var(--loyalty-wash)]"><div className={cn("h-full rounded opacity-70", colors[segment.id])} style={{ width: `${segment.amountShare}%` }} /></div><strong>{formatPersianPercent(segment.amountShare)}</strong></div></div>)}
+      </div>
+    </Panel>
+  );
+}
 
-      <DataScopeNote />
+function PurchaseValue({ result }: { result: BuyerLoyaltyResult }) {
+  const values = [result.valueComparison.firstPurchaseAverage, result.valueComparison.repeatPurchaseAverage];
+  const max = Math.max(...values, 1);
+  return (
+    <Panel title="ارزش خرید اول و خریدهای بعدی" description="متوسط مبلغ تراکنش موفق؛ نمایش به تومان">
+      <div className="grid min-h-52 grid-cols-2 items-end gap-5 px-4 pt-5">
+        {values.map((value, index) => <div key={index} className="flex h-full flex-col items-center justify-end gap-2"><strong className="text-xs text-[var(--loyalty-ink)]">{formatPersianNumber(value / 10, { maximumFractionDigits: 0 })} تومان</strong><div className={cn("w-full max-w-24 rounded-t", index === 0 ? "bg-[var(--loyalty-blue)]" : "bg-[var(--loyalty-green)]")} style={{ height: `${Math.max(15, (value / max) * 125)}px` }} /><span className="text-center text-[10px] text-[var(--loyalty-subtle)]">{index === 0 ? "اولین خرید مشاهده‌شده" : "خرید دوم و بعدی"}</span></div>)}
+      </div>
+    </Panel>
+  );
+}
+
+function Methodology({ result }: { result: BuyerLoyaltyResult }) {
+  return (
+    <details className={cn(panel, "group p-2.5 text-xs text-[var(--loyalty-subtle)]")}>
+      <summary className="flex cursor-pointer list-none items-center gap-2 font-semibold text-[var(--loyalty-ink)]"><InfoIcon className="size-4 text-[var(--loyalty-blue)]" /> چگونه محاسبه شد؟</summary>
+      <div className="mt-3 grid gap-2 border-t border-[var(--loyalty-line)] pt-3 sm:grid-cols-2 lg:grid-cols-4">
+        <p><strong className="block text-[var(--loyalty-ink)]">شناسه مشتری</strong>هر payer_card_key به‌عنوان یک مشتری قابل‌شناسایی و فقط در همان پذیرنده شمرده شده است.</p>
+        <p><strong className="block text-[var(--loyalty-ink)]">خرید</strong>فقط ردیف‌های try_status = Verified.</p>
+        <p><strong className="block text-[var(--loyalty-ink)]">مخرج ۳۰روزه</strong>{formatPersianNumber(result.retentionCurve.find((item) => item.horizon === 30)?.eligible ?? 0)} مشتری واجد شرایط؛ {formatPersianNumber(result.methodology.excludedFrom30DayRetention)} مشتری نابالغ حذف شدند.</p>
+        <p><strong className="block text-[var(--loyalty-ink)]">نسخه داده</strong>{BUYER_LOYALTY_INDEX.source.sha256.slice(0, 8)} · نخستین خرید یعنی نخستین خرید مشاهده‌شده در فایل.</p>
+      </div>
+    </details>
+  );
+}
+
+function Loading() {
+  return <div className="grid gap-2.5"><div className="grid grid-cols-2 gap-2 xl:grid-cols-5">{Array.from({ length: 5 }, (_, index) => <Skeleton key={index} className="h-28" />)}</div><div className="grid gap-2.5 lg:grid-cols-2"><Skeleton className="h-72" /><Skeleton className="h-72" /></div></div>;
+}
+
+export function BuyerLoyaltyDashboard() {
+  const [merchantId, setMerchantId] = useState(BUYER_LOYALTY_INDEX.merchants[0].id);
+  const [result, setResult] = useState<BuyerLoyaltyResult | null>(null);
+  const [error, setError] = useState(false);
+  const [liveAction, setLiveAction] = useState<{ key: string; text: string; status: "streaming" | "complete" | "error" } | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(buyerLoyaltyMerchantDataUrl(merchantId), { signal: controller.signal }).then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json() as Promise<BuyerLoyaltyResult>;
+    }).then(setResult).catch((reason: unknown) => {
+      if (reason instanceof DOMException && reason.name === "AbortError") return;
+      setError(true);
+    });
+    return () => controller.abort();
+  }, [merchantId]);
+
+  useEffect(() => {
+    if (!result || result.merchant.id !== merchantId || !result.eligible) return;
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => {
+      setLiveAction({ key: merchantId, text: "", status: "streaming" });
+      streamBuyerLoyaltyAction({ result, signal: controller.signal, onText: (text) => setLiveAction({ key: merchantId, text, status: "streaming" }) }).then((text) => setLiveAction({ key: merchantId, text, status: "complete" })).catch(() => {
+        if (!controller.signal.aborted) setLiveAction({ key: merchantId, text: result.insight.ruleAction, status: "error" });
+      });
+    }, 50);
+    return () => { window.clearTimeout(timer); controller.abort(); };
+  }, [merchantId, result]);
+
+  function changeMerchant(value: string | null) {
+    if (!value) return;
+    setResult(null);
+    setError(false);
+    setMerchantId(value);
+  }
+
+  const live = liveAction?.key === merchantId ? liveAction : null;
+  return (
+    <div className="flex flex-col gap-2.5 text-[var(--loyalty-ink)]" style={theme}>
+      <Header merchantId={merchantId} onMerchantChange={changeMerchant} />
+      {!result ? error ? <div className={cn(panel, "flex min-h-48 items-center justify-center p-4 text-sm text-[var(--loyalty-rose)]")}>داده وفاداری این پذیرنده بارگذاری نشد.</div> : <Loading /> : <>
+        <Kpis result={result} />
+        <section className="grid gap-2.5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)]"><Insight result={result} action={live?.text ?? result.insight.ruleAction} status={result.eligible ? (live?.status ?? "streaming") : "error"} /><RetentionChart result={result} /></section>
+        <section className="grid gap-2.5 xl:grid-cols-3"><CohortHeatmap result={result} /><IntervalDistribution result={result} /><SegmentValue result={result} /><PurchaseValue result={result} /></section>
+        <Methodology result={result} />
+        <p className="flex items-start justify-center gap-2 px-2 text-center text-[10px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs"><ShieldCheckIcon className="mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-green)]" />در این داشبورد هر payer_card_key یک مشتری قابل‌شناسایی در نظر گرفته شده و داده فقط رفتار مشاهده‌شده از دی ۱۴۰۴ تا تیر ۱۴۰۵ را پوشش می‌دهد.</p>
+      </>}
     </div>
   );
 }
