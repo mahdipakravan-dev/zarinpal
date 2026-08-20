@@ -178,9 +178,17 @@ function Panel({
   className?: string;
 }) {
   return (
-    <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3", className)}>
-      <header className="flex flex-col gap-0.5">
-        <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">{title}</h2>
+    <article
+      className={cn(
+        panelClass,
+        "flex flex-col gap-2 p-2.5 sm:gap-2.5 sm:p-3",
+        className
+      )}
+    >
+      <header className="flex shrink-0 flex-col gap-0.5">
+        <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">
+          {title}
+        </h2>
         {description ? (
           <p className="text-xs leading-5 text-[var(--loyalty-subtle)]">
             {description}
@@ -370,9 +378,9 @@ function BehaviorDonutCard({ className }: { className?: string }) {
 
 function buildChartPoints(values: number[], labels: string[], max: number) {
   const width = 460;
-  const height = 190;
-  const top = 20;
-  const left = 44;
+  const height = 120;
+  const top = 16;
+  const left = 40;
   const xStep = width / Math.max(labels.length - 1, 1);
 
   return values.map((value, index) => ({
@@ -385,13 +393,11 @@ function buildChartPoints(values: number[], labels: string[], max: number) {
 
 function TrendChart({
   labels,
-  compact = false,
   max,
   series,
   title,
 }: {
   labels: string[];
-  compact?: boolean;
   max: number;
   series: LineSeries[];
   title: string;
@@ -400,11 +406,13 @@ function TrendChart({
     ...item,
     points: buildChartPoints(item.values, labels, max),
   }));
+  const plotBottom = 136;
+  const viewHeight = 158;
 
   return (
-    <figure className={cn("flex flex-col gap-2.5", !compact && "flex-1")}>
+    <figure className="flex min-h-0 flex-1 flex-col justify-center gap-2">
       <figcaption className="sr-only">{title}</figcaption>
-      <div className="flex justify-center gap-4 text-xs text-[var(--loyalty-subtle)]">
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-[var(--loyalty-subtle)]">
         {series.map((item) => (
           <span key={item.label} className="flex items-center gap-2">
             <span
@@ -423,30 +431,55 @@ function TrendChart({
         ))}
       </div>
       <svg
-        viewBox="0 0 560 250"
-        className={cn("h-auto w-full", compact ? "max-h-40" : "min-h-40 sm:min-h-48")}
+        viewBox={`0 0 520 ${viewHeight}`}
+        className="h-auto w-full"
         role="img"
         aria-label={title}
       >
         <g aria-hidden="true">
           {[0, 10, 20, 30, 40].map((tick) => {
-            const y = 210 - (tick / max) * 190;
+            const y = plotBottom - (tick / max) * 120;
 
             return (
               <g key={tick}>
-                <line x1="44" x2="520" y1={y} y2={y} className="stroke-[var(--loyalty-line)]" strokeWidth="1" />
-                <text x="22" y={y + 4} textAnchor="middle" className="fill-[var(--loyalty-subtle)] text-[10px]">
+                <line
+                  x1="40"
+                  x2="500"
+                  y1={y}
+                  y2={y}
+                  className="stroke-[var(--loyalty-line)]"
+                  strokeWidth="1"
+                />
+                <text
+                  x="20"
+                  y={y + 3}
+                  textAnchor="middle"
+                  className="fill-[var(--loyalty-subtle)] text-[9px]"
+                >
                   {formatChartPercent(tick)}
                 </text>
               </g>
             );
           })}
-          <line x1="44" x2="520" y1="210" y2="210" className="stroke-[var(--loyalty-line)]" strokeWidth="1.5" />
+          <line
+            x1="40"
+            x2="500"
+            y1={plotBottom}
+            y2={plotBottom}
+            className="stroke-[var(--loyalty-line)]"
+            strokeWidth="1.5"
+          />
           {labels.map((label, index) => {
-            const x = 44 + index * (460 / Math.max(labels.length - 1, 1));
+            const x = 40 + index * (460 / Math.max(labels.length - 1, 1));
 
             return (
-              <text key={label} x={x} y="235" textAnchor="middle" className="fill-[var(--loyalty-subtle)] text-[11px]">
+              <text
+                key={label}
+                x={x}
+                y={viewHeight - 4}
+                textAnchor="middle"
+                className="fill-[var(--loyalty-subtle)] text-[10px]"
+              >
                 {label}
               </text>
             );
@@ -470,22 +503,30 @@ function TrendChart({
           return (
             <g key={item.label}>
               <polyline
-                points={item.points.map((point) => `${point.x},${point.y}`).join(" ")}
+                points={item.points
+                  .map((point) => `${point.x},${point.y}`)
+                  .join(" ")}
                 fill="none"
                 className={lineTone}
-                strokeWidth="3"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeDasharray={item.tone === "muted" ? "7 8" : undefined}
+                strokeDasharray={item.tone === "muted" ? "6 7" : undefined}
               />
               {item.points.map((point) => (
                 <g key={`${item.label}-${point.label}`}>
-                  <circle cx={point.x} cy={point.y} r="5" className={cn("fill-card", lineTone)} strokeWidth="3" />
+                  <circle
+                    cx={point.x}
+                    cy={point.y}
+                    r="4"
+                    className={cn("fill-card", lineTone)}
+                    strokeWidth="2.5"
+                  />
                   <text
                     x={point.x}
-                    y={point.y - 12}
+                    y={point.y - 8}
                     textAnchor="middle"
-                    className={cn("text-[11px] font-semibold", textTone)}
+                    className={cn("text-[9px] font-semibold", textTone)}
                   >
                     {formatChartPercent(point.value)}
                   </text>
@@ -502,7 +543,7 @@ function TrendChart({
 function SecondPurchaseCard({ className }: { className?: string }) {
   return (
     <Panel
-      className={className}
+      className={cn("h-full", className)}
       title="نرخ خرید دوم یا بعدی در بازه‌های زمانی"
       description="از بین کارت‌های اولین‌بار مشاهده‌شده"
     >
@@ -528,23 +569,30 @@ function cohortCellStyle(value: number): CSSProperties {
 function RetentionCohortCard({ className }: { className?: string }) {
   return (
     <Panel
-      className={className}
+      className={cn("h-full", className)}
       title="Retention Cohort بر اساس ماه اولین مشاهده"
       description="درصد کارت‌هایی که در بازه زمانی، خرید تکراری داشته‌اند"
     >
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[28rem] border-separate border-spacing-0 text-center text-xs">
+      <div className="flex min-h-0 flex-1 flex-col justify-center overflow-x-auto">
+        <table className="w-full min-w-[24rem] border-separate border-spacing-0 text-center text-xs">
           <caption className="sr-only">
-            جدول cohort نگهداشت کارت‌ها بر اساس ماه اولین مشاهده و بازگشت در روزهای ۷،
-            ۳۰، ۶۰ و ۹۰.
+            جدول cohort نگهداشت کارت‌ها بر اساس ماه اولین مشاهده و بازگشت در روزهای
+            ۷، ۳۰، ۶۰ و ۹۰.
           </caption>
           <thead>
             <tr>
-              <th scope="col" className="p-2 text-start font-medium text-[var(--loyalty-subtle)]">
+              <th
+                scope="col"
+                className="px-1.5 py-1 text-start font-medium text-[var(--loyalty-subtle)]"
+              >
                 ماه اول مشاهده
               </th>
               {COHORT_HEADERS.map((header) => (
-                <th key={header} scope="col" className="p-2 font-medium text-[var(--loyalty-subtle)]">
+                <th
+                  key={header}
+                  scope="col"
+                  className="px-1.5 py-1 font-medium text-[var(--loyalty-subtle)]"
+                >
                   {header}
                 </th>
               ))}
@@ -553,13 +601,16 @@ function RetentionCohortCard({ className }: { className?: string }) {
           <tbody>
             {RETENTION_COHORT_ROWS.map((row) => (
               <tr key={row.month}>
-                <th scope="row" className="border-t border-[var(--loyalty-line)] p-2 text-start font-medium text-[var(--loyalty-ink)]">
+                <th
+                  scope="row"
+                  className="border-t border-[var(--loyalty-line)] px-1.5 py-1.5 text-start font-medium text-[var(--loyalty-ink)]"
+                >
                   {row.month}
                 </th>
                 {row.values.map((value, index) => (
                   <td
                     key={`${row.month}-${COHORT_HEADERS[index]}`}
-                    className="border-t border-white p-2 font-bold tabular-nums"
+                    className="border-t border-white px-1.5 py-1.5 font-bold tabular-nums"
                     style={value === null ? undefined : cohortCellStyle(value)}
                   >
                     {value === null ? "–" : formatChartPercent(value)}
@@ -571,7 +622,10 @@ function RetentionCohortCard({ className }: { className?: string }) {
         </table>
       </div>
       <p className="flex items-start gap-2 border-s-2 border-[var(--loyalty-line)] ps-2 text-xs leading-5 text-[var(--loyalty-subtle)]">
-        <InfoIcon className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]" aria-hidden="true" />
+        <InfoIcon
+          className="mt-0.5 shrink-0 text-[var(--loyalty-navy)]"
+          aria-hidden="true"
+        />
         سطرهای اخیر به دلیل right-censoring فرصت کامل برای ۹۰ روز ندارند.
       </p>
     </Panel>
@@ -604,11 +658,11 @@ export function BuyerLoyaltyDashboard() {
 
       <section
         aria-label="تحلیل نگهداشت و فاصله خرید"
-        className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-12"
+        className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-2 xl:grid-cols-12"
       >
         <RetentionCohortCard className="xl:col-span-5" />
         <SecondPurchaseCard className="xl:col-span-4" />
-        <BehaviorDonutCard className="xl:col-span-3" />
+        <BehaviorDonutCard className="h-full xl:col-span-3" />
       </section>
 
       <DataScopeNote />

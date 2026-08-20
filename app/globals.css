@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #f6f8fb;
+  --background: #ffffff;
   --foreground: #17213f;
   --card: #ffffff;
   --card-foreground: #17213f;
@@ -29,7 +29,7 @@
   --chart-4: #8b5a2b;
   --chart-5: #d44949;
   --radius: 0.5rem;
-  --sidebar: #fbfcff;
+  --sidebar: #ffffff;
   --sidebar-foreground: #17213f;
   --sidebar-primary: #174fd6;
   --sidebar-primary-foreground: #ffffff;
@@ -197,7 +197,7 @@
     border-radius: 28px;
     border-color: var(--sidebar-border);
     color: var(--sidebar-foreground);
-    background: var(--sidebar);
+    background: #ffffff;
     box-shadow: 0 12px 32px rgba(23, 33, 63, 0.08);
   }
 
