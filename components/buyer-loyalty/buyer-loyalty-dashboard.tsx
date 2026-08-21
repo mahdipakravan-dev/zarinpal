@@ -4,19 +4,19 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   BadgeDollarSignIcon,
   CalendarClockIcon,
+  Clock3Icon,
   CreditCardIcon,
   InfoIcon,
-  LightbulbIcon,
   RefreshCwIcon,
   ShieldCheckIcon,
-  SparklesIcon,
   StoreIcon,
-  TargetIcon,
   UsersIcon,
 } from "lucide-react";
 
+import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { streamBuyerLoyaltyAction } from "@/lib/buyer-loyalty-ai-stream";
 import {
   BUYER_LOYALTY_INDEX,
@@ -28,8 +28,8 @@ import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const theme = {
-  "--loyalty-ink": "#172042",
-  "--loyalty-subtle": "#68728b",
+  "--loyalty-ink": "#19191a",
+  "--loyalty-subtle": "#19191a",
   "--loyalty-line": "#e1e6ef",
   "--loyalty-wash": "#f6f8fb",
   "--loyalty-blue": "#2457d6",
@@ -41,6 +41,10 @@ const theme = {
   "--loyalty-rose": "#d64d62",
   "--loyalty-rose-soft": "#fdecef",
   "--loyalty-yellow": "#ffd60a",
+  "--insight-ink": "#19191a",
+  "--insight-subtle": "#19191a",
+  "--insight-line": "#e1e6ef",
+  "--insight-wash": "#f6f8fb",
 } as CSSProperties;
 
 const panel = "rail-panel rail-panel-interactive [--rail-accent:var(--loyalty-blue)] [--rail-line:var(--loyalty-line)]";
@@ -67,42 +71,59 @@ function Header({ merchantId, onMerchantChange }: {
   onMerchantChange: (value: string | null) => void;
 }) {
   const merchant = BUYER_LOYALTY_INDEX.merchants.find((item) => item.id === merchantId);
+  const periodLabel = formatObservationRange(BUYER_LOYALTY_INDEX.source.dateRange);
+
   return (
-    <header className="flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
       <div className="flex min-w-0 items-center gap-2.5">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] sm:size-11">
-          <UsersIcon className="size-5 text-[var(--loyalty-ink)]" aria-hidden="true" />
-        </div>
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-[var(--loyalty-yellow)] text-[var(--loyalty-ink)]">
+          <UsersIcon className="size-5" aria-hidden="true" />
+        </span>
         <div className="min-w-0">
           <h1 className="text-lg font-extrabold text-[var(--loyalty-ink)] sm:text-xl">خریداران وفادار</h1>
-          <p className="text-xs text-[var(--loyalty-subtle)] sm:text-sm">رفتار مشتریان از اولین خرید مشاهده‌شده تا بازگشت بعدی</p>
+          <p className="text-xs leading-5 text-[var(--loyalty-subtle)] sm:text-sm">
+            رفتار مشتریان از اولین خرید مشاهده‌شده تا بازگشت بعدی
+          </p>
         </div>
       </div>
-      <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,20rem)_auto] lg:w-auto">
+      <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:w-auto md:min-w-[24rem]">
         <Select value={merchantId} onValueChange={onMerchantChange}>
-          <SelectTrigger className="h-10 w-full justify-start gap-2 border-[var(--loyalty-line)] bg-card px-3" aria-label="انتخاب پذیرنده">
+          <SelectTrigger
+            className="h-10 w-full border-[var(--loyalty-line)] bg-card"
+            aria-label="انتخاب پذیرنده"
+          >
             <StoreIcon className="size-4 text-[var(--loyalty-blue)]" aria-hidden="true" />
-            <span className="min-w-0 flex-1 truncate text-start text-xs font-bold text-[var(--loyalty-ink)]">{merchant?.label ?? "انتخاب پذیرنده"}</span>
+            <span className="min-w-0 flex-1 truncate text-start text-xs font-bold text-[var(--loyalty-ink)]">
+              {merchant?.label ?? merchantId}
+            </span>
           </SelectTrigger>
-          <SelectContent className="min-w-72 p-1.5">
+          <SelectContent>
             <SelectGroup>
               {BUYER_LOYALTY_INDEX.merchants.map((item) => (
-                <SelectItem key={item.id} value={item.id} label={item.label} className="py-2 pe-8 ps-2">
-                  <span className="flex min-w-0 flex-col items-start">
-                    <span className="text-sm font-semibold">{item.label}</span>
-                    <span className="text-[11px] text-muted-foreground">{formatPersianNumber(item.verifiedPurchases)} خرید موفق</span>
-                  </span>
+                <SelectItem key={item.id} value={item.id}>
+                  {item.label}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-3 text-xs text-[var(--loyalty-subtle)]">
-          <CalendarClockIcon className="size-4 text-[var(--loyalty-amber)]" aria-hidden="true" /> دی ۱۴۰۴ تا تیر ۱۴۰۵
+        <div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-3 text-xs">
+          <Clock3Icon className="size-4 text-[var(--loyalty-blue)]" aria-hidden="true" />
+          <strong className="whitespace-nowrap text-[var(--loyalty-ink)]">{periodLabel}</strong>
         </div>
       </div>
     </header>
   );
+}
+
+function formatObservationRange(range: { start: string; end: string }) {
+  const formatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+    month: "long",
+    year: "numeric",
+  });
+  const start = formatter.format(new Date(`${range.start}T00:00:00`));
+  const end = formatter.format(new Date(`${range.end}T00:00:00`));
+  return start === end ? start : `${start} تا ${end}`;
 }
 
 const kpiDefinitions = [
@@ -170,23 +191,6 @@ function RetentionChart({ result }: { result: BuyerLoyaltyResult }) {
       </div>
       <p className="text-[10px] leading-4 text-[var(--loyalty-subtle)]">بازه کوچک زیر هر نرخ، فاصله اطمینان ۹۵٪ است؛ مخرج هر افق فقط مشتریان دارای فرصت کامل مشاهده را شامل می‌شود.</p>
     </Panel>
-  );
-}
-
-function Insight({ result, action, status }: { result: BuyerLoyaltyResult; action: string; status: "streaming" | "complete" | "error" }) {
-  const ActionIcon = status === "error" ? TargetIcon : SparklesIcon;
-  return (
-    <aside className="rail-banner flex min-h-72 flex-col gap-2.5 p-2.5 sm:p-3">
-      <div className="relative flex items-center gap-2 text-[var(--loyalty-yellow)]"><LightbulbIcon className="size-4" aria-hidden="true" /><h2 className="text-sm font-bold text-white">بینش کلیدی</h2></div>
-      <p className="relative text-sm leading-6 text-white/95">{result.insight.headline}</p>
-      <ul className="relative flex flex-col gap-1.5 text-xs leading-5 text-white/80 sm:text-sm">
-        {result.insight.bullets.map((bullet) => <li key={bullet} className="flex gap-2"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-[var(--loyalty-green)]" /><span>{bullet}</span></li>)}
-      </ul>
-      <div className="relative mt-auto flex gap-2 rounded-md border border-white/15 bg-white/10 p-2.5">
-        <ActionIcon className="mt-0.5 size-4 shrink-0 text-[var(--loyalty-yellow)]" aria-hidden="true" />
-        <p className="text-xs leading-5 text-white/90 sm:text-sm"><span className="font-semibold text-[var(--loyalty-yellow)]">{status === "error" ? "پیشنهاد: " : "پیشنهاد هوشمند: "}</span><span aria-live="polite">{action || "در حال تحلیل الگوی بازگشت…"}{status === "streaming" ? <span className="ms-1 inline-block h-4 w-0.5 animate-pulse bg-current align-middle" /> : null}</span></p>
-      </div>
-    </aside>
   );
 }
 
@@ -272,7 +276,6 @@ export function BuyerLoyaltyDashboard() {
   const [merchantId, setMerchantId] = useState(BUYER_LOYALTY_INDEX.merchants[0].id);
   const [result, setResult] = useState<BuyerLoyaltyResult | null>(null);
   const [error, setError] = useState(false);
-  const [liveAction, setLiveAction] = useState<{ key: string; text: string; status: "streaming" | "complete" | "error" } | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -286,17 +289,13 @@ export function BuyerLoyaltyDashboard() {
     return () => controller.abort();
   }, [merchantId]);
 
-  useEffect(() => {
-    if (!result || result.merchant.id !== merchantId || !result.eligible) return;
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => {
-      setLiveAction({ key: merchantId, text: "", status: "streaming" });
-      streamBuyerLoyaltyAction({ result, signal: controller.signal, onText: (text) => setLiveAction({ key: merchantId, text, status: "streaming" }) }).then((text) => setLiveAction({ key: merchantId, text, status: "complete" })).catch(() => {
-        if (!controller.signal.aborted) setLiveAction({ key: merchantId, text: result.insight.ruleAction, status: "error" });
-      });
-    }, 50);
-    return () => { window.clearTimeout(timer); controller.abort(); };
-  }, [merchantId, result]);
+  const { action: liveAction, status: liveStatus } = useLiveAiAction({
+    key: merchantId,
+    enabled: Boolean(result && result.merchant.id === merchantId && result.eligible),
+    fallback: result?.insight.ruleAction ?? "",
+    stream: ({ signal, onText }) =>
+      streamBuyerLoyaltyAction({ result: result!, signal, onText }),
+  });
 
   function changeMerchant(value: string | null) {
     if (!value) return;
@@ -305,13 +304,23 @@ export function BuyerLoyaltyDashboard() {
     setMerchantId(value);
   }
 
-  const live = liveAction?.key === merchantId ? liveAction : null;
   return (
     <div className="flex flex-col gap-2.5 text-[var(--loyalty-ink)]" style={theme}>
       <Header merchantId={merchantId} onMerchantChange={changeMerchant} />
       {!result ? error ? <div className={cn(panel, "flex min-h-48 items-center justify-center p-4 text-sm text-[var(--loyalty-rose)]")}>داده وفاداری این پذیرنده بارگذاری نشد.</div> : <Loading /> : <>
         <Kpis result={result} />
-        <section className="grid gap-2.5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)]"><Insight result={result} action={live?.text ?? result.insight.ruleAction} status={result.eligible ? (live?.status ?? "streaming") : "error"} /><RetentionChart result={result} /></section>
+        <section className="grid gap-2.5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)]">
+          <AiInsight
+            layout="stack"
+            className="min-h-72"
+            headline={result.insight.headline}
+            detail={result.insight.bullets[0]}
+            action={liveAction}
+            status={result.eligible ? liveStatus : "error"}
+            loadingLabel="در حال تحلیل الگوی بازگشت…"
+          />
+          <RetentionChart result={result} />
+        </section>
         <section className="grid gap-2.5 xl:grid-cols-3"><CohortHeatmap result={result} /><IntervalDistribution result={result} /><SegmentValue result={result} /><PurchaseValue result={result} /></section>
         <Methodology result={result} />
         <p className="flex items-start justify-center gap-2 px-2 text-center text-[10px] leading-5 text-[var(--loyalty-subtle)] sm:text-xs"><ShieldCheckIcon className="mt-0.5 size-3.5 shrink-0 text-[var(--loyalty-green)]" />در این داشبورد هر payer_card_key یک مشتری قابل‌شناسایی در نظر گرفته شده و داده فقط رفتار مشاهده‌شده از دی ۱۴۰۴ تا تیر ۱۴۰۵ را پوشش می‌دهد.</p>

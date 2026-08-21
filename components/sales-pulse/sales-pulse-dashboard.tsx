@@ -5,13 +5,13 @@ import { ActivityIcon } from "lucide-react";
 
 import { CumulativeTrendChart } from "@/components/sales-pulse/cumulative-trend-chart";
 import {
-  GrowthBreakdownBlocks,
   GrowthDonut,
+  GrowthFormulaInfo,
   GrowthWaterfall,
 } from "@/components/sales-pulse/growth-charts";
 import { HourlyImpactChart } from "@/components/sales-pulse/hourly-impact-chart";
 import { ImpactHeatmap } from "@/components/sales-pulse/impact-heatmap";
-import { InsightPanel } from "@/components/sales-pulse/insight-panel";
+import { AiInsight } from "@/components/dashboard/ai-insight";
 import { KpiScorecard, KpiScorecardGrid } from "@/components/sales-pulse/kpi-scorecard";
 import {
   DataLimitNote,
@@ -19,6 +19,7 @@ import {
 } from "@/components/sales-pulse/period-toolbar";
 import { QuickComparisonList } from "@/components/sales-pulse/quick-comparison-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import {
   SALES_PULSE_INDEX,
   salesPulseMerchantDataUrl,
@@ -26,12 +27,12 @@ import {
   type SalesPulseResult,
 } from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { streamSalesPulseAction } from "@/lib/sales-pulse-ai-stream";
+import { cn } from "@/lib/utils";
 
 const pulseTheme = {
-  "--pulse-ink": "#1a2148",
-  "--pulse-subtle": "#6b7590",
+  "--pulse-ink": "#19191a",
+  "--pulse-subtle": "#19191a",
   "--pulse-line": "#e4e9f3",
   "--pulse-wash": "#f6f8fc",
   "--pulse-blue": "#174fd6",
@@ -47,6 +48,10 @@ const pulseTheme = {
   "--pulse-amber-soft": "#fff6ea",
   "--pulse-amber-line": "#ffe0b5",
   "--pulse-yellow": "#ffd60a",
+  "--insight-ink": "#19191a",
+  "--insight-subtle": "#19191a",
+  "--insight-line": "#e4e9f3",
+  "--insight-wash": "#f6f8fc",
 } as CSSProperties;
 
 const panelClass =
@@ -196,11 +201,6 @@ export function SalesPulseDashboard() {
     SalesPulseResult
   > | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [liveAction, setLiveAction] = useState<{
-    key: string;
-    text: string;
-    status: "streaming" | "complete" | "error";
-  } | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -220,36 +220,24 @@ export function SalesPulseDashboard() {
   }, [merchantId]);
 
   const result = merchantResults?.[periodId];
+  const merchant = SALES_PULSE_INDEX.merchants.find((item) => item.id === merchantId);
+  const period = SALES_PULSE_INDEX.periods.find((item) => item.id === periodId);
+  const insightKey = `${merchantId}:${periodId}`;
+  const fallbackAction = result?.insight.ruleAction ?? "";
 
-  useEffect(() => {
-    if (!result) return;
-    const key = `${merchantId}:${periodId}`;
-    const merchant = SALES_PULSE_INDEX.merchants.find((item) => item.id === merchantId);
-    const period = SALES_PULSE_INDEX.periods.find((item) => item.id === periodId);
-    if (!merchant || !period) return;
-
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => {
-      setLiveAction({ key, text: "", status: "streaming" });
+  const { action: liveAction, status: liveStatus } = useLiveAiAction({
+    key: insightKey,
+    enabled: Boolean(result && merchant && period),
+    fallback: fallbackAction,
+    stream: ({ signal, onText }) =>
       streamSalesPulseAction({
-        merchantCategory: merchant.categoryTitle,
-        periodLabel: period.label,
-        result,
-        signal: controller.signal,
-        onText: (text) => setLiveAction({ key, text, status: "streaming" }),
-      })
-        .then((text) => setLiveAction({ key, text, status: "complete" }))
-        .catch(() => {
-          if (controller.signal.aborted) return;
-          setLiveAction({ key, text: result.insight.ruleAction, status: "error" });
-        });
-    }, 50);
-
-    return () => {
-      window.clearTimeout(timer);
-      controller.abort();
-    };
-  }, [merchantId, periodId, result]);
+        merchantCategory: merchant!.categoryTitle,
+        periodLabel: period!.label,
+        result: result!,
+        signal,
+        onText,
+      }),
+  });
 
   function handlePeriodChange(value: string | null) {
     if (value) setPeriodId(value);
@@ -291,8 +279,6 @@ export function SalesPulseDashboard() {
   }
 
   const kpis = formatSalesPulseKpis(result);
-  const insightKey = `${merchantId}:${periodId}`;
-  const activeLiveAction = liveAction?.key === insightKey ? liveAction : null;
   const quickComparison = result.quickComparison.map((item) => ({
     label: item.label,
     value: formatSigned(item.value, item.type === "percent" ? "٪" : ""),
@@ -314,8 +300,12 @@ export function SalesPulseDashboard() {
         aria-labelledby="growth-breakdown-heading"
         className="grid grid-cols-1 gap-2.5 lg:grid-cols-2"
       >
-        <article className={cn(panelClass, "flex flex-col gap-2.5 p-2.5 sm:p-3")}>
-          <header>
+        <article className={cn(panelClass, "relative flex flex-col gap-2.5 p-2.5 sm:p-3")}>
+          <GrowthFormulaInfo
+            factors={result.growthFactors}
+            total={result.totalGrowth}
+          />
+          <header className="pe-8">
             <h2
               id="growth-breakdown-heading"
               className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base"
@@ -334,19 +324,14 @@ export function SalesPulseDashboard() {
               total={result.totalGrowth}
             />
           </div>
-
-          <GrowthBreakdownBlocks
-            factors={result.growthFactors}
-            total={result.totalGrowth}
-          />
         </article>
 
-        <InsightPanel
+        <AiInsight
+          layout="stack"
           headline={result.insight.headline}
-          bullets={result.insight.bullets}
-          action={activeLiveAction?.text ?? result.insight.action}
-          actionSource={activeLiveAction?.status === "error" ? "rules" : "ai"}
-          actionStatus={activeLiveAction?.status ?? "idle"}
+          detail={result.insight.bullets[0]}
+          action={liveAction}
+          status={liveStatus}
         />
       </section>
 
@@ -370,8 +355,8 @@ export function SalesPulseDashboard() {
           <QuickComparisonList items={quickComparison} />
         </article>
 
-        <article className={cn(panelClass, "self-start p-2.5 sm:p-3")}>
-          <header className="mb-2">
+        <article className={cn(panelClass, "flex h-full flex-col p-2.5 sm:p-3")}>
+          <header className="mb-2 shrink-0">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               توزیع اثر رشد بر اساس ساعت
             </h2>
@@ -382,8 +367,13 @@ export function SalesPulseDashboard() {
           <HourlyImpactChart data={result.hourlyImpact} />
         </article>
 
-        <article className={cn(panelClass, "self-start overflow-x-auto p-2.5 sm:p-3 md:col-span-2")}>
-          <header className="mb-2">
+        <article
+          className={cn(
+            panelClass,
+            "flex h-full flex-col overflow-x-auto p-2.5 sm:p-3 md:col-span-2"
+          )}
+        >
+          <header className="mb-2 shrink-0">
             <h2 className="text-sm font-bold text-[var(--pulse-ink)] sm:text-base">
               ماتریس اثر خالص رشد
             </h2>

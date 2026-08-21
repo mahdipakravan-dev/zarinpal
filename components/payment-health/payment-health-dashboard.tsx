@@ -3,13 +3,16 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   AlertTriangleIcon, ArrowUpRightIcon, Building2Icon, CheckCircle2Icon, Clock3Icon,
-  InfoIcon, LightbulbIcon, RefreshCwIcon, RouteIcon, ShieldAlertIcon, ShieldCheckIcon,
-  StoreIcon, TargetIcon, TerminalIcon, UsersIcon, type LucideIcon,
+  InfoIcon, RefreshCwIcon, RouteIcon, ShieldAlertIcon, ShieldCheckIcon,
+  StoreIcon, TerminalIcon, UsersIcon, type LucideIcon,
 } from "lucide-react";
 
+import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
+import { streamPaymentHealthAction } from "@/lib/payment-health-ai-stream";
 import {
   PAYMENT_HEALTH_INDEX, paymentHealthMerchantDataUrl, type HealthAnomaly,
   type HealthKpi, type PaymentHealthResult,
@@ -17,11 +20,13 @@ import {
 import { cn } from "@/lib/utils";
 
 const theme = {
-  "--health-ink": "#17191d", "--health-subtle": "#68707d", "--health-line": "#e3e7ed",
+  "--health-ink": "#19191a", "--health-subtle": "#19191a", "--health-line": "#e3e7ed",
   "--health-wash": "#f7f8fa", "--health-blue": "#174fd6", "--health-blue-soft": "#edf3ff",
   "--health-teal": "#0f907d", "--health-teal-soft": "#e9f7f3", "--health-green": "#16865f",
   "--health-amber": "#d97720", "--health-amber-soft": "#fff2e3", "--health-red": "#d44c5c",
   "--health-red-soft": "#fdecef", "--health-yellow": "#ffd60a",
+  "--insight-ink": "#19191a", "--insight-subtle": "#19191a",
+  "--insight-line": "#e3e7ed", "--insight-wash": "#f7f8fa",
 } as CSSProperties;
 const panel = "rail-panel rail-panel-interactive [--rail-accent:var(--health-blue)] [--rail-line:var(--health-line)]";
 
@@ -42,10 +47,6 @@ function Summary({ result }: { result: PaymentHealthResult }) {
     ["اطمینان تحلیل", confidence, ShieldCheckIcon],
   ];
   return <section className={cn(panel, "grid divide-y divide-[var(--health-line)] sm:grid-cols-4 sm:divide-x sm:divide-x-reverse sm:divide-y-0")} aria-label="خلاصه تحلیل">{items.map(([label, value, Icon]) => <div key={label} className="flex min-w-0 items-center gap-2.5 px-3 py-2.5"><span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-[var(--health-blue-soft)] text-[var(--health-blue)]"><Icon className="size-4" /></span><div className="min-w-0"><p className="text-[10px] text-[var(--health-subtle)]">{label}</p><p className="truncate text-xs font-bold" title={value}>{value}</p></div></div>)}</section>;
-}
-
-function Insight({ result }: { result: PaymentHealthResult }) {
-  return <aside className="rail-banner grid gap-3 p-3 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.42fr)]"><div className="relative flex gap-3"><span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-[var(--health-teal-soft)] text-[var(--health-teal)]"><LightbulbIcon className="size-4" /></span><div><p className="mb-1 text-xs font-bold text-[var(--health-teal)]">بینش کلیدی</p><p className="text-sm font-semibold leading-6">{result.insight.headline}</p><p className="mt-1 text-xs leading-5 text-[var(--health-subtle)]">{result.insight.diagnosis}</p></div></div><div className="relative flex gap-2 border-t border-[var(--health-line)] pt-3 md:border-s md:border-t-0 md:ps-3 md:pt-0"><TargetIcon className="mt-0.5 size-4 shrink-0 text-[var(--health-amber)]" /><p className="text-xs leading-5"><strong className="text-[var(--health-amber)]">اقدام پیشنهادی: </strong>{result.insight.action}</p></div></aside>;
 }
 
 type KpiDefinition = { id: keyof PaymentHealthResult["kpis"]; label: string; caption: string; icon: LucideIcon; lowerBetter?: boolean };
@@ -121,11 +122,72 @@ export function PaymentHealthDashboard() {
   const [merchantId, setMerchantId] = useState(PAYMENT_HEALTH_INDEX.merchants[0].id);
   const [result, setResult] = useState<PaymentHealthResult | null>(null);
   const [error, setError] = useState(false);
+
   useEffect(() => {
     const controller = new AbortController();
-    fetch(paymentHealthMerchantDataUrl(merchantId), { signal: controller.signal }).then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json() as Promise<PaymentHealthResult>; }).then(setResult).catch((reason) => { if (reason?.name !== "AbortError") setError(true); });
+    fetch(paymentHealthMerchantDataUrl(merchantId), { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json() as Promise<PaymentHealthResult>;
+      })
+      .then(setResult)
+      .catch((reason) => {
+        if (reason?.name !== "AbortError") setError(true);
+      });
     return () => controller.abort();
   }, [merchantId]);
-  function changeMerchant(value: string | null) { if (!value || value === merchantId) return; setResult(null); setError(false); setMerchantId(value); }
-  return <div className="flex flex-col gap-2.5 text-[var(--health-ink)]" style={theme}><Header merchantId={merchantId} onChange={changeMerchant} />{error ? <div className={cn(panel, "flex min-h-40 items-center justify-center p-4 text-sm text-[var(--health-red)]")}>داده سلامت پرداخت این پذیرنده بارگذاری نشد.</div> : !result ? <Loading /> : <><Summary result={result} /><Insight result={result} /><Kpis result={result} /><section className="grid gap-2.5 xl:grid-cols-3"><Funnel result={result} /><Retry result={result} /></section><section className="grid gap-2.5 xl:grid-cols-2"><AmountComparison result={result} /><Heatmap result={result} /></section><section className="grid gap-2.5 xl:grid-cols-2"><Anomalies result={result} /><OperationsTable result={result} /></section><WeeklyTrend result={result} /><Methodology result={result} /></>}</div>;
+
+  const { action: liveAction, status: liveStatus } = useLiveAiAction({
+    key: merchantId,
+    enabled: Boolean(result && result.merchant.id === merchantId && result.eligible),
+    fallback: result?.insight.action ?? "",
+    stream: ({ signal, onText }) =>
+      streamPaymentHealthAction({ result: result!, signal, onText }),
+  });
+
+  function changeMerchant(value: string | null) {
+    if (!value || value === merchantId) return;
+    setResult(null);
+    setError(false);
+    setMerchantId(value);
+  }
+
+  return (
+    <div className="flex flex-col gap-2.5 text-[var(--health-ink)]" style={theme}>
+      <Header merchantId={merchantId} onChange={changeMerchant} />
+      {error ? (
+        <div className={cn(panel, "flex min-h-40 items-center justify-center p-4 text-sm text-[var(--health-red)]")}>
+          داده سلامت پرداخت این پذیرنده بارگذاری نشد.
+        </div>
+      ) : !result ? (
+        <Loading />
+      ) : (
+        <>
+          <Summary result={result} />
+          <AiInsight
+            headline={result.insight.headline}
+            detail={result.insight.diagnosis}
+            action={liveAction}
+            status={liveStatus}
+            loadingLabel="در حال تحلیل مسیر پرداخت…"
+          />
+          <Kpis result={result} />
+          <section className="grid gap-2.5 xl:grid-cols-3">
+            <Funnel result={result} />
+            <Retry result={result} />
+          </section>
+          <section className="grid gap-2.5 xl:grid-cols-2">
+            <AmountComparison result={result} />
+            <Heatmap result={result} />
+          </section>
+          <section className="grid gap-2.5 xl:grid-cols-2">
+            <Anomalies result={result} />
+            <OperationsTable result={result} />
+          </section>
+          <WeeklyTrend result={result} />
+          <Methodology result={result} />
+        </>
+      )}
+    </div>
+  );
 }

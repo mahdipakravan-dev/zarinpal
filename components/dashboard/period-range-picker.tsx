@@ -30,8 +30,8 @@ type PeriodRangePickerProps = {
 };
 
 const periodPickerTheme = {
-  "--period-ink": "#17191d",
-  "--period-subtle": "#68707d",
+  "--period-ink": "#19191a",
+  "--period-subtle": "#19191a",
   "--period-line": "#e6e8ec",
   "--period-wash": "#f7f8fa",
   "--period-blue": "#174fd6",

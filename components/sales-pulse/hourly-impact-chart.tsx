@@ -19,13 +19,13 @@ export function HourlyImpactChart({ data }: HourlyImpactChartProps) {
   const barWidth = Math.min(36, slotWidth * 0.55);
 
   return (
-    <figure className="flex h-full min-h-0 w-full flex-1 items-center">
+    <figure className="flex min-h-0 w-full flex-1 items-center">
       <figcaption className="sr-only">
         توزیع اثر خالص رشد فروش بر اساس ساعت روز
       </figcaption>
       <svg
         viewBox={`0 0 ${width} ${height}`}
-        className="h-full max-h-52 w-full"
+        className="h-full w-full"
         role="img"
         aria-label="نمودار میله‌ای اثر رشد بر اساس ساعت"
       >

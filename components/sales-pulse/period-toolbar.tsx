@@ -22,6 +22,12 @@ type PeriodToolbarProps = {
   variant?: "panel" | "inline";
 };
 
+const controlTriggerClass =
+  "h-10 w-full min-w-0 justify-start gap-2 rounded-lg border border-[var(--pulse-line)] bg-card px-3 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:size-4 [&>svg:last-child]:shrink-0 [&>svg:last-child]:text-[var(--pulse-blue)]";
+
+const controlItemClass =
+  "py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]";
+
 export function PeriodToolbar({
   periodId,
   merchantId,
@@ -45,79 +51,81 @@ export function PeriodToolbar({
     >
       <div
         className={cn(
-          "grid w-full grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2.5",
-          isInline ? "lg:w-auto lg:min-w-[18rem]" : "sm:w-auto"
+          "grid w-full grid-cols-2 gap-2",
+          isInline ? "md:w-[24rem]" : "sm:w-[24rem]"
         )}
       >
-        <div className="min-w-0 sm:min-w-36">
-          <Select value={merchantId} onValueChange={onMerchantChange}>
-            <SelectTrigger
-              className="h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]"
-              aria-label="انتخاب پذیرنده"
-            >
-              <StoreIcon className="size-4 shrink-0 text-[var(--pulse-blue)]" aria-hidden="true" />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]">
-                {merchant?.label ?? "پذیرنده"}
-              </span>
-            </SelectTrigger>
-            <SelectContent className="min-w-56 rounded-lg p-1.5">
-              <SelectGroup>
-                {merchants.map((item) => (
-                  <SelectItem
-                    key={item.id}
-                    value={item.id}
-                    label={item.label}
-                    className="py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]"
-                  >
-                    <span className="flex min-w-0 flex-col gap-0.5">
-                      <span className="text-sm font-semibold text-[var(--pulse-ink)]">
-                        {item.label}
-                      </span>
-                      <span className="text-[11px] text-[var(--pulse-subtle)]">
-                        {formatPersianNumber(item.verifiedPurchases)} خرید موفق در کل فایل
-                      </span>
+        <Select value={merchantId} onValueChange={onMerchantChange}>
+          <SelectTrigger
+            className={controlTriggerClass}
+            aria-label="انتخاب پذیرنده"
+          >
+            <StoreIcon
+              className="size-4 shrink-0 text-[var(--pulse-blue)]"
+              aria-hidden="true"
+            />
+            <span className="min-w-0 flex-1 truncate text-xs font-bold text-[var(--pulse-ink)]">
+              {merchant?.label ?? "پذیرنده"}
+            </span>
+          </SelectTrigger>
+          <SelectContent className="min-w-56 rounded-lg p-1.5">
+            <SelectGroup>
+              {merchants.map((item) => (
+                <SelectItem
+                  key={item.id}
+                  value={item.id}
+                  label={item.label}
+                  className={controlItemClass}
+                >
+                  <span className="flex min-w-0 flex-col gap-0.5">
+                    <span className="text-sm font-semibold text-[var(--pulse-ink)]">
+                      {item.label}
                     </span>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+                    <span className="text-[11px] text-[var(--pulse-subtle)]">
+                      {formatPersianNumber(item.verifiedPurchases)} خرید موفق در کل فایل
+                    </span>
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-        <div className="min-w-0 sm:min-w-36">
-          <Select value={periodId} onValueChange={onPeriodChange}>
-            <SelectTrigger
-              className="h-10 w-full justify-start gap-2 rounded-lg border-[var(--pulse-line)] bg-card px-3 py-2 text-start hover:border-[var(--pulse-blue-line)] hover:bg-[var(--pulse-wash)] data-[popup-open]:border-[var(--pulse-blue-line)] data-[popup-open]:bg-[var(--pulse-wash)] [&>svg:last-child]:text-[var(--pulse-blue)]"
-              aria-label="انتخاب بازه تحلیل"
-            >
-              <CalendarRangeIcon className="size-4 shrink-0 text-[var(--pulse-blue)]" aria-hidden="true" />
-              <span className="min-w-0 flex-1 truncate text-xs font-extrabold text-[var(--pulse-ink)]">
-                {period?.label ?? "بازه"}
-              </span>
-            </SelectTrigger>
-            <SelectContent className="min-w-64 rounded-lg p-1.5">
-              <SelectGroup>
-                {periods.map((item) => (
-                  <SelectItem
-                    key={item.id}
-                    value={item.id}
-                    label={item.label}
-                    className="py-2 pe-8 ps-2 data-highlighted:bg-[var(--pulse-wash)] data-selected:bg-[var(--pulse-blue-soft)]"
-                  >
-                    <span className="flex min-w-0 flex-col gap-0.5">
-                      <span className="text-sm font-semibold text-[var(--pulse-ink)]">
-                        {item.label}
-                      </span>
-                      <span className="text-[11px] text-[var(--pulse-subtle)]">
-                        {item.range}
-                      </span>
+        <Select value={periodId} onValueChange={onPeriodChange}>
+          <SelectTrigger
+            className={controlTriggerClass}
+            aria-label="انتخاب بازه تحلیل"
+          >
+            <CalendarRangeIcon
+              className="size-4 shrink-0 text-[var(--pulse-blue)]"
+              aria-hidden="true"
+            />
+            <span className="min-w-0 flex-1 truncate text-xs font-bold text-[var(--pulse-ink)]">
+              {period?.label ?? "بازه"}
+            </span>
+          </SelectTrigger>
+          <SelectContent className="min-w-64 rounded-lg p-1.5">
+            <SelectGroup>
+              {periods.map((item) => (
+                <SelectItem
+                  key={item.id}
+                  value={item.id}
+                  label={item.label}
+                  className={controlItemClass}
+                >
+                  <span className="flex min-w-0 flex-col gap-0.5">
+                    <span className="text-sm font-semibold text-[var(--pulse-ink)]">
+                      {item.label}
                     </span>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+                    <span className="text-[11px] text-[var(--pulse-subtle)]">
+                      {item.range}
+                    </span>
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
 
       {period && !isInline ? (

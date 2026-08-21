@@ -1,6 +1,17 @@
+import { InfoIcon } from "lucide-react";
+
 import type { GrowthFactor } from "@/lib/sales-pulse-data";
 import { formatPersianNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type GrowthWaterfallProps = {
   factors: GrowthFactor[];
@@ -101,7 +112,7 @@ export function GrowthDonut({ total }: { total: number }) {
   const positive = total >= 0;
 
   return (
-    <div className="relative mx-auto flex size-36 items-center justify-center">
+    <div className="relative mx-auto mt-4 flex size-36 items-center justify-center sm:mt-5">
       <svg
         viewBox="0 0 128 128"
         className="size-full -rotate-90 motion-reduce:rotate-0"
@@ -184,5 +195,40 @@ export function GrowthBreakdownBlocks({
         {formatPersianNumber(total)}٪ تغییر کل
       </span>
     </div>
+  );
+}
+
+export function GrowthFormulaInfo({
+  factors,
+  total,
+}: {
+  factors: GrowthFactor[];
+  total: number;
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-2.5 end-2.5 z-10 size-7 text-[var(--pulse-blue)] hover:bg-[var(--pulse-blue-soft)] hover:text-[var(--pulse-blue)]"
+            aria-label="نمایش فرمول تجزیه رشد"
+          />
+        }
+      >
+        <InfoIcon className="size-4" />
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-lg" dir="rtl">
+        <DialogHeader>
+          <DialogTitle>فرمول تجزیه رشد</DialogTitle>
+          <DialogDescription>
+            سهم هر عامل از تغییر کل فروش موفق در دوره انتخاب‌شده
+          </DialogDescription>
+        </DialogHeader>
+        <GrowthBreakdownBlocks factors={factors} total={total} />
+      </DialogContent>
+    </Dialog>
   );
 }

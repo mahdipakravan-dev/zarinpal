@@ -3,14 +3,17 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   ActivityIcon, ArrowUpRightIcon, BadgePercentIcon, CheckCircle2Icon,
-  CircleDollarSignIcon, Clock3Icon, InfoIcon, LightbulbIcon, LockKeyholeIcon,
-  ReceiptTextIcon, RefreshCwIcon, ShieldCheckIcon, StoreIcon, TargetIcon,
+  CircleDollarSignIcon, Clock3Icon, InfoIcon, LockKeyholeIcon,
+  ReceiptTextIcon, RefreshCwIcon, ShieldCheckIcon, StoreIcon,
   TrendingUpIcon, TrophyIcon, UsersIcon, WalletCardsIcon, type LucideIcon,
 } from "lucide-react";
 
+import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
+import { streamPeerPositionAction } from "@/lib/peer-position-ai-stream";
 import {
   PEER_POSITION_INDEX, peerPositionMerchantDataUrl, type PeerMetric,
   type PeerMetricId, type PeerPositionResult, type PeerTone,
@@ -18,11 +21,13 @@ import {
 import { cn } from "@/lib/utils";
 
 const theme = {
-  "--peer-ink": "#17191d", "--peer-subtle": "#68707d", "--peer-line": "#e3e7ed",
+  "--peer-ink": "#19191a", "--peer-subtle": "#19191a", "--peer-line": "#e3e7ed",
   "--peer-wash": "#f7f8fa", "--peer-blue": "#174fd6", "--peer-blue-soft": "#edf3ff",
   "--peer-teal": "#0f907d", "--peer-teal-soft": "#e9f7f3", "--peer-green": "#16865f",
   "--peer-amber": "#d97720", "--peer-amber-soft": "#fff2e3", "--peer-red": "#d44c5c",
   "--peer-red-soft": "#fdecef", "--peer-yellow": "#ffd60a",
+  "--insight-ink": "#19191a", "--insight-subtle": "#19191a",
+  "--insight-line": "#e3e7ed", "--insight-wash": "#f7f8fa",
 } as CSSProperties;
 
 const panel = "rail-panel rail-panel-interactive [--rail-accent:var(--peer-blue)] [--rail-line:var(--peer-line)]";
@@ -80,10 +85,6 @@ function SummaryStrip({ result }: { result: PeerPositionResult }) {
 
 function SummaryItem({ label, value, icon: Icon, tone = "neutral" }: { label: string; value: string; icon: LucideIcon; tone?: PeerTone }) {
   return <div className="flex min-w-0 items-center gap-2.5 px-3 py-2.5"><span className={cn("flex size-8 shrink-0 items-center justify-center rounded-md", toneClasses[tone].soft, toneClasses[tone].text)}><Icon className="size-4" aria-hidden="true" /></span><div className="min-w-0"><p className="text-[10px] text-[var(--peer-subtle)]">{label}</p><p className="truncate text-xs font-bold text-[var(--peer-ink)]" title={value}>{value}</p></div></div>;
-}
-
-function InsightBanner({ result }: { result: PeerPositionResult }) {
-  return <aside className="rail-banner grid gap-3 p-3 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.42fr)]"><div className="relative flex min-w-0 gap-3"><span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-[var(--peer-teal-soft)] text-[var(--peer-teal)]"><LightbulbIcon className="size-4" aria-hidden="true" /></span><div className="min-w-0"><p className="mb-1 text-xs font-bold text-[var(--peer-teal)]">بینش کلیدی</p><p className="text-sm font-semibold leading-6 text-[var(--peer-ink)]">{result.insight.headline}</p><p className="mt-1 text-xs leading-5 text-[var(--peer-subtle)]">{result.insight.diagnosis}</p></div></div><div className="relative flex gap-2 border-t border-[var(--peer-line)] pt-3 md:border-s md:border-t-0 md:ps-3 md:pt-0"><TargetIcon className="mt-0.5 size-4 shrink-0 text-[var(--peer-amber)]" aria-hidden="true" /><p className="text-xs leading-5 text-[var(--peer-ink)]"><strong className="text-[var(--peer-amber)]">اقدام پیشنهادی: </strong>{result.insight.action}</p></div></aside>;
 }
 
 function MetricCard({ metric }: { metric: PeerMetric }) {
@@ -152,18 +153,70 @@ export function PeerPositionDashboard() {
   const [merchantId, setMerchantId] = useState(PEER_POSITION_INDEX.merchants[0].id);
   const [result, setResult] = useState<PeerPositionResult | null>(null);
   const [error, setError] = useState(false);
+
   useEffect(() => {
     const controller = new AbortController();
     fetch(peerPositionMerchantDataUrl(merchantId), { signal: controller.signal })
-      .then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json() as Promise<PeerPositionResult>; })
-      .then(setResult).catch((reason) => { if (reason?.name !== "AbortError") setError(true); });
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json() as Promise<PeerPositionResult>;
+      })
+      .then(setResult)
+      .catch((reason) => {
+        if (reason?.name !== "AbortError") setError(true);
+      });
     return () => controller.abort();
   }, [merchantId]);
+
+  const { action: liveAction, status: liveStatus } = useLiveAiAction({
+    key: merchantId,
+    enabled: Boolean(result && result.merchant.id === merchantId && result.eligible),
+    fallback: result?.insight.action ?? "",
+    stream: ({ signal, onText }) =>
+      streamPeerPositionAction({ result: result!, signal, onText }),
+  });
+
   function changeMerchant(value: string | null) {
     if (!value || value === merchantId) return;
     setResult(null);
     setError(false);
     setMerchantId(value);
   }
-  return <div className="flex flex-col gap-2.5 text-[var(--peer-ink)]" style={theme}><DashboardHeader merchantId={merchantId} onMerchantChange={changeMerchant} />{error ? <div className={cn(panel, "flex min-h-40 items-center justify-center p-4 text-sm text-[var(--peer-red)]")}>داده جایگاه این پذیرنده بارگذاری نشد.</div> : !result ? <LoadingState /> : <><SummaryStrip result={result} /><InsightBanner result={result} /><div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_16rem]"><main className="flex min-w-0 flex-col gap-2.5"><KpiHighlights metrics={result.metrics} /><PercentileMap metrics={result.metrics} /><section className="grid gap-2.5 xl:grid-cols-2" aria-label="نمودارهای تحلیلی"><GrowthRetentionScatter result={result} /><WeeklyTrend trend={result.weeklyTrend} /></section><OpportunityList result={result} /></main><PeerGroupAside result={result} /></div><Methodology result={result} /></>}</div>;
+
+  return (
+    <div className="flex flex-col gap-2.5 text-[var(--peer-ink)]" style={theme}>
+      <DashboardHeader merchantId={merchantId} onMerchantChange={changeMerchant} />
+      {error ? (
+        <div className={cn(panel, "flex min-h-40 items-center justify-center p-4 text-sm text-[var(--peer-red)]")}>
+          داده جایگاه این پذیرنده بارگذاری نشد.
+        </div>
+      ) : !result ? (
+        <LoadingState />
+      ) : (
+        <>
+          <SummaryStrip result={result} />
+          <AiInsight
+            headline={result.insight.headline}
+            detail={result.insight.diagnosis}
+            action={liveAction}
+            status={liveStatus}
+            loadingLabel="در حال تحلیل جایگاه…"
+          />
+          <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_16rem]">
+            <main className="flex min-w-0 flex-col gap-2.5">
+              <KpiHighlights metrics={result.metrics} />
+              <PercentileMap metrics={result.metrics} />
+              <section className="grid gap-2.5 xl:grid-cols-2" aria-label="نمودارهای تحلیلی">
+                <GrowthRetentionScatter result={result} />
+                <WeeklyTrend trend={result.weeklyTrend} />
+              </section>
+              <OpportunityList result={result} />
+            </main>
+            <PeerGroupAside result={result} />
+          </div>
+          <Methodology result={result} />
+        </>
+      )}
+    </div>
+  );
 }

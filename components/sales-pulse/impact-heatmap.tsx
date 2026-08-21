@@ -30,7 +30,7 @@ export function ImpactHeatmap({ values }: ImpactHeatmapProps) {
   );
 
   return (
-    <figure className="w-full overflow-x-auto">
+    <figure className="flex min-h-0 w-full flex-1 flex-col justify-center overflow-x-auto">
       <figcaption className="sr-only">
         ماتریس اثر خالص رشد بر اساس روز هفته و بازه ساعتی
       </figcaption>
