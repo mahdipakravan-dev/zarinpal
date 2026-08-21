@@ -27,6 +27,8 @@ type PeriodRangePickerProps = {
   className?: string;
   defaultRange?: PeriodDateRange;
   onRangeChange?: (range: { start: Date; end: Date }) => void;
+  minDate?: Date;
+  maxDate?: Date;
 };
 
 const periodPickerTheme = {
@@ -42,16 +44,16 @@ const periodPickerTheme = {
 } as CSSProperties;
 
 const calendarWeekdays = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
-const calendarMonthFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+const calendarMonthFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
   month: "long",
   year: "numeric",
 });
 const calendarDayFormatter = new Intl.NumberFormat("fa-IR");
-const compactDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+const compactDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
   day: "numeric",
   month: "short",
 });
-const fullDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+const fullDateFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
   day: "numeric",
   month: "long",
   year: "numeric",
@@ -78,31 +80,55 @@ function isSameDate(first: Date, second?: Date): boolean {
   );
 }
 
+const calendarPartsFormatter = new Intl.DateTimeFormat("en-US-u-ca-persian", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+});
+
+function calendarParts(date: Date) {
+  const parts = Object.fromEntries(
+    calendarPartsFormatter.formatToParts(date).map((part) => [part.type, part.value])
+  );
+  return { year: Number(parts.year), month: Number(parts.month), day: Number(parts.day) };
+}
+
 function monthCells(month: Date): Array<Date | null> {
-  const year = month.getFullYear();
-  const monthIndex = month.getMonth();
-  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-  const leadingBlanks = (new Date(year, monthIndex, 1).getDay() + 1) % 7;
+  const current = calendarParts(month);
+  const first = new Date(month);
+  first.setDate(first.getDate() - current.day + 1);
+  const leadingBlanks = (first.getDay() + 1) % 7;
   const cells: Array<Date | null> = Array.from(
     { length: leadingBlanks },
     () => null
   );
-
-  for (let day = 1; day <= daysInMonth; day += 1) {
-    cells.push(new Date(year, monthIndex, day));
+  for (let date = first; ; ) {
+    const parts = calendarParts(date);
+    if (parts.year !== current.year || parts.month !== current.month) break;
+    cells.push(new Date(date));
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
   }
 
   return cells;
 }
 
 function shiftMonth(month: Date, offset: number): Date {
-  return new Date(month.getFullYear(), month.getMonth() + offset, 1);
+  const current = calendarParts(month);
+  const first = new Date(month);
+  first.setDate(first.getDate() - current.day + 1);
+  const probe = new Date(first);
+  probe.setDate(probe.getDate() + (offset > 0 ? 32 : -1));
+  const target = calendarParts(probe);
+  probe.setDate(probe.getDate() - target.day + 1);
+  return probe;
 }
 
 export function PeriodRangePicker({
   className,
   defaultRange,
   onRangeChange,
+  minDate,
+  maxDate,
 }: PeriodRangePickerProps) {
   const initialRange = defaultRange ?? createDefaultPeriodRange();
   const [open, setOpen] = useState(false);
@@ -173,7 +199,7 @@ export function PeriodRangePicker({
               aria-hidden="true"
             />
             <span className="truncate text-xs font-extrabold text-[var(--period-ink)]">
-              بازه
+              {appliedLabel}
             </span>
           </span>
           <ChevronDownIcon
@@ -251,13 +277,16 @@ export function PeriodRangePicker({
 
               const isStart = isSameDate(date, draftRange.start);
               const isEnd = isSameDate(date, draftRange.end);
+              const disabled = Boolean(
+                (minDate && date < startOfDay(minDate)) || (maxDate && date > startOfDay(maxDate))
+              );
 
               return (
                 <button
                   key={date.toISOString()}
                   type="button"
                   className={cn(
-                    "mx-auto flex size-9 cursor-pointer items-center justify-center rounded-full border border-transparent text-sm font-medium text-[var(--period-ink)] outline-none transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-[var(--period-yellow-soft)] focus-visible:ring-2 focus-visible:ring-[var(--period-yellow-strong)] focus-visible:ring-offset-2 active:scale-95 motion-reduce:transition-none",
+                    "mx-auto flex size-9 cursor-pointer items-center justify-center rounded-full border border-transparent text-sm font-medium text-[var(--period-ink)] outline-none transition-[background-color,border-color,transform] duration-150 ease-out hover:bg-[var(--period-yellow-soft)] focus-visible:ring-2 focus-visible:ring-[var(--period-yellow-strong)] focus-visible:ring-offset-2 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 motion-reduce:transition-none",
                     isStart &&
                       "border-[var(--period-yellow)] bg-[var(--period-yellow)] font-extrabold",
                     isEnd &&
@@ -265,10 +294,11 @@ export function PeriodRangePicker({
                       "border-[var(--period-yellow-strong)] bg-card font-extrabold"
                   )}
                   onClick={() => handleDateSelection(date)}
+                  disabled={disabled}
                   aria-label={fullDateFormatter.format(date)}
                   aria-pressed={isStart || isEnd}
                 >
-                  {calendarDayFormatter.format(date.getDate())}
+                  {calendarDayFormatter.format(calendarParts(date).day)}
                 </button>
               );
             })}

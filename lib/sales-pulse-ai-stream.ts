@@ -38,6 +38,17 @@ function factsFor({ merchantCategory, periodLabel, result }: StreamSalesPulseAct
       label: strongestHour.label,
       contributionPoints: strongestHour.value,
     },
+    calendarImpact: {
+      dayTypes: result.calendarImpact.dayTypes,
+      notableDates: result.calendarImpact.notableDates.slice(0, 4).map((item) => ({
+        jalaliDate: item.jalaliDate,
+        occasions: item.labels,
+        isOfficialHoliday: item.isOfficialHoliday,
+        isWeekend: item.isWeekend,
+        successfulSalesPercent: item.successfulSalesPercent,
+        successfulPurchaseCountPercent: item.successfulPurchaseCountPercent,
+      })),
+    },
     ruleBasedSuggestion: result.insight.ruleAction,
   };
 }
@@ -52,7 +63,8 @@ export async function streamSalesPulseAction(
     system: [
       "شما دستیار رشد کسب‌وکار پذیرندگان پرداخت هستید.",
       "فقط براساس داده تجمیعی ورودی، یک اقدام عملی، کم‌ریسک و قابل‌آزمایش پیشنهاد کنید.",
-      "رابطه علّی، عدد، تخفیف یا واقعیتی که در ورودی نیست مب توانبد پیشنهاد دهید.",
+      "روی تفاوت فروش در جمعه‌ها، تعطیلات رسمی و مناسبت‌های دارای داده کافی تمرکز کنید.",
+      "همبستگی تقویمی را علت تغییر فروش معرفی نکنید و عدد یا واقعیتی خارج از ورودی نسازید.",
       "اگر اطمینان کم است، پیشنهاد را به جمع‌آوری داده یا یک آزمایش محدود معطوف کنید.",
       "پاسخ باید فارسی روان، فقط یک جمله و حداکثر ۳۵ کلمه باشد.",
       "فقط خود جمله پیشنهاد را بنویسید؛ JSON، عنوان، Markdown یا توضیح اضافه ننویسید.",

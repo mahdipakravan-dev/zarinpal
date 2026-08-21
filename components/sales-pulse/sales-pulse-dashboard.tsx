@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { ActivityIcon } from "lucide-react";
 
 import { CumulativeTrendChart } from "@/components/sales-pulse/cumulative-trend-chart";
+import { CalendarImpactGuide } from "@/components/sales-pulse/calendar-impact-guide";
 import {
   GrowthDonut,
   GrowthFormulaInfo,
@@ -24,8 +25,10 @@ import {
   SALES_PULSE_INDEX,
   salesPulseMerchantDataUrl,
   type SalesPulseKpi,
+  type SalesPulseMerchantData,
   type SalesPulseResult,
 } from "@/lib/sales-pulse-data";
+import { buildCustomSalesPulseResult } from "@/lib/sales-pulse-custom-range";
 import { formatPersianNumber } from "@/lib/format";
 import { streamSalesPulseAction } from "@/lib/sales-pulse-ai-stream";
 import { cn } from "@/lib/utils";
@@ -56,6 +59,15 @@ const pulseTheme = {
 
 const panelClass =
   "rail-panel rail-panel-interactive [--rail-accent:var(--pulse-blue)] [--rail-line:var(--pulse-line)]";
+
+const dataMinDate = new Date(2026, 0, 1);
+const dataMaxDate = new Date(2026, 5, 30);
+
+function localDateKey(date: Date) {
+  return [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    .map((value, index) => (index === 0 ? String(value) : String(value).padStart(2, "0")))
+    .join("-");
+}
 
 function formatSigned(value: number, suffix = ""): string {
   const prefix = value > 0 ? "+" : "";
@@ -194,12 +206,10 @@ function SalesPulseLoading() {
 }
 
 export function SalesPulseDashboard() {
-  const [periodId, setPeriodId] = useState("nowruz-1405");
+  const [rangeMode, setRangeMode] = useState<"all" | "custom">("all");
+  const [customRange, setCustomRange] = useState({ start: dataMinDate, end: dataMaxDate });
   const [merchantId, setMerchantId] = useState(SALES_PULSE_INDEX.merchants[0].id);
-  const [merchantResults, setMerchantResults] = useState<Record<
-    string,
-    SalesPulseResult
-  > | null>(null);
+  const [merchantData, setMerchantData] = useState<SalesPulseMerchantData | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -208,9 +218,9 @@ export function SalesPulseDashboard() {
     fetch(salesPulseMerchantDataUrl(merchantId), { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json() as Promise<Record<string, SalesPulseResult>>;
+        return response.json() as Promise<SalesPulseMerchantData>;
       })
-      .then(setMerchantResults)
+      .then(setMerchantData)
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
         setLoadError("فایل تجمیعی این پذیرنده بارگذاری نشد.");
@@ -219,33 +229,43 @@ export function SalesPulseDashboard() {
     return () => controller.abort();
   }, [merchantId]);
 
-  const result = merchantResults?.[periodId];
+  const customStart = localDateKey(customRange.start);
+  const customEnd = localDateKey(customRange.end);
+  const result = useMemo(
+    () =>
+      rangeMode === "all"
+        ? merchantData?.results["all-range"]
+        : merchantData
+          ? buildCustomSalesPulseResult(merchantData.daily, customStart, customEnd)
+          : null,
+    [customEnd, customStart, merchantData, rangeMode]
+  );
   const merchant = SALES_PULSE_INDEX.merchants.find((item) => item.id === merchantId);
-  const period = SALES_PULSE_INDEX.periods.find((item) => item.id === periodId);
-  const insightKey = `${merchantId}:${periodId}`;
+  const rangeKey = rangeMode === "all" ? "all-range" : `${customStart}:${customEnd}`;
+  const rangeLabel =
+    rangeMode === "all"
+      ? "کل بازه ۱۱ دی ۱۴۰۴ تا ۹ تیر ۱۴۰۵"
+      : `بازه دلخواه ${customStart} تا ${customEnd}`;
+  const insightKey = `${merchantId}:${rangeKey}`;
   const fallbackAction = result?.insight.ruleAction ?? "";
 
   const { action: liveAction, status: liveStatus } = useLiveAiAction({
     key: insightKey,
-    enabled: Boolean(result && merchant && period),
+    enabled: Boolean(result && merchant),
     fallback: fallbackAction,
     stream: ({ signal, onText }) =>
       streamSalesPulseAction({
         merchantCategory: merchant!.categoryTitle,
-        periodLabel: period!.label,
+        periodLabel: rangeLabel,
         result: result!,
         signal,
         onText,
       }),
   });
 
-  function handlePeriodChange(value: string | null) {
-    if (value) setPeriodId(value);
-  }
-
   function handleMerchantChange(value: string | null) {
     if (value) {
-      setMerchantResults(null);
+      setMerchantData(null);
       setLoadError(null);
       setMerchantId(value);
     }
@@ -254,12 +274,15 @@ export function SalesPulseDashboard() {
   const controls = (
     <PeriodToolbar
       variant="inline"
-      periodId={periodId}
       merchantId={merchantId}
-      periods={SALES_PULSE_INDEX.periods}
       merchants={SALES_PULSE_INDEX.merchants}
-      onPeriodChange={handlePeriodChange}
       onMerchantChange={handleMerchantChange}
+      rangeMode={rangeMode}
+      customRange={customRange}
+      minDate={dataMinDate}
+      maxDate={dataMaxDate}
+      onRangeModeChange={setRangeMode}
+      onCustomRangeChange={setCustomRange}
     />
   );
 
@@ -295,6 +318,8 @@ export function SalesPulseDashboard() {
           <KpiScorecard key={kpi.id} kpi={kpi} />
         ))}
       </KpiScorecardGrid>
+
+      <CalendarImpactGuide impact={result.calendarImpact} />
 
       <section
         aria-labelledby="growth-breakdown-heading"
