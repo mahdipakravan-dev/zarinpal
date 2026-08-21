@@ -19,7 +19,9 @@ import {
   TriangleAlertIcon,
 } from "lucide-react";
 
-import { buildVisualGraph, segmentLabel } from "@/lib/business-graph/graph-builders";
+import { AiInsight } from "@/components/dashboard/ai-insight";
+import { streamBusinessGraphAction } from "@/lib/business-graph-ai-stream";
+import { buildVisualGraph } from "@/lib/business-graph/graph-builders";
 import type {
   GlobalGraphKind,
   GraphKind,
@@ -31,6 +33,7 @@ import type {
   VisualNode,
 } from "@/lib/business-graph/types";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
+import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { cn } from "@/lib/utils";
 import { PageHeading } from "@/components/dashboard/page-heading";
 import { Badge } from "@/components/ui/badge";
@@ -366,31 +369,6 @@ function NodeInspector() {
   );
 }
 
-function MerchantInsight() {
-  const { state } = useGraph();
-  const { merchant } = state;
-  const dominantSegment = Object.entries(merchant.segments).sort(
-    (a, b) => b[1] - a[1],
-  )[0];
-
-  return (
-    <div className="rounded-lg border border-primary/20 bg-gradient-to-br from-primary/10 to-primary/[0.03] p-3.5">
-      <span className="text-[10px] font-semibold text-primary">برداشت سریع</span>
-      <strong className="mt-1.5 block text-sm leading-6">
-        {merchant.id} در جامعه گرافی{" "}
-        {formatPersianNumber(merchant.community + 1)} قرار دارد.
-      </strong>
-      <p className="m-0 text-[11px] leading-6 text-muted-foreground">
-        نرخ موفقیت {formatPersianPercent(merchant.successRate * 100)} و نرخ کارت
-        بازگشتی {formatPersianPercent(merchant.repeatBuyerRate * 100)} است.
-        {dominantSegment
-          ? ` بزرگ‌ترین سگمنت مشاهده‌شده «${segmentLabel(dominantSegment[0])}» با ${formatPersianNumber(dominantSegment[1])} کارت است.`
-          : ""}
-      </p>
-    </div>
-  );
-}
-
 function Evidence() {
   const { state } = useGraph();
   const { payload, merchant, kind } = state;
@@ -530,6 +508,63 @@ function AdjacencyFallback() {
   );
 }
 
+function GraphInsightBanner() {
+  const { state } = useGraph();
+  const { scope, kind, merchant, payload } = state;
+  const insightKey = `${scope}:${kind}:${merchant.id}`;
+  const fallback =
+    scope === "merchant"
+      ? `با تمرکز روی نرخ موفقیت ${formatPersianPercent(merchant.successRate * 100)} و کارت بازگشتی ${formatPersianPercent(merchant.repeatBuyerRate * 100)}، یک آزمایش محدود روی مسیر پرداخت یا بازگشت مشتری اجرا کنید.`
+      : "الگوی شباهت شبکه را با یک نمونه کوچک از پذیرنده‌های هم‌دسته بررسی کنید و قبل از تعمیم، داده بیشتری جمع کنید.";
+
+  const { action, status } = useLiveAiAction({
+    key: insightKey,
+    fallback,
+    stream: ({ signal, onText }) =>
+      streamBusinessGraphAction({
+        scope,
+        kind,
+        merchant: scope === "merchant" ? merchant : null,
+        meta: {
+          sessions: payload.meta.sessions,
+          merchants: payload.meta.merchants,
+          observedCards: payload.meta.observedCards,
+          dateFrom: payload.meta.dateFrom,
+          dateTo: payload.meta.dateTo,
+        },
+        signal,
+        onText,
+      }),
+  });
+
+  return (
+    <AiInsight
+      surface="panel"
+      className="border border-[#e6e8ec] border-s-[3px] border-s-[#ffd60a]"
+      headline={
+        scope === "merchant"
+          ? `${merchant.id} · موفقیت ${formatPersianPercent(merchant.successRate * 100)}`
+          : `${graphTitle(kind)} · ${formatPersianNumber(payload.meta.merchants)} پذیرنده`
+      }
+      detail={
+        scope === "merchant"
+          ? `کارت بازگشتی ${formatPersianPercent(merchant.repeatBuyerRate * 100)} · بازیابی retry ${formatPersianNumber(merchant.laterVerified)}`
+          : `بازه ${payload.meta.dateFrom} تا ${payload.meta.dateTo}`
+      }
+      action={action}
+      status={status}
+      loadingLabel="در حال تحلیل گراف…"
+    />
+  );
+}
+
+function graphTitle(kind: GraphKind) {
+  if (kind === "similarity") return "گراف شباهت پذیرندگان";
+  if (kind === "categories") return "گراف دسته‌های کسب‌وکار";
+  if (kind === "customers") return "گراف مشتریان پذیرنده";
+  return "گراف مسیر پرداخت";
+}
+
 function DashboardShell() {
   const { state, actions } = useGraph();
   const { payload, graph, selectedNode } = state;
@@ -564,6 +599,7 @@ function DashboardShell() {
       </div>
 
       <MetricStrip />
+      <GraphInsightBanner />
 
       <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-[minmax(0,1fr)_288px]">
         <section
@@ -597,7 +633,6 @@ function DashboardShell() {
         </section>
 
         <aside className="rail-panel flex flex-col gap-4 overflow-auto p-3.5">
-          <MerchantInsight />
           <div>
             <h3 className="mb-2 text-sm font-medium">جزئیات گره</h3>
             <NodeInspector />
