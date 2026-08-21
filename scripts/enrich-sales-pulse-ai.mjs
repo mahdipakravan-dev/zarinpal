@@ -10,7 +10,7 @@ const auditLogPath = resolve(
   root,
   process.env.LIARA_AI_LOG_PATH ?? ".sales-pulse-logs/liara-ai.jsonl"
 );
-const promptVersion = "sales-pulse-action-v1";
+const promptVersion = "sales-pulse-calendar-action-v2";
 
 function optionValues(name) {
   const values = [];
@@ -118,6 +118,10 @@ function factsFor(merchant, period, result) {
       label: strongestHour.label,
       contributionPoints: strongestHour.value,
     },
+    calendarImpact: {
+      dayTypes: result.calendarImpact.dayTypes,
+      notableDates: result.calendarImpact.notableDates.slice(0, 4),
+    },
     ruleBasedSuggestion: result.insight.ruleAction ?? result.insight.action,
   };
 }
@@ -129,6 +133,7 @@ function messagesFor(facts) {
       content: [
         "شما دستیار رشد کسب‌وکار پذیرندگان پرداخت هستید.",
         "فقط براساس داده تجمیعی ورودی، یک اقدام عملی، کم‌ریسک و قابل‌آزمایش پیشنهاد کنید.",
+        "روی تفاوت فروش در جمعه‌ها، تعطیلات رسمی و مناسبت‌های دارای داده کافی تمرکز کنید.",
         "رابطه علّی، عدد، تخفیف یا واقعیتی که در ورودی نیست نسازید.",
         "اگر اطمینان کم است، پیشنهاد را به جمع‌آوری داده یا یک آزمایش محدود معطوف کنید.",
         "پاسخ باید فارسی روان، یک جمله و حداکثر ۳۵ کلمه باشد.",
@@ -265,10 +270,10 @@ async function main() {
   const merchantFiles = new Map();
   for (const merchant of selectedMerchants) {
     const path = resolve(merchantDirectory, `${merchant.id}.json`);
-    const results = await readJson(path);
-    merchantFiles.set(merchant.id, { path, results, dirty: false });
+    const payload = await readJson(path);
+    merchantFiles.set(merchant.id, { path, payload, dirty: false });
     for (const period of selectedPeriods) {
-      const result = results[period.id];
+      const result = payload.results[period.id];
       if (!result?.eligible) continue;
       const facts = factsFor(merchant, period, result);
       const inputHash = stableHash({ promptVersion, model: configuredModel, facts });
@@ -325,7 +330,7 @@ async function main() {
   await Promise.all(Array.from({ length: concurrency }, () => worker()));
 
   for (const file of merchantFiles.values()) {
-    if (file.dirty) await writeJsonAtomic(file.path, file.results);
+    if (file.dirty) await writeJsonAtomic(file.path, file.payload);
   }
   await writeJsonAtomic(cachePath, cache);
   console.log(`[sales-pulse-ai] enriched ${completed} suggestions; rule-based fallbacks remain intact.`);

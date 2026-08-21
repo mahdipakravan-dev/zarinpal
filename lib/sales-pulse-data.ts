@@ -63,6 +63,28 @@ export type SalesPulseResult = {
   cumulativeTrend: TrendPoint[];
   hourlyImpact: HourlyImpact[];
   heatmap: number[][];
+  calendarImpact: {
+    coverage: { start: string | null; end: string | null; calendarDays: number };
+    dayTypes: Array<{
+      id: "weekend" | "official-holiday" | "special-day";
+      label: string;
+      dates: number;
+      eligible: boolean;
+      successfulSalesPercent: number;
+      successfulPurchaseCountPercent: number;
+    }>;
+    notableDates: Array<{
+      date: string;
+      jalaliDate: string;
+      labels: string[];
+      isOfficialHoliday: boolean;
+      isWeekend: boolean;
+      dates: number;
+      eligible: boolean;
+      successfulSalesPercent: number;
+      successfulPurchaseCountPercent: number;
+    }>;
+  };
   quickComparison: Array<{
     label: string;
     value: number;
@@ -79,6 +101,25 @@ export type SalesPulseResult = {
       generatedAt: string;
     };
   };
+};
+
+export type SalesPulseDailyData = {
+  date: string;
+  actual: number[];
+  baseline: number[];
+  hourlyActualSales: number[];
+  hourlyBaselineSales: number[];
+  calendar: {
+    jalaliLabel: string;
+    isWeekend: boolean;
+    isOfficialHoliday: boolean;
+    events: string[];
+  } | null;
+};
+
+export type SalesPulseMerchantData = {
+  results: Record<string, SalesPulseResult>;
+  daily: SalesPulseDailyData[];
 };
 
 export type SalesPulseIndex = {
@@ -99,7 +140,7 @@ export type SalesPulseIndex = {
     range: string;
     start: string;
     end: string;
-    kind: "month" | "occasion";
+    kind: "month" | "occasion" | "range";
   }>;
   merchants: Array<{
     id: string;

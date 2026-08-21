@@ -8,9 +8,37 @@ const projectRoot = resolve(import.meta.dirname, "..");
 const sourcePath = resolve(projectRoot, "challenge_data.csv");
 const indexOutputPath = resolve(projectRoot, "lib/generated/sales-pulse-index.json");
 const merchantOutputDirectory = resolve(projectRoot, "public/data/sales-pulse/merchants");
+const calendarPath = resolve(projectRoot, "data/iran-calendar-2026.json");
 const onlyIfStale = process.argv.includes("--if-stale");
 
+const calendarData = JSON.parse(await readFile(calendarPath, "utf8"));
+const calendarByDate = new Map(calendarData.days.map((day) => [day.gregorian, day]));
+
 const periods = [
+  {
+    id: "all-range",
+    label: "کل بازه",
+    range: "۱۱ دی ۱۴۰۴ تا ۹ تیر ۱۴۰۵",
+    start: "2026-01-01",
+    end: "2026-06-30",
+    kind: "range",
+  },
+  {
+    id: "dey-1404-partial",
+    label: "دی ۱۴۰۴ (بازه موجود)",
+    range: "۱۱ تا ۳۰ دی ۱۴۰۴",
+    start: "2026-01-01",
+    end: "2026-01-20",
+    kind: "month",
+  },
+  {
+    id: "bahman-1404",
+    label: "بهمن ۱۴۰۴",
+    range: "۱ تا ۳۰ بهمن ۱۴۰۴",
+    start: "2026-01-21",
+    end: "2026-02-19",
+    kind: "month",
+  },
   {
     id: "esfand-1404",
     label: "اسفند ۱۴۰۴",
@@ -49,6 +77,14 @@ const periods = [
     range: "۱ تا ۳۱ خرداد ۱۴۰۵",
     start: "2026-05-22",
     end: "2026-06-21",
+    kind: "month",
+  },
+  {
+    id: "tir-1405-partial",
+    label: "تیر ۱۴۰۵ (بازه موجود)",
+    range: "۱ تا ۹ تیر ۱۴۰۵",
+    start: "2026-06-22",
+    end: "2026-06-30",
     kind: "month",
   },
 ];
@@ -308,7 +344,103 @@ function bucketTrend(daily, metric) {
   return values;
 }
 
-function insightFor({ eligible, confidence, current, baseline, factors, hourly }) {
+function aggregateDaily(items) {
+  const actual = [0, 0, 0, 0, 0, 0, 0, 0];
+  const baseline = [0, 0, 0, 0, 0, 0, 0, 0];
+  for (const item of items) {
+    add(actual, item.actual);
+    add(baseline, item.baseline);
+  }
+  const currentMetrics = metricSnapshot(actual);
+  const baselineMetrics = metricSnapshot(baseline);
+  return {
+    dates: items.length,
+    eligible: actual[0] >= 10 && baseline[0] >= 10 && actual[2] >= 3,
+    successfulSalesPercent: round(percentageChange(actual[3], baseline[3]), 2),
+    successfulPurchaseCountPercent: round(
+      percentageChange(currentMetrics.successfulCount, baselineMetrics.successfulCount),
+      2
+    ),
+  };
+}
+
+function calendarImpactFor(daily) {
+  const enriched = daily.map((item) => ({ ...item, calendar: calendarByDate.get(item.date) }));
+  const group = (id, label, predicate) => ({
+    id,
+    label,
+    ...aggregateDaily(enriched.filter((item) => item.calendar && predicate(item.calendar))),
+  });
+  const dayTypes = [
+    group("weekend", "جمعه‌ها", (day) => day.isWeekend),
+    group("official-holiday", "تعطیلات رسمی", (day) => day.isOfficialHoliday),
+    group("special-day", "روزهای مناسبتی", (day) => day.events.length > 0),
+  ];
+  const notableDates = enriched
+    .filter((item) => item.calendar?.events.length > 0)
+    .map((item) => {
+      const impact = aggregateDaily([item]);
+      return {
+        date: item.date,
+        jalaliDate: item.calendar.jalaliLabel,
+        labels: item.calendar.events.map((event) => event.title),
+        isOfficialHoliday: item.calendar.isOfficialHoliday,
+        isWeekend: item.calendar.isWeekend,
+        ...impact,
+      };
+    })
+    .filter((item) => item.eligible)
+    .sort(
+      (left, right) =>
+        Math.abs(right.successfulSalesPercent) - Math.abs(left.successfulSalesPercent)
+    )
+    .slice(0, 5);
+  return {
+    coverage: {
+      start: daily[0]?.date ?? null,
+      end: daily.at(-1)?.date ?? null,
+      calendarDays: enriched.filter((item) => item.calendar).length,
+    },
+    dayTypes,
+    notableDates,
+  };
+}
+
+function dailyDataFor(cells, start, end, globalStart) {
+  return datesBetween(start, end).map((date) => {
+    const actual = [0, 0, 0, 0, 0, 0, 0, 0];
+    const baseline = [0, 0, 0, 0, 0, 0, 0, 0];
+    const hourlyActualSales = Array(8).fill(0);
+    const hourlyBaselineSales = Array(8).fill(0);
+    for (let hour = 0; hour < 24; hour += 1) {
+      const observed = actualCell(cells, date, hour);
+      const expected = baselineCell(cells, date, hour, globalStart);
+      add(actual, observed);
+      add(baseline, expected);
+      const block = Math.floor(hour / 3);
+      hourlyActualSales[block] += observed[3];
+      hourlyBaselineSales[block] += expected[3];
+    }
+    const calendar = calendarByDate.get(date);
+    return {
+      date,
+      actual: actual.map((value) => round(value, 3)),
+      baseline: baseline.map((value) => round(value, 3)),
+      hourlyActualSales: hourlyActualSales.map((value) => round(value, 3)),
+      hourlyBaselineSales: hourlyBaselineSales.map((value) => round(value, 3)),
+      calendar: calendar
+        ? {
+            jalaliLabel: calendar.jalaliLabel,
+            isWeekend: calendar.isWeekend,
+            isOfficialHoliday: calendar.isOfficialHoliday,
+            events: calendar.events.map((event) => event.title),
+          }
+        : null,
+    };
+  });
+}
+
+function insightFor({ eligible, confidence, current, baseline, factors, hourly, calendarImpact }) {
   if (!eligible) {
     const action = "بازه طولانی‌تری انتخاب کنید یا تا جمع‌شدن نمونه بیشتر صبر کنید.";
     return {
@@ -328,8 +460,19 @@ function insightFor({ eligible, confidence, current, baseline, factors, hourly }
   const sortedFactors = [...factors].sort((left, right) => Math.abs(right.value) - Math.abs(left.value));
   const peak = [...hourly].sort((left, right) => right.value - left.value)[0];
   const returnChange = metricSnapshot(current).returningShare - metricSnapshot(baseline).returningShare;
+  const strongestCalendar = [...calendarImpact.dayTypes]
+    .filter((item) => item.eligible && item.dates > 0)
+    .sort(
+      (left, right) =>
+        Math.abs(right.successfulSalesPercent) - Math.abs(left.successfulSalesPercent)
+    )[0];
+  const strongestDate = calendarImpact.notableDates[0];
   let action = "الگوی فعلی را پایش کنید و تغییرات را در بازه بعد دوباره بسنجید.";
-  if (returnChange < -2) action = "یک پیشنهاد خرید دوم را نزدیک به زمان بازگشت معمول مشتریان وفادار آزمایش کنید.";
+  if (strongestCalendar?.successfulSalesPercent < -5)
+    action = `برای ${strongestCalendar.label} یک آزمایش کوچک برای جبران افت فروش اجرا و نتیجه را با روزهای مشابه مقایسه کنید.`;
+  else if (strongestCalendar?.successfulSalesPercent > 5)
+    action = `الگوی موفق ${strongestCalendar.label} را در دوره بعد با یک آزمایش محدود تکرار و نتیجه را دوباره اندازه‌گیری کنید.`;
+  else if (returnChange < -2) action = "یک پیشنهاد خرید دوم را نزدیک به زمان بازگشت معمول مشتریان وفادار آزمایش کنید.";
   else if (factors.find((factor) => factor.id === "success-rate")?.value < -2) action = "افت موفقیت پرداخت را به تفکیک PSP و مبلغ بررسی کنید.";
   else if (factors.find((factor) => factor.id === "ticket")?.value < -2) action = "بسته‌های خرید یا آستانه‌های مبلغ را برای افزایش سبد آزمایش کنید.";
   else if (peak?.value > 0) action = `کمپین بعدی را با تمرکز بر بازه ${peak.label} آزمایش کنید.`;
@@ -337,9 +480,13 @@ function insightFor({ eligible, confidence, current, baseline, factors, hourly }
   return {
     headline: `فروش موفق ${Math.abs(growth).toLocaleString("fa-IR", { maximumFractionDigits: 1 })}٪ ${direction} از میانگین دوره‌های مشابه بود.`,
     bullets: [
-      `بیشترین سهم تغییر از ${sortedFactors[0].label} (${sortedFactors[0].value > 0 ? "+" : ""}${sortedFactors[0].value.toLocaleString("fa-IR", { maximumFractionDigits: 1 })} واحد درصد) آمده است.`,
-      `بیشترین اثر ساعتی در بازه ${peak.label} ثبت شد (${peak.value > 0 ? "+" : ""}${peak.value.toLocaleString("fa-IR", { maximumFractionDigits: 1 })} واحد درصد).`,
-      `سهم مشتریان بازگشتی ${Math.abs(returnChange).toLocaleString("fa-IR", { maximumFractionDigits: 1 })} واحد درصد ${returnChange >= 0 ? "افزایش" : "کاهش"} داشت؛ اطمینان تحلیل ${confidence === "high" ? "زیاد" : confidence === "medium" ? "متوسط" : "کم"} است.`,
+      strongestCalendar
+        ? `فروش در ${strongestCalendar.label} ${Math.abs(strongestCalendar.successfulSalesPercent).toLocaleString("fa-IR", { maximumFractionDigits: 1 })}٪ ${strongestCalendar.successfulSalesPercent >= 0 ? "بالاتر" : "پایین‌تر"} از روزهای مشابه بود.`
+        : "برای مقایسه جمعه‌ها و تعطیلات رسمی، داده کافی در این بازه وجود ندارد.",
+      strongestDate
+        ? `${strongestDate.jalaliDate} با مناسبت «${strongestDate.labels[0]}» بیشترین تفاوت قابل‌اندازه‌گیری را داشت.`
+        : `بیشترین سهم تغییر از ${sortedFactors[0].label} آمده است.`,
+      `اطمینان تحلیل ${confidence === "high" ? "زیاد" : confidence === "medium" ? "متوسط" : "کم"} است؛ این اعداد همبستگی‌اند و علت تغییر فروش را ثابت نمی‌کنند.`,
     ],
     action,
     ruleAction: action,
@@ -461,6 +608,8 @@ function buildResult(cells, period, globalStart) {
     },
   };
 
+  const calendarImpact = calendarImpactFor(daily);
+
   return {
     eligible,
     confidence,
@@ -472,6 +621,7 @@ function buildResult(cells, period, globalStart) {
     cumulativeTrend,
     hourlyImpact,
     heatmap,
+    calendarImpact,
     quickComparison: [
       { label: "تعداد خرید موفق", value: kpis.successfulCount.change, type: "percent" },
       { label: "مبلغ فروش موفق", value: kpis.salesAmount.change, type: "percent" },
@@ -486,6 +636,7 @@ function buildResult(cells, period, globalStart) {
       baseline,
       factors: growthFactors,
       hourly: hourlyImpact,
+      calendarImpact,
     }),
   };
 }
@@ -573,9 +724,12 @@ async function main() {
   const results = {};
   for (const merchant of merchantList) {
     const cells = merchantCells.get(merchant.id) ?? new Map();
-    results[merchant.id] = Object.fromEntries(
-      periods.map((period) => [period.id, buildResult(cells, period, globalStart)])
-    );
+    results[merchant.id] = {
+      results: Object.fromEntries(
+        periods.map((period) => [period.id, buildResult(cells, period, globalStart)])
+      ),
+      daily: dailyDataFor(cells, globalStart, globalEnd, globalStart),
+    };
   }
 
   const sourceInfo = {
