@@ -2,14 +2,14 @@
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
-  AlertTriangleIcon, ArrowUpRightIcon, Building2Icon, CheckCircle2Icon, Clock3Icon,
+  AlertTriangleIcon, ArrowUpRightIcon, Building2Icon, CheckCircle2Icon,
   InfoIcon, RefreshCwIcon, RouteIcon, ShieldAlertIcon, ShieldCheckIcon,
   StoreIcon, TerminalIcon, UsersIcon, type LucideIcon,
 } from "lucide-react";
 
+import { AnalysisToolbar } from "@/components/dashboard/analysis-toolbar";
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { streamPaymentHealthAction } from "@/lib/payment-health-ai-stream";
@@ -35,7 +35,30 @@ function Panel({ title, description, children, className }: { title: string; des
 }
 
 function Header({ merchantId, onChange }: { merchantId: string; onChange: (value: string | null) => void }) {
-  return <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between"><div className="flex min-w-0 items-center gap-2.5"><span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-[var(--health-yellow)]"><ShieldCheckIcon className="size-5" aria-hidden="true" /></span><div><h1 className="text-lg font-extrabold text-[var(--health-ink)] sm:text-xl">سلامت مسیر پرداخت</h1><p className="text-xs leading-5 text-[var(--health-subtle)] sm:text-sm">تشخیص ریزش از NoAttempt تا verify، با کنترل مبلغ و PSP</p></div></div><div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:w-auto md:min-w-[24rem]"><Select value={merchantId} onValueChange={onChange}><SelectTrigger className="h-10 w-full border-[var(--health-line)] bg-card" aria-label="انتخاب پذیرنده"><StoreIcon className="size-4 text-[var(--health-blue)]" /><span className="min-w-0 flex-1 truncate text-start text-xs font-bold">{merchantId}</span></SelectTrigger><SelectContent><SelectGroup>{PAYMENT_HEALTH_INDEX.merchants.map((merchant) => <SelectItem key={merchant.id} value={merchant.id}>{merchant.label}</SelectItem>)}</SelectGroup></SelectContent></Select><div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--health-line)] bg-card px-3 text-xs"><Clock3Icon className="size-4 text-[var(--health-teal)]" /><strong className="whitespace-nowrap">{PAYMENT_HEALTH_INDEX.period.label}</strong></div></div></header>;
+  const period = PAYMENT_HEALTH_INDEX.period;
+  return (
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-[var(--health-yellow)]">
+          <ShieldCheckIcon className="size-5" aria-hidden="true" />
+        </span>
+        <div>
+          <h1 className="text-lg font-extrabold text-[var(--health-ink)] sm:text-xl">سلامت مسیر پرداخت</h1>
+          <p className="text-xs leading-5 text-[var(--health-subtle)] sm:text-sm">
+            تشخیص ریزش از NoAttempt تا verify، با کنترل مبلغ و PSP
+          </p>
+        </div>
+      </div>
+      <AnalysisToolbar
+        merchantId={merchantId}
+        merchants={PAYMENT_HEALTH_INDEX.merchants}
+        periodId={period.id}
+        periods={[{ id: period.id, label: period.label, range: period.range }]}
+        onMerchantChange={onChange}
+        onPeriodChange={() => undefined}
+      />
+    </header>
+  );
 }
 
 function Summary({ result }: { result: PaymentHealthResult }) {

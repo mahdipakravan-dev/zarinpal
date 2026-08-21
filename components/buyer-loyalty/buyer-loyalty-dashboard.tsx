@@ -4,18 +4,16 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   BadgeDollarSignIcon,
   CalendarClockIcon,
-  Clock3Icon,
   CreditCardIcon,
   InfoIcon,
   RefreshCwIcon,
   ShieldCheckIcon,
-  StoreIcon,
   UsersIcon,
 } from "lucide-react";
 
+import { AnalysisToolbar } from "@/components/dashboard/analysis-toolbar";
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { streamBuyerLoyaltyAction } from "@/lib/buyer-loyalty-ai-stream";
 import {
@@ -70,8 +68,14 @@ function Header({ merchantId, onMerchantChange }: {
   merchantId: string;
   onMerchantChange: (value: string | null) => void;
 }) {
-  const merchant = BUYER_LOYALTY_INDEX.merchants.find((item) => item.id === merchantId);
   const periodLabel = formatObservationRange(BUYER_LOYALTY_INDEX.source.dateRange);
+  const periods = [
+    {
+      id: "observation",
+      label: periodLabel,
+      range: periodLabel,
+    },
+  ];
 
   return (
     <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
@@ -86,32 +90,14 @@ function Header({ merchantId, onMerchantChange }: {
           </p>
         </div>
       </div>
-      <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:w-auto md:min-w-[24rem]">
-        <Select value={merchantId} onValueChange={onMerchantChange}>
-          <SelectTrigger
-            className="h-10 w-full border-[var(--loyalty-line)] bg-card"
-            aria-label="انتخاب پذیرنده"
-          >
-            <StoreIcon className="size-4 text-[var(--loyalty-blue)]" aria-hidden="true" />
-            <span className="min-w-0 flex-1 truncate text-start text-xs font-bold text-[var(--loyalty-ink)]">
-              {merchant?.label ?? merchantId}
-            </span>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {BUYER_LOYALTY_INDEX.merchants.map((item) => (
-                <SelectItem key={item.id} value={item.id}>
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--loyalty-line)] bg-card px-3 text-xs">
-          <Clock3Icon className="size-4 text-[var(--loyalty-blue)]" aria-hidden="true" />
-          <strong className="whitespace-nowrap text-[var(--loyalty-ink)]">{periodLabel}</strong>
-        </div>
-      </div>
+      <AnalysisToolbar
+        merchantId={merchantId}
+        merchants={BUYER_LOYALTY_INDEX.merchants}
+        periodId="observation"
+        periods={periods}
+        onMerchantChange={onMerchantChange}
+        onPeriodChange={() => undefined}
+      />
     </header>
   );
 }

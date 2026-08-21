@@ -3,14 +3,14 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   ActivityIcon, ArrowUpRightIcon, BadgePercentIcon, CheckCircle2Icon,
-  CircleDollarSignIcon, Clock3Icon, InfoIcon, LockKeyholeIcon,
-  ReceiptTextIcon, RefreshCwIcon, ShieldCheckIcon, StoreIcon,
-  TrendingUpIcon, TrophyIcon, UsersIcon, WalletCardsIcon, type LucideIcon,
+  CircleDollarSignIcon, InfoIcon, LockKeyholeIcon,
+  ReceiptTextIcon, RefreshCwIcon, ShieldCheckIcon, StoreIcon, TrendingUpIcon,
+  TrophyIcon, UsersIcon, WalletCardsIcon, type LucideIcon,
 } from "lucide-react";
 
+import { AnalysisToolbar } from "@/components/dashboard/analysis-toolbar";
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { streamPeerPositionAction } from "@/lib/peer-position-ai-stream";
@@ -64,13 +64,32 @@ function Panel({ title, description, children, className }: { title: string; des
 }
 
 function DashboardHeader({ merchantId, onMerchantChange }: { merchantId: string; onMerchantChange: (value: string | null) => void }) {
-  return <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
-    <div className="flex min-w-0 items-center gap-2.5"><span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-[var(--peer-yellow)] text-[var(--peer-ink)]"><TrophyIcon className="size-5" aria-hidden="true" /></span><div className="min-w-0"><h1 className="text-lg font-extrabold text-[var(--peer-ink)] sm:text-xl">جایگاه در میان کسب‌وکارهای مشابه</h1><p className="text-xs leading-5 text-[var(--peer-subtle)] sm:text-sm">مقایسه محرمانه با همتاهای هم‌دسته و هم‌پروفایل</p></div></div>
-    <div className="grid w-full gap-2 sm:grid-cols-[minmax(0,1fr)_auto] md:w-auto md:min-w-[24rem]">
-      <Select value={merchantId} onValueChange={onMerchantChange}><SelectTrigger className="h-10 w-full border-[var(--peer-line)] bg-card" aria-label="انتخاب پذیرنده"><StoreIcon className="size-4 text-[var(--peer-blue)]" aria-hidden="true" /><span className="min-w-0 flex-1 truncate text-start text-xs font-bold">{merchantId}</span></SelectTrigger><SelectContent><SelectGroup>{PEER_POSITION_INDEX.merchants.map((merchant) => <SelectItem key={merchant.id} value={merchant.id}>{merchant.label}</SelectItem>)}</SelectGroup></SelectContent></Select>
-      <div className="flex h-10 items-center gap-2 rounded-lg border border-[var(--peer-line)] bg-card px-3 text-xs"><Clock3Icon className="size-4 text-[var(--peer-teal)]" aria-hidden="true" /><strong className="whitespace-nowrap text-[var(--peer-ink)]">{PEER_POSITION_INDEX.period.label}</strong></div>
-    </div>
-  </header>;
+  const period = PEER_POSITION_INDEX.period;
+  return (
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-[var(--peer-yellow)] text-[var(--peer-ink)]">
+          <TrophyIcon className="size-5" aria-hidden="true" />
+        </span>
+        <div className="min-w-0">
+          <h1 className="text-lg font-extrabold text-[var(--peer-ink)] sm:text-xl">
+            جایگاه در میان کسب‌وکارهای مشابه
+          </h1>
+          <p className="text-xs leading-5 text-[var(--peer-subtle)] sm:text-sm">
+            مقایسه محرمانه با همتاهای هم‌دسته و هم‌پروفایل
+          </p>
+        </div>
+      </div>
+      <AnalysisToolbar
+        merchantId={merchantId}
+        merchants={PEER_POSITION_INDEX.merchants}
+        periodId={period.id}
+        periods={[{ id: period.id, label: period.label, range: period.range }]}
+        onMerchantChange={onMerchantChange}
+        onPeriodChange={() => undefined}
+      />
+    </header>
+  );
 }
 
 function SummaryStrip({ result }: { result: PeerPositionResult }) {
