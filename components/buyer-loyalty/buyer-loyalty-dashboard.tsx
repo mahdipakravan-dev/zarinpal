@@ -8,6 +8,8 @@ import {
   InfoIcon,
   RefreshCwIcon,
   ShieldCheckIcon,
+  TrendingDownIcon,
+  TrendingUpIcon,
   UsersIcon,
 } from "lucide-react";
 
@@ -54,8 +56,8 @@ function Panel({ title, description, children, className }: {
   className?: string;
 }) {
   return (
-    <article className={cn(panel, "flex min-w-0 flex-col gap-3 p-2.5 sm:p-3", className)}>
-      <header>
+    <article className={cn(panel, "flex min-h-0 min-w-0 flex-col gap-3 p-2.5 sm:p-3", className)}>
+      <header className="shrink-0">
         <h2 className="text-sm font-bold text-[var(--loyalty-ink)] sm:text-base">{title}</h2>
         <p className="mt-0.5 text-xs leading-5 text-[var(--loyalty-subtle)]">{description}</p>
       </header>
@@ -228,14 +230,158 @@ function SegmentValue({ result }: { result: BuyerLoyaltyResult }) {
   );
 }
 
+function formatTomanParts(irr: number) {
+  const toman = irr / 10;
+  if (toman <= 0) return { value: "۰", unit: "تومان" };
+  if (toman >= 1_000_000) {
+    return {
+      value: formatPersianNumber(toman / 1_000_000, { maximumFractionDigits: 1 }),
+      unit: "میلیون تومان",
+    };
+  }
+  if (toman >= 1_000) {
+    return {
+      value: formatPersianNumber(toman / 1_000, { maximumFractionDigits: 0 }),
+      unit: "هزار تومان",
+    };
+  }
+  return {
+    value: formatPersianNumber(toman, { maximumFractionDigits: 0 }),
+    unit: "تومان",
+  };
+}
+
 function PurchaseValue({ result }: { result: BuyerLoyaltyResult }) {
-  const values = [result.valueComparison.firstPurchaseAverage, result.valueComparison.repeatPurchaseAverage];
-  const max = Math.max(...values, 1);
+  const first = result.valueComparison.firstPurchaseAverage;
+  const repeat = result.valueComparison.repeatPurchaseAverage;
+  const max = Math.max(first, repeat, 1);
+  const hasData = first > 0 || repeat > 0;
+  const deltaPercent = first > 0 && repeat > 0 ? ((repeat - first) / first) * 100 : null;
+  const rising = deltaPercent !== null && deltaPercent >= 0;
+  const columns = [
+    {
+      id: "first",
+      label: "خرید اول",
+      hint: "اولین خرید مشاهده‌شده",
+      value: first,
+      fill: "linear-gradient(180deg, #5b82f0 0%, #2457d6 72%, #1b3f9e 100%)",
+      glow: "0 10px 24px color-mix(in oklab, var(--loyalty-blue) 28%, transparent)",
+    },
+    {
+      id: "repeat",
+      label: "خرید بعدی",
+      hint: "خرید دوم و بعدی",
+      value: repeat,
+      fill: "linear-gradient(180deg, #3dbe96 0%, #11966f 72%, #0b6d51 100%)",
+      glow: "0 10px 24px color-mix(in oklab, var(--loyalty-green) 28%, transparent)",
+    },
+  ] as const;
+
   return (
-    <Panel title="ارزش خرید اول و خریدهای بعدی" description="متوسط مبلغ تراکنش موفق؛ نمایش به تومان">
-      <div className="grid min-h-52 grid-cols-2 items-end gap-5 px-4 pt-5">
-        {values.map((value, index) => <div key={index} className="flex h-full flex-col items-center justify-end gap-2"><strong className="text-xs text-[var(--loyalty-ink)]">{formatPersianNumber(value / 10, { maximumFractionDigits: 0 })} تومان</strong><div className={cn("w-full max-w-24 rounded-t", index === 0 ? "bg-[var(--loyalty-blue)]" : "bg-[var(--loyalty-green)]")} style={{ height: `${Math.max(15, (value / max) * 125)}px` }} /><span className="text-center text-[10px] text-[var(--loyalty-subtle)]">{index === 0 ? "اولین خرید مشاهده‌شده" : "خرید دوم و بعدی"}</span></div>)}
-      </div>
+    <Panel
+      className="h-full min-h-0"
+      title="ارزش خرید اول و خریدهای بعدی"
+      description="متوسط مبلغ تراکنش موفق؛ نمایش به تومان"
+    >
+      {!hasData ? (
+        <div className="flex min-h-44 flex-1 items-center justify-center rounded-lg bg-[var(--loyalty-wash)] px-3 text-center text-xs text-[var(--loyalty-subtle)]">
+          برای این پذیرنده میانگین مبلغ خرید قابل‌محاسبه نیست.
+        </div>
+      ) : (
+        <div className="flex min-h-0 flex-1 flex-col gap-3">
+          <div
+            className="relative flex min-h-52 flex-1 items-end justify-center gap-3 overflow-hidden rounded-xl border border-[var(--loyalty-line)] px-3 pb-3 pt-10 sm:gap-5"
+            style={{
+              background:
+                "radial-gradient(120% 90% at 50% 110%, color-mix(in oklab, var(--loyalty-green) 10%, transparent), transparent 55%), radial-gradient(90% 70% at 15% 0%, color-mix(in oklab, var(--loyalty-blue) 12%, transparent), transparent 50%), var(--loyalty-wash)",
+            }}
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-6 bottom-10 top-8 rounded-lg border border-dashed border-[var(--loyalty-line)]/80"
+            />
+            {columns.map((column) => {
+              const parts = formatTomanParts(column.value);
+              const height = column.value > 0 ? Math.max(18, (column.value / max) * 100) : 8;
+              return (
+                <div key={column.id} className="relative z-[1] flex h-full w-full max-w-[7rem] flex-col items-center">
+                  <div className="mb-2 text-center">
+                    <p className="text-lg font-extrabold leading-none tracking-tight text-[var(--loyalty-ink)] sm:text-xl">
+                      {parts.value}
+                    </p>
+                    <p className="mt-1 text-[10px] text-[var(--loyalty-subtle)]">{parts.unit}</p>
+                  </div>
+                  <div className="flex w-full flex-1 items-end justify-center">
+                    <div
+                      className={cn(
+                        "w-[72%] max-w-16 rounded-t-2xl transition-[height] duration-500 ease-out",
+                        column.value === 0 && "border border-dashed border-[var(--loyalty-line)] bg-white/50 shadow-none",
+                      )}
+                      style={
+                        column.value > 0
+                          ? { height: `${height}%`, background: column.fill, boxShadow: column.glow }
+                          : { height: `${height}%` }
+                      }
+                      title={column.hint}
+                    />
+                  </div>
+                  <div className="mt-2 text-center">
+                    <p className="text-[11px] font-bold text-[var(--loyalty-ink)]">{column.label}</p>
+                    <p className="text-[9px] leading-4 text-[var(--loyalty-subtle)]">{column.hint}</p>
+                  </div>
+                </div>
+              );
+            })}
+            {deltaPercent !== null ? (
+              <div className="absolute left-1/2 top-3 z-[2] flex -translate-x-1/2 items-center gap-1 rounded-full border border-white/80 bg-white px-2.5 py-1 shadow-[0_8px_20px_rgba(25,25,26,0.08)]">
+                {rising ? (
+                  <TrendingUpIcon className="size-3.5 text-[var(--loyalty-green)]" aria-hidden />
+                ) : (
+                  <TrendingDownIcon className="size-3.5 text-[var(--loyalty-rose)]" aria-hidden />
+                )}
+                <span
+                  className={cn(
+                    "text-[11px] font-extrabold",
+                    rising ? "text-[var(--loyalty-green)]" : "text-[var(--loyalty-rose)]",
+                  )}
+                >
+                  {rising ? "+" : "−"}
+                  {formatPersianPercent(Math.abs(deltaPercent))}
+                </span>
+              </div>
+            ) : repeat === 0 ? (
+              <div className="absolute left-1/2 top-3 z-[2] -translate-x-1/2 rounded-full border border-[var(--loyalty-line)] bg-white px-2.5 py-1 text-[10px] font-semibold text-[var(--loyalty-subtle)] shadow-sm">
+                بدون خرید تکراری
+              </div>
+            ) : null}
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-center">
+            <div className="rounded-md bg-[var(--loyalty-blue-soft)] px-2 py-2">
+              <span className="block text-[9px] text-[var(--loyalty-subtle)]">سهم مبلغ خریدهای بعدی</span>
+              <strong className="text-sm text-[var(--loyalty-ink)]">
+                {formatPersianPercent(result.valueComparison.repeatAmountShare)}
+              </strong>
+            </div>
+            <div
+              className={cn(
+                "rounded-md px-2 py-2",
+                deltaPercent === null
+                  ? "bg-[var(--loyalty-wash)]"
+                  : rising
+                    ? "bg-[var(--loyalty-green-soft)]"
+                    : "bg-[var(--loyalty-rose-soft)]",
+              )}
+            >
+              <span className="block text-[9px] text-[var(--loyalty-subtle)]">نسبت به خرید اول</span>
+              <strong className="text-sm text-[var(--loyalty-ink)]">
+                {deltaPercent === null
+                  ? "—"
+                  : `${rising ? "+" : "−"}${formatPersianPercent(Math.abs(deltaPercent))}`}
+              </strong>
+            </div>
+          </div>
+        </div>
+      )}
     </Panel>
   );
 }

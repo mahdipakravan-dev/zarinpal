@@ -125,13 +125,211 @@ function OperationsTable({ result }: { result: PaymentHealthResult }) {
   return <Panel title="ترمینال و نوع verify" description="ترمینال‌های کمتر از ۳۰ نشست یا ۳۰ ورود برای نرخ‌گذاری کنار گذاشته می‌شوند." className="h-full"><div className="overflow-x-auto"><table className="w-full min-w-[24rem] text-xs"><thead><tr className="text-[var(--health-subtle)]"><th className="p-2 text-start font-medium">ترمینال</th><th className="p-2 text-end font-medium">موفقیت</th><th className="p-2 text-end font-medium">NoAttempt</th><th className="p-2 text-end font-medium">نشست</th></tr></thead><tbody>{result.terminals.length ? result.terminals.map((item) => <tr key={item.id} className="border-t border-[var(--health-line)]"><th className="p-2 text-start font-semibold">{item.id}</th><td className="p-2 text-end">{item.eligible ? formatPersianPercent(item.successRate) : "—"}</td><td className="p-2 text-end text-[var(--health-red)]">{formatPersianPercent(item.noAttempt)}</td><td className="p-2 text-end text-[var(--health-subtle)]">{formatPersianNumber(item.sessions)}</td></tr>) : <tr><td colSpan={4} className="p-4 text-center text-[var(--health-subtle)]">ترمینال واجد شرایط وجود ندارد.</td></tr>}</tbody></table></div><div className="grid gap-2 border-t border-[var(--health-line)] pt-3 sm:grid-cols-2">{result.verifyTypes.map((item) => <div key={item.id} className="rounded-md bg-[var(--health-wash)] p-2"><div className="flex items-center justify-between"><strong className="text-xs">verify {item.label}</strong><span className="text-[10px] text-[var(--health-subtle)]">{formatPersianNumber(item.sample)} تلاش</span></div><p className="mt-2 text-xs">موفقیت <strong>{formatPersianPercent(item.successRate)}</strong> · بدون تایید <strong className="text-[var(--health-red)]">{formatPersianPercent(item.paidIssue)}</strong></p></div>)}</div></Panel>;
 }
 
-function linePath(values: number[], width: number, height: number, padding: number, min: number, max: number) {
-  return values.map((value, index) => `${index ? "L" : "M"}${padding + index / Math.max(values.length - 1, 1) * (width - padding * 2)} ${height - padding - (value - min) / Math.max(max - min, 1) * (height - padding * 2)}`).join(" ");
-}
 function WeeklyTrend({ result }: { result: PaymentHealthResult }) {
-  const width = 520, height = 220, padding = 28, all = [...result.weeklyTrend.noAttempt, ...result.weeklyTrend.success];
-  const min = Math.min(...all, 0), max = Math.max(...all, 100);
-  return <Panel title="پایداری هفتگی مسیر" description="تغییر نرخ NoAttempt و موفقیت پس از ورود در طول ماه؛ جهش ناگهانی می‌تواند نشانه اختلال باشد."><div className="flex gap-4 text-[10px] text-[var(--health-subtle)]"><span className="flex items-center gap-1"><i className="h-0.5 w-5 bg-[var(--health-blue)]" />موفقیت</span><span className="flex items-center gap-1"><i className="h-0.5 w-5 bg-[var(--health-red)]" />NoAttempt</span></div><svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label="روند هفتگی موفقیت و NoAttempt"><path d={linePath(result.weeklyTrend.success, width, height, padding, min, max)} fill="none" stroke="var(--health-blue)" strokeWidth="3" /><path d={linePath(result.weeklyTrend.noAttempt, width, height, padding, min, max)} fill="none" stroke="var(--health-red)" strokeWidth="3" />{result.weeklyTrend.labels.map((label, index) => <text key={label} x={padding + index / 4 * (width - padding * 2)} y={height - 5} textAnchor="middle" className="fill-[var(--health-subtle)] text-[9px]">{label}</text>)}</svg></Panel>;
+  const { labels, success, noAttempt } = result.weeklyTrend;
+  const width = 560;
+  const height = 228;
+  const padding = { top: 18, right: 16, bottom: 34, left: 40 };
+  const chartWidth = width - padding.left - padding.right;
+  const chartHeight = height - padding.top - padding.bottom;
+  const hasData = [...success, ...noAttempt].some((value) => value > 0);
+  const maxValue = 100;
+  const minValue = 0;
+  const last = labels.length - 1;
+  const xStep = last > 0 ? chartWidth / last : 0;
+
+  const toX = (index: number) => padding.left + index * xStep;
+  const toY = (value: number) =>
+    padding.top + chartHeight - ((value - minValue) / (maxValue - minValue)) * chartHeight;
+
+  const line = (values: number[]) =>
+    values
+      .map((value, index) => `${index === 0 ? "M" : "L"}${toX(index)} ${toY(value)}`)
+      .join(" ");
+
+  const area = (values: number[]) => {
+    if (!values.length) return "";
+    const top = values
+      .map((value, index) => `${index === 0 ? "M" : "L"}${toX(index)} ${toY(value)}`)
+      .join(" ");
+    return `${top} L${toX(values.length - 1)} ${toY(0)} L${toX(0)} ${toY(0)} Z`;
+  };
+
+  const successDelta = last > 0 ? success[last] - success[last - 1] : null;
+  const noAttemptDelta = last > 0 ? noAttempt[last] - noAttempt[last - 1] : null;
+
+  return (
+    <Panel
+      title="پایداری هفتگی مسیر"
+      description="تغییر نرخ NoAttempt و موفقیت پس از ورود در طول ماه؛ جهش ناگهانی می‌تواند نشانه اختلال باشد."
+    >
+      {!hasData ? (
+        <div className="flex min-h-44 items-center justify-center rounded-xl bg-[var(--health-wash)] px-4 text-center text-xs text-[var(--health-subtle)]">
+          در این ماه روند هفتگی قابل‌نمایش نیست؛ نمونه کافی در هفته‌ها ثبت نشده است.
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex gap-4 text-[10px] text-[var(--health-subtle)]">
+              <span className="flex items-center gap-1.5">
+                <i className="h-0.5 w-5 rounded-full bg-[var(--health-blue)]" />
+                موفقیت پس از ورود
+              </span>
+              <span className="flex items-center gap-1.5">
+                <i className="h-0.5 w-5 rounded-full border border-dashed border-[var(--health-red)] bg-[var(--health-red)]/30" />
+                NoAttempt
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2 text-[10px]">
+              {successDelta !== null ? (
+                <span className="rounded-full bg-[var(--health-blue-soft)] px-2.5 py-1 font-semibold text-[var(--health-blue)]">
+                  موفقیت هفته آخر {formatPersianPercent(successDelta, true)}
+                </span>
+              ) : null}
+              {noAttemptDelta !== null ? (
+                <span className="rounded-full bg-[var(--health-red-soft)] px-2.5 py-1 font-semibold text-[var(--health-red)]">
+                  NoAttempt هفته آخر {formatPersianPercent(noAttemptDelta, true)}
+                </span>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-[var(--health-line)] bg-[var(--health-wash)] px-1 pt-1">
+            <svg
+              viewBox={`0 0 ${width} ${height}`}
+              className="h-auto w-full max-h-56"
+              role="img"
+              aria-label="روند هفتگی موفقیت و NoAttempt"
+            >
+              <defs>
+                <linearGradient id="health-success-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--health-blue)" stopOpacity="0.22" />
+                  <stop offset="100%" stopColor="var(--health-blue)" stopOpacity="0.02" />
+                </linearGradient>
+                <linearGradient id="health-noattempt-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--health-red)" stopOpacity="0.16" />
+                  <stop offset="100%" stopColor="var(--health-red)" stopOpacity="0.02" />
+                </linearGradient>
+              </defs>
+
+              {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
+                const y = padding.top + chartHeight * (1 - tick);
+                const value = minValue + (maxValue - minValue) * tick;
+                return (
+                  <g key={tick}>
+                    <line
+                      x1={padding.left}
+                      x2={width - padding.right}
+                      y1={y}
+                      y2={y}
+                      stroke="var(--health-line)"
+                      strokeDasharray="4 4"
+                    />
+                    <text
+                      x={padding.left - 8}
+                      y={y + 3}
+                      textAnchor="end"
+                      fill="var(--health-subtle)"
+                      fontSize="10"
+                    >
+                      {formatPersianNumber(value, { maximumFractionDigits: 0 })}٪
+                    </text>
+                  </g>
+                );
+              })}
+
+              <path d={area(success)} fill="url(#health-success-fill)" />
+              <path d={area(noAttempt)} fill="url(#health-noattempt-fill)" />
+
+              <path
+                d={line(success)}
+                fill="none"
+                stroke="var(--health-blue)"
+                strokeWidth="2.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d={line(noAttempt)}
+                fill="none"
+                stroke="var(--health-red)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="6 4"
+              />
+
+              {labels.map((label, index) => (
+                <g key={label}>
+                  <line
+                    x1={toX(index)}
+                    x2={toX(index)}
+                    y1={padding.top}
+                    y2={padding.top + chartHeight}
+                    stroke="var(--health-line)"
+                    strokeOpacity="0.45"
+                  />
+                  <circle cx={toX(index)} cy={toY(success[index] ?? 0)} r="4" fill="var(--health-blue)" stroke="white" strokeWidth="1.5">
+                    <title>{`${label}: موفقیت ${formatPersianPercent(success[index] ?? 0)}`}</title>
+                  </circle>
+                  <circle
+                    cx={toX(index)}
+                    cy={toY(noAttempt[index] ?? 0)}
+                    r="3.5"
+                    fill="white"
+                    stroke="var(--health-red)"
+                    strokeWidth="2"
+                  >
+                    <title>{`${label}: NoAttempt ${formatPersianPercent(noAttempt[index] ?? 0)}`}</title>
+                  </circle>
+                  <text
+                    x={toX(index)}
+                    y={height - 10}
+                    textAnchor="middle"
+                    fill="var(--health-subtle)"
+                    fontSize="10"
+                  >
+                    {label}
+                  </text>
+                </g>
+              ))}
+            </svg>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+            {labels.map((label, index) => {
+              const successValue = success[index] ?? 0;
+              const noAttemptValue = noAttempt[index] ?? 0;
+              const quiet = successValue === 0 && noAttemptValue === 0;
+              return (
+                <div
+                  key={label}
+                  className={cn(
+                    "rounded-lg border px-2 py-2 text-center",
+                    quiet ? "border-dashed border-[var(--health-line)] bg-white" : "border-[var(--health-line)] bg-[var(--health-wash)]",
+                  )}
+                >
+                  <p className="text-[10px] font-semibold text-[var(--health-subtle)]">{label}</p>
+                  {quiet ? (
+                    <p className="mt-1 text-[10px] text-[var(--health-subtle)]">بدون نمونه</p>
+                  ) : (
+                    <div className="mt-1 space-y-0.5">
+                      <p className="text-[11px] font-bold text-[var(--health-blue)]">
+                        {formatPersianPercent(successValue)}
+                      </p>
+                      <p className="text-[10px] font-semibold text-[var(--health-red)]">
+                        {formatPersianPercent(noAttemptValue)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </Panel>
+  );
 }
 
 function Methodology({ result }: { result: PaymentHealthResult }) {
