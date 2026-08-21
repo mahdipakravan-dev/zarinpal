@@ -1,108 +1,178 @@
-# vinext-starter
+# ZarinPal Insight Dashboard
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+A Persian RTL merchant dashboard that turns payment telemetry into five growth views and one constrained AI agent. Charts, KPIs, and diagnoses are computed offline from real session data. The model only streams a single low-risk action sentence, with a rule-based fallback when the stream fails.
 
-## Prerequisites
+The UI stays inside a ZarinPal-shaped shell (sidebar, header, merchant account) so the insight layer feels like a product surface, not a separate analytics tool.
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+## What it does
 
-## Sites Lifecycle
+| Page | Sidebar label | Question it answers |
+| --- | --- | --- |
+| Sales Pulse | نبض فروش | Did this period beat the merchant's own weekday-hour rhythm, especially on Fridays, holidays, and occasions? |
+| Buyer Loyalty | وفاداری خریداران | Who returns, how long until the second purchase, and which segments carry the revenue? |
+| Peer Position | جایگاه همتا | Where does this merchant sit among anonymous same-category peers? |
+| Payment Health | سلامت پرداخت | Where does the path leak: no-attempt, bank entry, retry, verify, terminal? |
+| Business Graph | گراف کسب‌وکار | What structure is visible in merchant similarity, categories, customers, and payment flow? |
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+Legacy ledger screens (transactions, discounts, payment links) still exist in `app/page.tsx` but are not in the growth sidebar.
 
-This starter does not use `wrangler.jsonc`.
+## Architecture
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+The app is a single client-rendered workspace. `app/page.tsx` owns navigation state and swaps the active page. There is no per-page Next route for the dashboards.
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
-
-## Included Shape
-
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```
+challenge_data.csv
+        │
+        ▼
+ scripts/generate-*-data.mjs          ← deterministic math, once
+        │
+        ▼
+ public/data/{feature}/merchants/*.json
+ lib/generated/*-index.json
+        │
+        ▼
+ Dashboard (fetch JSON)               ← KPIs, charts, rule-based insight
+        │
+        ├── headline / bullets / diagnosis   (rules, never the model)
+        └── useLiveAiAction
+                 │
+                 ▼
+        lib/*-ai-stream.ts            ← page-specific prompt + aggregates
+                 │
+                 ▼
+        lib/liara-ai-stream.ts        ← SSE chat completions
+                 │
+                 ▼
+        AiInsight                     ← streamed one-sentence action
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+### Runtime stack
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+- **UI:** React 19, Next App Router on [vinext](https://github.com/cloudflare/vinext) (Vite + Cloudflare Worker)
+- **Direction / type:** `dir="rtl"`, `lang="fa"`, IranYekan
+- **Components:** Base UI / shadcn primitives under `components/ui`, insight chrome under `components/dashboard`
+- **Graph canvas:** `react-force-graph-2d`, lazy-loaded from `components/business-graph/graph-canvas.tsx`
+- **Agent transport:** browser `fetch` to Liara (OpenAI-compatible `/chat/completions` with `stream: true`)
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+### Data plane (deterministic)
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+Source file: `challenge_data.csv` (~2.21M rows, `2026-01-01` … `2026-06-30`). Generators run in Node, hash the source, and write versioned JSON.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+| Script | Output | Role |
+| --- | --- | --- |
+| `npm run data:sales-pulse` | `public/data/sales-pulse/merchants/` | Weekday-hour baseline, calendar impact, growth decomposition |
+| `npm run data:buyer-loyalty` | `public/data/buyer-loyalty/merchants/` | Retention curves, cohorts, segments |
+| `npm run data:peer-position` | `public/data/peer-position/merchants/` | Anonymous peer percentiles and opportunities |
+| `npm run data:payment-health` | `public/data/payment-health/merchants/` | Funnel, retry, PSP/amount matrix, anomalies |
+| Graph payload | `public/data/graph-data.json` | Merchant / customer / flow graphs |
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+`predev` / `prebuild` regenerate datasets only when stale (`--if-stale`). Indexes in `lib/generated/` list merchants and source hashes so the UI can prove which snapshot it is showing.
 
-## Diagnostic Commands
+Loaders in `lib/*-data.ts` are thin: they type the JSON and return a public URL. Dashboards `fetch` one merchant file at a time.
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+### Presentation plane
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+Shared chrome:
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+- `components/app-sidebar.tsx` — growth navigation
+- `components/dashboard-header.tsx` — ZarinPal header
+- `components/dashboard/page-heading.tsx` — titles
+- `components/dashboard/analysis-toolbar.tsx` — merchant / period selects
+- `components/dashboard/ai-insight.tsx` — insight + agent action
+- `hooks/use-live-ai-action.ts` — stream lifecycle (start, abort, fallback)
 
-## Learn More
+Each feature folder owns its charts (`components/sales-pulse`, `buyer-loyalty`, `peer-position`, `payment-health`, `business-graph`). Page files under `components/pages/` are one-line wrappers.
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
-# arval-plugin
+### Agent plane
+
+The agent is not a chatbot and does not compute metrics.
+
+1. **Facts stay in code.** Generators produce KPIs, headlines, diagnosis bullets, and a `ruleAction`.
+2. **The model rewrites one action.** On load (and on merchant/range/graph change) `useLiveAiAction` streams a replacement sentence. Changing context aborts the in-flight request.
+3. **Prompts are specialists.** Each `lib/*-ai-stream.ts` file sends a compact aggregate JSON plus a Persian system prompt. Shared rules: one sentence, ≤35 words, no Markdown/JSON, no invented numbers or causal claims, no discounts unless present in the input.
+4. **Transport is shared.** `lib/liara-ai-stream.ts` posts to `VITE_LIARA_AI_URL` with `VITE_LIARA_AI_API_KEY` / `VITE_LIARA_AI_MODEL`, parses SSE deltas, and logs redacted request/response records in the browser console (`[liara-ai-stream:*]` and page-specific prefixes).
+5. **Failure is silent to the merchant.** Empty or failed streams keep the rule-based action. `AiInsight` then labels it `پیشنهاد` instead of `پیشنهاد هوشمند`.
+
+Optional offline enrichment for Sales Pulse (`npm run data:sales-pulse:ai`) can bake an AI action into the JSON cache. Live streaming is the runtime path used by all five pages.
+
+**Privacy constraints the agent inherits:**
+
+- Input is aggregates only (no raw rows, card dumps, or terminal secrets)
+- Peer identities are never sent or rendered
+- Customer nodes are `payer_card_key` observations inside one merchant
+- Because there is no backend proxy, `VITE_*` values ship in the client bundle — use a **test** Liara credential only
+
+Details for the Sales Pulse prompt and audit log: [`docs/sales-pulse-ai.md`](docs/sales-pulse-ai.md).
+
+## Repository map
+
+```
+app/                         layout, fonts, single Home workspace
+components/
+  app-sidebar.tsx            growth nav
+  dashboard/                 shared insight chrome + agent panel
+  sales-pulse/               pulse charts and calendar guide
+  buyer-loyalty/             retention / cohort / segments
+  peer-position/             percentiles, scatter, opportunities
+  payment-health/            funnel, heatmap, anomalies
+  business-graph/            canvas, inspector, graph insight banner
+  pages/                     thin page adapters
+  ui/                        primitives
+hooks/use-live-ai-action.ts
+lib/
+  *-data.ts                  typed indexes + JSON URLs
+  *-ai-stream.ts             per-page agent prompts
+  liara-ai-stream.ts         SSE client
+  business-graph/            graph types + visual builders
+  generated/                 merchant indexes (build output)
+scripts/                     dataset generators + Sites install/build helpers
+public/data/                 static aggregates the dashboards fetch
+data/iran-calendar-2026.json official calendar used by Sales Pulse
+docs/                        agent prompt notes
+```
+
+## Setup
+
+Prerequisites: Node.js `>=22.13.0`.
+
+```bash
+cp .env.example .env.local   # then fill Liara test credentials
+npm install
+npm run dev
+```
+
+Without `VITE_LIARA_AI_URL` and `VITE_LIARA_AI_API_KEY`, dashboards still render; the insight box stays on the rule-based action.
+
+### Environment
+
+| Variable | Where | Purpose |
+| --- | --- | --- |
+| `VITE_LIARA_AI_URL` | browser | Streaming chat-completions endpoint |
+| `VITE_LIARA_AI_API_KEY` | browser | Test key only (bundled) |
+| `VITE_LIARA_AI_MODEL` | browser | Defaults to `openai/gpt-5.6-luna` |
+| `LIARA_AI_*` | Node (enrich script) | Offline Sales Pulse enrichment, timeout, JSONL audit path |
+
+Never commit `.env.local`.
+
+### Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite/Vinext dev server (datasets refresh if stale) |
+| `npm run build` | Production Sites artifact |
+| `npm run start` | Serve the built app |
+| `npm test` | Build + rendered HTML smoke test |
+| `npm run data:*` | Force-regenerate a dataset |
+| `npm run data:sales-pulse:ai` | Optional offline action enrichment |
+
+## Design rules (product)
+
+- **Math before language.** If the model is wrong, the charts remain auditable.
+- **One action, not a report.** The agent returns a sentence the merchant can try this week.
+- **Say “not enough data” instead of a pretty number.** Eligibility and confidence are first-class fields.
+- **Correlation is not causation.** Calendar copy and prompts are forbidden from claiming that an occasion caused a sales move.
+- **Privacy by construction.** Peer groups below the minimum size are not published; graph edges are statistical similarity, not business relationships.
+
+## Hosting notes
+
+This checkout still runs on the vinext Sites lifecycle (`scripts/install-ci.sh`, `scripts/build-verified.sh`, `scripts/sites-env.sh`). D1/R2 are declared in `.openai/hosting.json` but unused by the insight dashboards. Optional ChatGPT sign-in helpers live in `app/chatgpt-auth.ts` and are not required for the five growth pages.
