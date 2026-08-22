@@ -160,6 +160,7 @@ Never commit `.env.local`.
 | --- | --- |
 | `npm run dev` | Vite/Vinext dev server (datasets refresh if stale) |
 | `npm run build` | Production Sites artifact |
+| `npm run build:vercel` | Native Next.js production artifact (`.next`) for Vercel |
 | `npm run start` | Serve the built app |
 | `npm test` | Build + rendered HTML smoke test |
 | `npm run data:*` | Force-regenerate a dataset |
@@ -176,3 +177,8 @@ Never commit `.env.local`.
 ## Hosting notes
 
 This checkout still runs on the vinext Sites lifecycle (`scripts/install-ci.sh`, `scripts/build-verified.sh`, `scripts/sites-env.sh`). D1/R2 are declared in `.openai/hosting.json` but unused by the insight dashboards. Optional ChatGPT sign-in helpers live in `app/chatgpt-auth.ts` and are not required for the five growth pages.
+
+Vercel uses the native Next.js build configured in `vercel.json`. Do not set an
+Output Directory in the Vercel project settings; the Next.js framework adapter
+reads `.next` itself. The default `npm run build` remains the Vinext/Cloudflare
+build and emits `dist`.

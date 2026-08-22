@@ -1,5 +1,6 @@
 node_modules
 build
+.next
 drizzle
 exapmles
 .env
@@ -10,3 +11,4 @@ exapmles
 .wrangler/
 challenge_data.csv
 lib/generated/sales-pulse-ai-cache.json
+dist/
