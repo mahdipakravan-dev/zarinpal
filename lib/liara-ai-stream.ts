@@ -30,28 +30,15 @@ export async function streamLiaraAction({
   onText,
   logPrefix = "liara-ai-stream",
 }: StreamLiaraOptions): Promise<string> {
-  const url = import.meta.env.VITE_LIARA_AI_URL;
-  const apiKey = import.meta.env.VITE_LIARA_AI_API_KEY;
-  const model = import.meta.env.VITE_LIARA_AI_MODEL ?? "openai/gpt-5.6-luna";
-  if (!url || !apiKey) throw new Error("تنظیمات سرویس پیشنهاد هوشمند کامل نیست.");
-
   const requestId = crypto.randomUUID();
-  const body = {
-    model,
-    stream: true,
-    messages: [
-      { role: "system", content: system },
-      { role: "user", content: user },
-    ],
-  };
+  const body = { system, user };
   const startedAt = performance.now();
   logAudit(logPrefix, "request", {
     requestId,
     request: {
-      url,
+      url: "/api/liara-ai",
       method: "POST",
       headers: {
-        Authorization: "Bearer [REDACTED]",
         "Content-Type": "application/json",
       },
       body,
@@ -59,10 +46,9 @@ export async function streamLiaraAction({
   });
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch("/api/liara-ai", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),

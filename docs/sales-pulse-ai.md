@@ -6,16 +6,16 @@ terminal keys, or customer data.
 
 ## Runtime streaming setup
 
-Set `VITE_LIARA_AI_URL`, `VITE_LIARA_AI_API_KEY`, and `VITE_LIARA_AI_MODEL` in `.env.local`, then
-restart Vite. Opening Sales Pulse sends one streaming request after the selected merchant's static
+Set `LIARA_AI_URL`, `LIARA_AI_API_KEY`, and optionally `LIARA_AI_MODEL` in `.env.local`, then
+restart the server. Opening Sales Pulse sends one streaming request after the selected merchant's static
 aggregate loads. Changing the merchant or period cancels the previous stream and starts another.
 
 The streamed action progressively replaces the rule-based fallback. Calculations and factual
 bullets remain deterministic. Failed or empty streams fall back to the rule-based action.
 
-Because there is no backend, every `VITE_` value is included in the browser bundle. Use only a test
-credential in this mode. The request contains aggregated metrics, not raw transactions, card keys,
-terminal keys, or customer data.
+The browser calls the server-side `/api/liara-ai` proxy, so credentials remain on the server and
+production values are read at runtime. The request contains aggregated metrics, not raw transactions,
+card keys, terminal keys, or customer data.
 
 Runtime request, chunk, response, and error records are printed in the browser DevTools Console with
 the `[liara-ai-stream:*]` prefix. The Network panel also exposes the live SSE response.

@@ -90,7 +90,7 @@ The agent is not a chatbot and does not compute metrics.
 1. **Facts stay in code.** Generators produce KPIs, headlines, diagnosis bullets, and a `ruleAction`.
 2. **The model rewrites one action.** On load (and on merchant/range/graph change) `useLiveAiAction` streams a replacement sentence. Changing context aborts the in-flight request.
 3. **Prompts are specialists.** Each `lib/*-ai-stream.ts` file sends a compact aggregate JSON plus a Persian system prompt. Shared rules: one sentence, ≤35 words, no Markdown/JSON, no invented numbers or causal claims, no discounts unless present in the input.
-4. **Transport is shared.** `lib/liara-ai-stream.ts` posts to `VITE_LIARA_AI_URL` with `VITE_LIARA_AI_API_KEY` / `VITE_LIARA_AI_MODEL`, parses SSE deltas, and logs redacted request/response records in the browser console (`[liara-ai-stream:*]` and page-specific prefixes).
+4. **Transport is shared.** `lib/liara-ai-stream.ts` posts aggregate prompts to `/api/liara-ai`, which reads `LIARA_AI_URL`, `LIARA_AI_API_KEY`, and `LIARA_AI_MODEL` on the server and streams the upstream SSE response.
 5. **Failure is silent to the merchant.** Empty or failed streams keep the rule-based action. `AiInsight` then labels it `پیشنهاد` instead of `پیشنهاد هوشمند`.
 
 Optional offline enrichment for Sales Pulse (`npm run data:sales-pulse:ai`) can bake an AI action into the JSON cache. Live streaming is the runtime path used by all five pages.
@@ -100,7 +100,7 @@ Optional offline enrichment for Sales Pulse (`npm run data:sales-pulse:ai`) can 
 - Input is aggregates only (no raw rows, card dumps, or terminal secrets)
 - Peer identities are never sent or rendered
 - Customer nodes are `payer_card_key` observations inside one merchant
-- Because there is no backend proxy, `VITE_*` values ship in the client bundle — use a **test** Liara credential only
+- Liara credentials remain in the server-side proxy and are never shipped in the client bundle
 
 Details for the Sales Pulse prompt and audit log: [`docs/sales-pulse-ai.md`](docs/sales-pulse-ai.md).
 
@@ -141,16 +141,16 @@ npm install
 npm run dev
 ```
 
-Without `VITE_LIARA_AI_URL` and `VITE_LIARA_AI_API_KEY`, dashboards still render; the insight box stays on the rule-based action.
+Without `LIARA_AI_URL` and `LIARA_AI_API_KEY`, dashboards still render; the insight box stays on the rule-based action.
 
 ### Environment
 
 | Variable | Where | Purpose |
 | --- | --- | --- |
-| `VITE_LIARA_AI_URL` | browser | Streaming chat-completions endpoint |
-| `VITE_LIARA_AI_API_KEY` | browser | Test key only (bundled) |
-| `VITE_LIARA_AI_MODEL` | browser | Defaults to `openai/gpt-5.6-luna` |
-| `LIARA_AI_*` | Node (enrich script) | Offline Sales Pulse enrichment, timeout, JSONL audit path |
+| `LIARA_AI_URL` | server | Streaming chat-completions endpoint |
+| `LIARA_AI_API_KEY` | server | API credential (never bundled for the browser) |
+| `LIARA_AI_MODEL` | server | Defaults to `openai/gpt-5.6-luna` |
+| `LIARA_AI_*` safeguards | Node (enrich script) | Offline enrichment timeout and JSONL audit options |
 
 Never commit `.env.local`.
 
