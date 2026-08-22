@@ -30,6 +30,7 @@ import {
 } from "@/lib/sales-pulse-data";
 import { buildCustomSalesPulseResult } from "@/lib/sales-pulse-custom-range";
 import { formatPersianNumber } from "@/lib/format";
+import { PAGE_TITLES } from "@/lib/dashboard";
 import { streamSalesPulseAction } from "@/lib/sales-pulse-ai-stream";
 import { cn } from "@/lib/utils";
 
@@ -170,7 +171,7 @@ function SalesPulseHeader({ controls }: { controls: ReactNode }) {
         </div>
         <div className="flex min-w-0 flex-col gap-0.5">
           <h1 className="text-lg font-extrabold tracking-tight text-[var(--pulse-ink)] sm:text-xl">
-            نبض فروش و مناسبت‌ها
+            {PAGE_TITLES["sales-pulse"]}
           </h1>
           <p className="text-xs text-[var(--pulse-subtle)] sm:text-sm">
             مقایسه با میانگین همان روز و ساعت در هشت هفته گذشته

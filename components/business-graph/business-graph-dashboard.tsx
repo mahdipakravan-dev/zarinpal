@@ -22,6 +22,7 @@ import {
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { streamBusinessGraphAction } from "@/lib/business-graph-ai-stream";
 import { buildVisualGraph } from "@/lib/business-graph/graph-builders";
+import { PAGE_TITLES } from "@/lib/dashboard";
 import type {
   GlobalGraphKind,
   GraphKind,
@@ -572,7 +573,7 @@ function DashboardShell() {
   return (
     <div className="flex flex-col gap-2.5">
       <PageHeading
-        title="گراف هوشمند کسب‌وکار"
+        title={PAGE_TITLES["business-graph"]}
         subtitle="روابط پنهان بین فروش، پذیرنده، مشتری و مسیر پرداخت را روی یک نقشه عملیاتی ببینید"
         action={
           <Badge variant="outline" className="gap-1.5 font-normal" dir="ltr">

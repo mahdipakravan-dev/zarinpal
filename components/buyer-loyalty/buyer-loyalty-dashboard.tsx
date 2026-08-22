@@ -18,6 +18,7 @@ import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
 import { streamBuyerLoyaltyAction } from "@/lib/buyer-loyalty-ai-stream";
+import { PAGE_TITLES } from "@/lib/dashboard";
 import {
   BUYER_LOYALTY_INDEX,
   buyerLoyaltyMerchantDataUrl,
@@ -86,7 +87,9 @@ function Header({ merchantId, onMerchantChange }: {
           <UsersIcon className="size-5" aria-hidden="true" />
         </span>
         <div className="min-w-0">
-          <h1 className="text-lg font-extrabold text-[var(--loyalty-ink)] sm:text-xl">خریداران وفادار</h1>
+          <h1 className="text-lg font-extrabold text-[var(--loyalty-ink)] sm:text-xl">
+            {PAGE_TITLES["buyer-loyalty"]}
+          </h1>
           <p className="text-xs leading-5 text-[var(--loyalty-subtle)] sm:text-sm">
             رفتار مشتریان از اولین خرید مشاهده‌شده تا بازگشت بعدی
           </p>

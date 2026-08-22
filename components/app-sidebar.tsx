@@ -14,7 +14,7 @@ import {
   WaypointsIcon,
 } from "lucide-react";
 
-import { type DashboardPage } from "@/lib/dashboard";
+import { PAGE_TITLES, type DashboardPage } from "@/lib/dashboard";
 import {
   Sidebar,
   SidebarContent,
@@ -42,31 +42,31 @@ type NavItem = {
 const growthItems: NavItem[] = [
   {
     id: "sales-pulse",
-    label: "نبض فروش",
+    label: PAGE_TITLES["sales-pulse"],
     icon: HeartPulseIcon,
     page: "sales-pulse",
   },
   {
     id: "buyer-loyalty",
-    label: "وفاداری خریداران",
+    label: PAGE_TITLES["buyer-loyalty"],
     icon: RepeatIcon,
     page: "buyer-loyalty",
   },
   {
     id: "peer-position",
-    label: "جایگاه همتا",
+    label: PAGE_TITLES["peer-position"],
     icon: ChartNoAxesColumnIcon,
     page: "peer-position",
   },
   {
     id: "payment-health",
-    label: "سلامت پرداخت",
+    label: PAGE_TITLES["payment-health"],
     icon: WaypointsIcon,
     page: "payment-health",
   },
   {
     id: "business-graph",
-    label: "گراف کسب‌وکار",
+    label: PAGE_TITLES["business-graph"],
     icon: GitGraphIcon,
     page: "business-graph",
   },

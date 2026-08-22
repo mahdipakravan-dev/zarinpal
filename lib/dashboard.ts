@@ -12,7 +12,7 @@ export const DASHBOARD_PAGES = [
 export type DashboardPage = (typeof DASHBOARD_PAGES)[number];
 
 export const PAGE_TITLES: Record<DashboardPage, string> = {
-  "business-graph": "گراف هوشمند کسب و کار",
+  "business-graph": "گراف هوشمند کسب‌وکار",
   "sales-pulse": "نبض فروش و مناسبت‌ها",
   "buyer-loyalty": "رفتار و وفاداری خریداران",
   "peer-position": "جایگاه در میان کسب‌وکارهای مشابه",

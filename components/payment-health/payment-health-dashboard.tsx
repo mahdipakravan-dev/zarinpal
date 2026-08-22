@@ -11,6 +11,7 @@ import { AnalysisToolbar } from "@/components/dashboard/analysis-toolbar";
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
+import { PAGE_TITLES } from "@/lib/dashboard";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { streamPaymentHealthAction } from "@/lib/payment-health-ai-stream";
 import {
@@ -43,7 +44,9 @@ function Header({ merchantId, onChange }: { merchantId: string; onChange: (value
           <ShieldCheckIcon className="size-5" aria-hidden="true" />
         </span>
         <div>
-          <h1 className="text-lg font-extrabold text-[var(--health-ink)] sm:text-xl">سلامت مسیر پرداخت</h1>
+          <h1 className="text-lg font-extrabold text-[var(--health-ink)] sm:text-xl">
+            {PAGE_TITLES["payment-health"]}
+          </h1>
           <p className="text-xs leading-5 text-[var(--health-subtle)] sm:text-sm">
             تشخیص ریزش از NoAttempt تا verify، با کنترل مبلغ و PSP
           </p>

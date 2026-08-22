@@ -12,6 +12,7 @@ import { AnalysisToolbar } from "@/components/dashboard/analysis-toolbar";
 import { AiInsight } from "@/components/dashboard/ai-insight";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLiveAiAction } from "@/hooks/use-live-ai-action";
+import { PAGE_TITLES } from "@/lib/dashboard";
 import { formatPersianNumber, formatPersianPercent } from "@/lib/format";
 import { streamPeerPositionAction } from "@/lib/peer-position-ai-stream";
 import {
@@ -73,7 +74,7 @@ function DashboardHeader({ merchantId, onMerchantChange }: { merchantId: string;
         </span>
         <div className="min-w-0">
           <h1 className="text-lg font-extrabold text-[var(--peer-ink)] sm:text-xl">
-            جایگاه در میان کسب‌وکارهای مشابه
+            {PAGE_TITLES["peer-position"]}
           </h1>
           <p className="text-xs leading-5 text-[var(--peer-subtle)] sm:text-sm">
             مقایسه محرمانه با همتاهای هم‌دسته و هم‌پروفایل
