@@ -1,5 +1,5 @@
 # ZarinPal Insight Dashboard
-
+UP
 A Persian RTL merchant dashboard that turns payment telemetry into five growth views and one constrained AI agent. Charts, KPIs, and diagnoses are computed offline from real session data. The model only streams a single low-risk action sentence, with a rule-based fallback when the stream fails.
 
 The UI stays inside a ZarinPal-shaped shell (sidebar, header, merchant account) so the insight layer feels like a product surface, not a separate analytics tool.
